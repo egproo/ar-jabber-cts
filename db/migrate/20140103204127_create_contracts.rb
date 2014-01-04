@@ -6,6 +6,7 @@ class CreateContracts < ActiveRecord::Migration
       t.references :seller, null: false
       t.integer :duration_months, null: false
       t.integer :next_amount_estimate, null: true
+      t.integer :type, null: false
 
       t.timestamps
     end

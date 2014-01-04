@@ -44,6 +44,7 @@ CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
   contract = Contract.new(
     name: row[0],
     duration_months: row[4].to_i,
+    type: Contract::TYPE_ROOM,
   )
   contract.buyer = User.find_by_jid(row[1]) ||
                    User.create(
