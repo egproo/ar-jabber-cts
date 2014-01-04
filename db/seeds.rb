@@ -40,7 +40,7 @@ CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
 
   contract = Contract.new(
     name: row[0],
-    duration_months: row[5].to_i,
+    duration_months: row[4].to_i,
   )
   contract.buyer = User.find_by_jid(row[1]) ||
                    User.create(
@@ -58,9 +58,11 @@ CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
                       password: 'secret',
                       role: User::ROLE_MANAGER,
                     )
+
+  contract.created_at = Time.parse("#{row[6]} 0:00:00 UTC")
   contract.save!
 
-  amount = row[6].sub('$', '').to_i
+  amount = row[5].sub('$', '').to_i
   transfer = MoneyTransfer.first(
     conditions: { sender_id: contract.buyer.id, receiver_id: contract.seller.id }
   ) || MoneyTransfer.new(amount: 0)
@@ -68,12 +70,13 @@ CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
   transfer.amount += amount
   transfer.sender = contract.buyer
   transfer.receiver = contract.seller
-  transfer.created_at ||= Date.parse(row[7])
+  transfer.created_at = contract.created_at if transfer.new_record?
   transfer.save!
 
   payment = Payment.new(amount: amount)
   payment.money_transfer = transfer
   payment.contract = contract
+  payment.created_at = transfer.created_at
   payment.save!
 
   print '.'
