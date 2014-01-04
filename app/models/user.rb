@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
     ROLE_ADMIN => 'admin',
   }
 
-  attr_accessible :jid, :name, :password, :phone, :role
+  attr_accessible :jid, :name, :password, :phone, :role, :locale
 
   has_many :sent_transactions, class_name: 'Transaction', foreign_key: 'sender_id'
   has_many :received_transactions, class_name: 'Transaction', foreign_key: 'receiver_id'

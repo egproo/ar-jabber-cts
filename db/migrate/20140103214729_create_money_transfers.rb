@@ -1,10 +1,10 @@
 class CreateMoneyTransfers < ActiveRecord::Migration
   def change
     create_table :money_transfers do |t|
-      t.references :sender
-      t.references :receiver
-      t.integer :amount
-      t.string :comment
+      t.references :sender, null: false
+      t.references :receiver, null: false
+      t.integer :amount, null: false
+      t.string :comment, null: true
 
       t.timestamps
     end

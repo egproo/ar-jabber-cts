@@ -1,11 +1,11 @@
 class CreateContracts < ActiveRecord::Migration
   def change
     create_table :contracts do |t|
-      t.string :name
-      t.references :buyer
-      t.references :seller
-      t.integer :duration_months
-      t.integer :next_amount_estimate
+      t.string :name, null: false
+      t.references :buyer, null: false
+      t.references :seller, null: false
+      t.integer :duration_months, null: false
+      t.integer :next_amount_estimate, null: true
 
       t.timestamps
     end

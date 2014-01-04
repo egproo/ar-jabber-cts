@@ -25,6 +25,7 @@ User.create [{
     jid: 'modymatrix2@gmail.com',
     password: 'secret',
     role: User::ROLE_SUPER_MANAGER,
+    locale: 'sy',
   }]
 
 Contract.delete_all
@@ -38,6 +39,8 @@ CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
   break if row.first.nil?
   next if row.first.start_with?('room name') # header
 
+  p row
+
   contract = Contract.new(
     name: row[0],
     duration_months: row[4].to_i,
@@ -49,14 +52,16 @@ CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
                      phone: row[3],
                      password: nil,
                      role: User::ROLE_CLIENT,
+                     locale: 'sy',
                    )
   contract.seller = User.find_by_name(row[2]) ||
                     User.create(
-                      name: row[2],
+                      name: row[2] || 'unnamed',
                       jid: 'not_parsed@mail.me',
                       phone: nil,
                       password: 'secret',
                       role: User::ROLE_MANAGER,
+                      locale: 'sy',
                     )
 
   contract.created_at = Time.parse("#{row[6]} 0:00:00 UTC")
@@ -78,8 +83,6 @@ CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
   payment.contract = contract
   payment.created_at = transfer.created_at
   payment.save!
-
-  print '.'
 end
 puts "\n
   Clients  : #{User.count(conditions: { role: User::ROLE_CLIENT })}
