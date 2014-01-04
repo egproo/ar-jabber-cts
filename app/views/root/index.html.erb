@@ -1,21 +1,25 @@
-<table>
-	<tr>
-		<th>Room Name</th>
-		<th>Room Owner</th>
-		<th>Contract Creator</th>
-		<th>Owner Number</th>
-		<th>First Appeared</th>
-		<th>Contract Period</th>
-		<th>Payment Amount</th>
-		<th>Payment Date</th>
-		<th>Next Payment Date</th>
-		<th>Next Payment Amount (estimated)</th>
-	</tr>
-<% @contracts.each do |c| %>
-	<tr>
-		<% c.each_value do |v| %>
-			<td><%= v %></td>
+<table id="products" class="datatable">
+	<thead>
+		<tr>
+			<th>Room Name</th>
+			<th>Room Owner</th>
+			<th>Contract Creator</th>
+			<th>Owner Number</th>
+			<th>First Appeared</th>
+			<th>Contract Period</th>
+			<th>Payment Amount</th>
+			<th>Payment Date</th>
+			<th>Next Payment Date</th>
+			<th>Next Payment Amount (estimated)</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @contracts.each do |c| %>
+			<tr>
+				<% c.each_value do |v| %>
+					<td><%= v %></td>
+				<% end %>
+			</tr>
 		<% end %>
-	</tr>
-<% end %>
+	</tbody>
 </table>
