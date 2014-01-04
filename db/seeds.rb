@@ -25,74 +25,63 @@ User.create [{
     jid: 'modymatrix2@gmail.com',
     password: 'secret',
     role: User::ROLE_SUPER_MANAGER,
-  }, {
-    name: 'damascus',
-    phone: nil,
-    jid: 'owner@syriatalk.biz',
-    password: 'secret',
-    role: User::ROLE_MANAGER,
-  }, {
-    name: 'alastoraa',
-    phone: '+123457890',
-    jid: 'a.l.a.s.t.o.r.a.a@syriatalk.biz',
-    password: nil, # no login
-    role: User::ROLE_CLIENT,
   }]
 
-customer = User.find_by_name('alastoraa')
-manager = User.find_by_name('damascus')
-
 Contract.delete_all
-contract_3m_1 = Contract.new(
-  name: 'بانياس@conference.syriatalk.biz',
-  duration_months: 3,
-  next_amount_estimate: 15,
-).tap { |c|
-  c.buyer = customer
-  c.seller = manager
-  c.save!
-}
-contract_3m_2 = Contract.new(
-  name: 'حريصون@conference.syriatalk.biz',
-  duration_months: 3,
-  next_amount_estimate: 15,
-).tap { |c|
-  c.buyer = customer
-  c.seller = manager
-  c.save!
-}
-contract_1m = Contract.new(
-  name: 'شلة.الساحل@conference.syriatalk.biz',
-  duration_months: 1,
-  next_amount_estimate: 15,
-).tap { |c|
-  c.buyer = customer
-  c.seller = manager
-  c.created_at = 2.months.ago # outdated
-  c.save!
-}
-
 MoneyTransfer.delete_all
-MoneyTransfer.new(
-  amount: 30,
-).tap { |mt|
-  mt.sender = customer
-  mt.receiver = manager
-  mt.save!
-}
-
 Payment.delete_all
-Payment.new(
-  amount: 15,
-).tap { |p|
-  p.money_transfer = MoneyTransfer.first
-  p.contract = contract_3m_1
-  p.save!
-}
-Payment.new(
-  amount: 15,
-).tap { |p|
-  p.money_transfer = MoneyTransfer.first
-  p.contract = contract_3m_2
-  p.save!
-}
+  
+require 'csv'
+
+print "Parsing CSV"
+CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
+  break if row.first.nil?
+  next if row.first.start_with?('room name') # header
+
+  contract = Contract.new(
+    name: row[0],
+    duration_months: row[5].to_i,
+  )
+  contract.buyer = User.find_by_jid(row[1]) ||
+                   User.create(
+                     name: row[1].split('@', 2).first,
+                     jid: row[1],
+                     phone: row[3],
+                     password: nil,
+                     role: User::ROLE_CLIENT,
+                   )
+  contract.seller = User.find_by_name(row[2]) ||
+                    User.create(
+                      name: row[2],
+                      jid: 'not_parsed@mail.me',
+                      phone: nil,
+                      password: 'secret',
+                      role: User::ROLE_MANAGER,
+                    )
+  contract.save!
+
+  amount = row[6].sub('$', '').to_i
+  transfer = MoneyTransfer.first(
+    conditions: { sender_id: contract.buyer.id, receiver_id: contract.seller.id }
+  ) || MoneyTransfer.new(amount: 0)
+    
+  transfer.amount += amount
+  transfer.sender = contract.buyer
+  transfer.receiver = contract.seller
+  transfer.created_at ||= Date.parse(row[7])
+  transfer.save!
+
+  payment = Payment.new(amount: amount)
+  payment.money_transfer = transfer
+  payment.contract = contract
+  payment.save!
+
+  print '.'
+end
+puts "\n
+  Clients  : #{User.count(conditions: { role: User::ROLE_CLIENT })}
+  Managers : #{User.count(conditions: { role: User::ROLE_MANAGER })}
+  Contracts: #{Contract.count}
+  Transfers: #{MoneyTransfer.count}
+  Payments : #{Payment.count}
+"
