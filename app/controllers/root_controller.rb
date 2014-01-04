@@ -5,7 +5,6 @@ class RootController < ApplicationController
         room_name: contract.name,
         room_owner: contract.buyer,
         contract_creator: contract.seller,
-        owner_number: contract.buyer.try(:phone),
         first_appeared: contract.created_at,
         contract_period: contract.duration_months,
         payment_amount: contract.last_payment.try(:amount),
