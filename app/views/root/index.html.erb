@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <div class="table-responsive col-xs-12">
 	<table id="products" class="datatable table">
 		<thead>
@@ -6,7 +5,6 @@
 				<th>Room Name</th>
 				<th>Room Owner</th>
 				<th>Contract Creator</th>
-				<th>Owner Number</th>
 				<th>First Appeared</th>
 				<th>Contract Period</th>
 				<th>Payment Amount</th>
@@ -18,9 +16,15 @@
 		<tbody>
 			<% @contracts.each do |c| %>
 				<tr>
-					<% c.each_value do |v| %>
-						<td><%= v %></td>
-					<% end %>
+					<td><%= c[:room_name] %></td>
+					<td><%= c[:room_owner] %></td>
+					<td><%= c[:contract_creator] %></td>
+					<td><%= c[:first_appeared] %></td>
+					<td><%= c[:contract_period] %></td>
+					<td><%= c[:payment_amount] %></td>
+					<td><%= c[:payment_date] %></td>
+					<td><%= c[:next_payment_date] || 'n/a' %></td>
+					<td><%= c[:next_payment_estimate] || 'n/a' %></td>
 				</tr>
 			<% end %>
 		</tbody>
