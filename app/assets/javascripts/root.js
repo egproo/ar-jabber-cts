@@ -13,7 +13,7 @@ $(document).ready(function() {
 
   tableContainer.dataTable({
     // Setup for Bootstrap support.
-    //sDom           : '<"row"<"span6"l><"span6"f>r>t<"row"<"span6"i><"span6"p>>',
+    sDom: "<'row'<'col-12'f><'col-12'l>r>t<'row'<'col-12'i><'col-12'p>>",
     sPaginationType: 'bootstrap',
     oLanguage      : {
         sLengthMenu: '_MENU_ records per page'
