@@ -1,6 +1,6 @@
 class RootController < ApplicationController
   def index
-    @contracts = Contract.all.map do |contract|
+    @contracts = Contract.all(include: [:buyer, :seller, :payments]).map do |contract|
       {
         room_name: contract.name,
         room_owner: contract.buyer,
