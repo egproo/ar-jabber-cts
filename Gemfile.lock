@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/rweng/jquery-datatables-rails.git
+  revision: 44b0448193d4856847e47fb2a245bdd51a4bb2fa
+  specs:
+    jquery-datatables-rails (1.12.2)
+      jquery-rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -47,6 +54,8 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.1)
     libv8 (3.16.14.3)
+    lodash-rails (2.4.0)
+      railties (>= 3.1)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -108,7 +117,9 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
+  jquery-datatables-rails!
   jquery-rails
+  lodash-rails
   rails (= 3.2.13)
   sass-rails (~> 3.2.3)
   sqlite3
