@@ -90,7 +90,7 @@ CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
   amount = row[5].sub('$', '').to_i
   transfer = MoneyTransfer.first(
     conditions: { sender_id: contract.buyer.id, receiver_id: contract.seller.id }
-  ) || MoneyTransfer.new(amount: 0)
+  ) || MoneyTransfer.new(amount: 0, received: true)
     
   transfer.amount += amount
   transfer.sender = contract.buyer

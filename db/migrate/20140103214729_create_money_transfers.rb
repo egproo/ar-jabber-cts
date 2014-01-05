@@ -5,6 +5,7 @@ class CreateMoneyTransfers < ActiveRecord::Migration
       t.references :receiver, null: false
       t.integer :amount, null: false
       t.string :comment, null: true
+      t.boolean :received, null: false, default: false
 
       t.timestamps
     end
