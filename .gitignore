@@ -13,4 +13,9 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-/db/schema.rb
+
+# Do not store schemas
+/db/schema.*
+
+# vim swap files
+*.swp

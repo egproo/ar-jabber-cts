@@ -7,16 +7,25 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.delete_all
+budget = User.create(
+  name: 'budget',
+  phone: nil,
+  jid: 'admin@dget.cc',
+  password: nil,
+  role: User::ROLE_STUB,
+)
+employee = User.create(
+  name: 'alxers',
+  phone: nil,
+  jid: 'alex4rom@gmail.com',
+  password: 'secret',
+  role: User::ROLE_ADMIN,
+)
+
 User.create [{
     name: 'dot',
     phone: nil,
     jid: 'dot.doom@gmail.com',
-    password: 'secret',
-    role: User::ROLE_ADMIN,
-  }, {
-    name: 'alxers',
-    phone: nil,
-    jid: 'alex4rom@gmail.com',
     password: 'secret',
     role: User::ROLE_ADMIN,
   }, {
@@ -25,74 +34,80 @@ User.create [{
     jid: 'modymatrix2@gmail.com',
     password: 'secret',
     role: User::ROLE_SUPER_MANAGER,
-  }, {
-    name: 'damascus',
-    phone: nil,
-    jid: 'owner@syriatalk.biz',
-    password: 'secret',
-    role: User::ROLE_MANAGER,
-  }, {
-    name: 'alastoraa',
-    phone: '+123457890',
-    jid: 'a.l.a.s.t.o.r.a.a@syriatalk.biz',
-    password: nil, # no login
-    role: User::ROLE_CLIENT,
+    locale: 'sy',
   }]
 
-customer = User.find_by_name('alastoraa')
-manager = User.find_by_name('damascus')
-
 Contract.delete_all
-contract_3m_1 = Contract.new(
-  name: 'بانياس@conference.syriatalk.biz',
-  duration_months: 3,
-  next_amount_estimate: 15,
-).tap { |c|
-  c.buyer = customer
-  c.seller = manager
-  c.save!
-}
-contract_3m_2 = Contract.new(
-  name: 'حريصون@conference.syriatalk.biz',
-  duration_months: 3,
-  next_amount_estimate: 15,
-).tap { |c|
-  c.buyer = customer
-  c.seller = manager
-  c.save!
-}
-contract_1m = Contract.new(
-  name: 'شلة.الساحل@conference.syriatalk.biz',
-  duration_months: 1,
-  next_amount_estimate: 15,
-).tap { |c|
-  c.buyer = customer
-  c.seller = manager
-  c.created_at = 2.months.ago # outdated
-  c.save!
-}
-
 MoneyTransfer.delete_all
-MoneyTransfer.new(
-  amount: 30,
-).tap { |mt|
-  mt.sender = customer
-  mt.receiver = manager
-  mt.save!
+Payment.delete_all
+
+salary1 = Contract.new(
+  name: 'programmer',
+  duration_months: 1,
+  type: Contract::TYPE_SALARY,
+).tap { |c|
+  c.buyer = budget
+  c.seller = employee
+  c.next_amount_estimate = 400
 }
 
-Payment.delete_all
-Payment.new(
-  amount: 15,
-).tap { |p|
-  p.money_transfer = MoneyTransfer.first
-  p.contract = contract_3m_1
-  p.save!
-}
-Payment.new(
-  amount: 15,
-).tap { |p|
-  p.money_transfer = MoneyTransfer.first
-  p.contract = contract_3m_2
-  p.save!
-}
+require 'csv'
+
+print "Parsing CSV"
+CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
+  break if row.first.nil?
+  next if row.first.start_with?('room name') # header
+
+  p row
+
+  contract = Contract.new(
+    name: row[0],
+    duration_months: row[4].to_i,
+    type: Contract::TYPE_ROOM,
+  )
+  contract.buyer = User.find_by_jid(row[1]) ||
+                   User.create(
+                     name: row[1].split('@', 2).first,
+                     jid: row[1],
+                     phone: row[3],
+                     password: nil,
+                     role: User::ROLE_CLIENT,
+                     locale: 'sy',
+                   )
+  contract.seller = User.find_by_name(row[2]) ||
+                    User.create(
+                      name: row[2] || 'unnamed',
+                      jid: 'not_parsed@mail.me',
+                      phone: nil,
+                      password: 'secret',
+                      role: User::ROLE_MANAGER,
+                      locale: 'sy',
+                    )
+
+  contract.created_at = Time.parse("#{row[6]} 0:00:00 UTC")
+  contract.save!
+
+  amount = row[5].sub('$', '').to_i
+  transfer = MoneyTransfer.first(
+    conditions: { sender_id: contract.buyer.id, receiver_id: contract.seller.id }
+  ) || MoneyTransfer.new(amount: 0, received: true)
+    
+  transfer.amount += amount
+  transfer.sender = contract.buyer
+  transfer.receiver = contract.seller
+  transfer.created_at = contract.created_at if transfer.new_record?
+  transfer.save!
+
+  payment = Payment.new(amount: amount)
+  payment.money_transfer = transfer
+  payment.contract = contract
+  payment.created_at = transfer.created_at
+  payment.save!
+end
+puts "\n
+  Clients  : #{User.count(conditions: { role: User::ROLE_CLIENT })}
+  Managers : #{User.count(conditions: { role: User::ROLE_MANAGER })}
+  Contracts: #{Contract.count}
+  Transfers: #{MoneyTransfer.count}
+  Payments : #{Payment.count}
+"
