@@ -16,3 +16,6 @@
 
 # Do not store schemas
 /db/schema.*
+
+# vim swap files
+*.swp

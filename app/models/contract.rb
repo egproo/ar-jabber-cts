@@ -1,7 +1,7 @@
 class Contract < ActiveRecord::Base
   TYPE_ROOM = 1
   TYPE_ANNOUNCEMENT = 2
-  TYPE_EMPLOYEE = 3
+  TYPE_SALARY = 3
 
   belongs_to :buyer, class_name: 'User'
   belongs_to :seller, class_name: 'User'

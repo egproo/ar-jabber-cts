@@ -7,16 +7,25 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.delete_all
+budget = User.create(
+  name: 'budget',
+  phone: nil,
+  jid: 'admin@dget.cc',
+  password: nil,
+  role: User::ROLE_STUB,
+)
+employee = User.create(
+  name: 'alxers',
+  phone: nil,
+  jid: 'alex4rom@gmail.com',
+  password: 'secret',
+  role: User::ROLE_ADMIN,
+)
+
 User.create [{
     name: 'dot',
     phone: nil,
     jid: 'dot.doom@gmail.com',
-    password: 'secret',
-    role: User::ROLE_ADMIN,
-  }, {
-    name: 'alxers',
-    phone: nil,
-    jid: 'alex4rom@gmail.com',
     password: 'secret',
     role: User::ROLE_ADMIN,
   }, {
@@ -31,7 +40,17 @@ User.create [{
 Contract.delete_all
 MoneyTransfer.delete_all
 Payment.delete_all
-  
+
+salary1 = Contract.new(
+  name: 'programmer',
+  duration_months: 1,
+  type: Contract::TYPE_SALARY,
+).tap { |c|
+  c.buyer = budget
+  c.seller = employee
+  c.next_amount_estimate = 400
+}
+
 require 'csv'
 
 print "Parsing CSV"
