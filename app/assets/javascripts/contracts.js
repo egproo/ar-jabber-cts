@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  $('.room-name').input_field_addons({ postfix: '@conference.syriatalk.biz' });
 
   var tableContainer = $('#contracts');
 

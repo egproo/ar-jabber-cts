@@ -9,7 +9,7 @@ Money transfer:
 <% if @money_transfer.payments.any? %>
 Payments:
 	<% @money_transfer.payments.each do |p| %>
-	<%= p %>
+	<%= link_to p, p.contract %>
 	<% end %>
 <% end %>
 </pre>

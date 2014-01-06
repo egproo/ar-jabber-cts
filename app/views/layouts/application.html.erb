@@ -8,6 +8,10 @@
 </head>
 <body style="padding: 20px">
 
+<% if flash[:error] %>
+	<div style="color: red"><%= flash[:error] %></div>
+<% end %>
+
 <%=t 'User' %>: <%= link_to current_user, '/users/home' %> LOCALE: <%= I18n.locale %>
 
 <%= yield %>

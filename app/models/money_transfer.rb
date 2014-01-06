@@ -17,6 +17,7 @@ class MoneyTransfer < ActiveRecord::Base
   end
 
   def validate_payment_amounts
+    return unless amount.present?
     payments_sum = payments.inject(0) { |a,e| a + e.amount }
     errors.add(:amount, "is smaller than total payments amount #{payments_sum}") if payments_sum > amount
   end

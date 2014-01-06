@@ -20,17 +20,28 @@ class MoneyTransfersController < ApplicationController
     @contracts = money_transfer_contracts(@money_transfer)
     
     @contracts.each do |contract|
-      if amount = params["pay_contract_#{contract.id}"]
+      if (amount = params["amount_contract_#{contract.id}"]).present?
         @money_transfer.payments.build(
           amount: amount
         ).contract = contract
+
+        duration = params["duration_contract_#{contract.id}"].to_i
+        unless (1..12).include?(duration)
+          flash[:error] = "Invalid value or duration of contract #{contract.name}: #{duration}"
+          return render :new
+        end
       end
     end
 
-    if @money_transfer.save
-      redirect_to @money_transfer
-    else
-      render :new
+    MoneyTransfer.transaction do
+      @money_transfer.payments.each do |p|
+        p.contract.update_attributes!(duration_months: params["duration_contract_#{p.contract.id}"])
+      end
+      if @money_transfer.save
+        redirect_to @money_transfer
+      else
+        render :new
+      end
     end
   end
 

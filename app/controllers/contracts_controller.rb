@@ -1,6 +1,6 @@
 class ContractsController < ApplicationController
   def index
-    contracts = Contract.all(include: [:buyer, :seller, :payments]).map do |contract|
+    contracts = Contract.all(include: [:buyer, :seller, :last_payment]).map do |contract|
       [
         contract.name,
         contract.buyer,
@@ -35,11 +35,13 @@ class ContractsController < ApplicationController
       duration_months: params[:contract][:duration_months],
       type: Contract::TYPE_ROOM,
     )
+    @contract.name += '@conference.syriatalk.biz' unless @contract.name.include?('@')
     @contract.seller = current_user
     @contract.buyer = User.find_by_name(params[:contract][:buyer])
     if @contract.save
       redirect_to @contract
     else
+      @contract.name.sub!('@conference.syriatalk.biz', '')
       render :new
     end
   end

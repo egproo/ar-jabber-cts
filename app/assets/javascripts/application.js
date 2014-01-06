@@ -17,7 +17,7 @@
 //= require twitter/typeahead
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
-//= require jquery.bootstrap-money-field.js
+//= require jquery.bootstrap-input-addon.js
 //= require_tree .
 
 $(document).ready(function() {
@@ -25,5 +25,5 @@ $(document).ready(function() {
         name: 'user',
         prefetch: '/users.json?map=name'
     });
-    $('.amount-usd').money_field();
+    $('.amount-usd').input_field_addons({ prefix: '$' });
 })

@@ -9,22 +9,18 @@ class Contract < ActiveRecord::Base
   belongs_to :buyer, class_name: 'User'
   belongs_to :seller, class_name: 'User'
   has_many :payments
+  has_one :last_payment, class_name: 'Payment', order: 'created_at DESC'
   attr_accessible :name, :duration_months, :next_amount_estimate, :type
 
   validates_uniqueness_of :name
-  validates_inclusion_of :duration_months, in: (1..12)
   validates_presence_of :buyer
   validates_presence_of :seller
   validates_format_of :name, with: /@conference.syriatalk.biz\z/
 
   self.inheritance_column = :_type_disabled
 
-  def last_payment
-    @last_payment ||= payments.last
-  end
-
   def next_payment_date
-    last_payment.try(:created_at).try(:+, duration_months.months)
+    last_payment.try(:created_at).try(:+, duration_months.months) if duration_months
   end
 
   def to_s

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     if current_user.role <= User::ROLE_SUPER_MANAGER
-      raise 'This user does not have contracts with you' unless current_user == @user || current_user.clients.include?(@user)
+      return render text: 'This user does not have contracts with you' unless current_user == @user || current_user.clients.include?(@user)
     end
   end
 

@@ -1,4 +1,4 @@
-class ContractPaymentAmountInput < SimpleForm::Inputs::NumericInput
+class ContractPaymentNewDurationInput < SimpleForm::Inputs::NumericInput
   class FakeBuilder
     def initialize(builder)
       @builder = builder

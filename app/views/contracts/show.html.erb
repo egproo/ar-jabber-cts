@@ -2,6 +2,12 @@
 Name:  <%= @contract.name %>
 Room Owner: <%= @contract.buyer.name %>
 Contract Creator: <%= @contract.seller.name %>
+Duration (months): <%= @contract.duration_months %>
+<% if @contract.last_payment %>
+Last payment: <%= link_to @contract.last_payment, @contract.last_payment.money_transfer %>
+<% end %>
 
-First appeared: <%= @contract.created_at %>
+First appeared: <%= @contract.created_at.to_date %>
 </pre>
+
+<%= link_to 'Receive money transfer from this client', "/money_transfers/new?sender_id=#{@contract.buyer.id}&receiver_id=#{current_user.id}", class: 'btn' %>
