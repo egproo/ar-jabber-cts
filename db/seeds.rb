@@ -22,6 +22,14 @@ employee = User.create(
   role: User::ROLE_ADMIN,
 )
 
+stub = User.create(
+  name: User::STUB,
+  phone: nil,
+  jid: 'stub@dget.cc',
+  password: nil,
+  role: User::ROLE_ADMIN,
+) if Rails.env.development?
+
 User.create [{
     name: 'dot',
     phone: nil,
@@ -53,7 +61,7 @@ salary1 = Contract.new(
 
 require 'csv'
 
-print "Parsing CSV"
+puts "Parsing CSV"
 CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
   break if row.first.nil?
   next if row.first.start_with?('room name') # header

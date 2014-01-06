@@ -11,6 +11,8 @@ gem 'sqlite3'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  gem 'sass-rails', '~> 3.2.3'
+
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer', :platforms => :ruby
 
@@ -18,6 +20,10 @@ group :assets do
 
   gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-rails.git'
   gem 'lodash-rails'
+end
+
+group :production do
+  gem 'unicorn'
 end
 
 gem 'jquery-rails'

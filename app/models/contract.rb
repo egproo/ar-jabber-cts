@@ -17,4 +17,8 @@ class Contract < ActiveRecord::Base
   def next_payment_date
     last_payment.try(:created_at).try(:+, duration_months.months)
   end
+
+  def to_s
+    name.sub('@conference.syriatalk.biz', '')
+  end
 end

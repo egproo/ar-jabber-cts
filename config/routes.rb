@@ -1,4 +1,8 @@
 JabberCTS::Application.routes.draw do
+  get 'users/home'
+  resources :users
+
+
   get "money_transfer/new"
 
   get "money_transfer/create"
