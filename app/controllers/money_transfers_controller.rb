@@ -41,6 +41,10 @@ class MoneyTransfersController < ApplicationController
   def index
     # FIXME: security issue (full read: major)
     @money_transfers = MoneyTransfer.all
+    respond_to do |format|
+      format.html
+      format.json { render json: @money_transfers }
+    end
   end
 
   private
