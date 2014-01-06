@@ -44,6 +44,7 @@ class MoneyTransfersController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render json: @money_transfers }
+      format.datatable { render json: { aaData: @money_transfers } }
     end
   end
 
