@@ -39,6 +39,8 @@ class User < ActiveRecord::Base
   has_one :salary_contract, class_name: 'Contract', foreign_key: 'seller_id', conditions: { type: Contract::TYPE_SALARY }
 
   def debt
+    return 0 if role <= ROLE_CLIENT
+
     # Total received
     MoneyTransfer.all(conditions: { receiver_id: self }).sum(&:amount) -
     # Minus total sent
@@ -53,6 +55,17 @@ class User < ActiveRecord::Base
 
   def role_name
     ROLE_NAMES[role]
+  end
+
+  def clients
+    User.all(
+      joins: :bought_contracts,
+      conditions: {
+        contracts: {
+          type: [Contract::TYPE_ROOM, Contract::TYPE_ANNOUNCEMENT],
+          seller_id: self
+        }
+      })
   end
 
   def self.dump_htpasswd
