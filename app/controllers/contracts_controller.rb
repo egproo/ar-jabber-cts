@@ -11,6 +11,7 @@ class ContractsController < ApplicationController
         contract.last_payment.try(:created_at),
         contract.next_payment_date,
         contract.next_amount_estimate,
+        contract.id,
       ]
     end
     respond_to do |format|

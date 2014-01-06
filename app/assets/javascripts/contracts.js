@@ -3,6 +3,10 @@ $(document).ready(function() {
 
   var tableContainer = $('#contracts');
 
+  var cnr = function(data, format, row) {
+      return "<a href='/contracts/" + row[9] + "'>" + data + "</a>";
+  }
+
   tableContainer.dataTable({
     sPaginationType: 'bootstrap',
     bProcessing: true,
@@ -12,6 +16,9 @@ $(document).ready(function() {
     },
     aoColumnDefs: [
       {
+          mRender: cnr,
+          aTargets: [0]
+      }, {
         mRender: userRenderer,
         aTargets: [1, 2]
       }, {

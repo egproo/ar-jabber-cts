@@ -1,7 +1,7 @@
 <pre>
 Name:  <%= @contract.name %>
-Room Owner: <%= @contract.buyer.name %>
-Contract Creator: <%= @contract.seller.name %>
+Room Owner: <%= link_to @contract.buyer.name, @contract.buyer %>
+Contract Creator: <%= link_to @contract.seller.name, @contract.seller %>
 Duration (months): <%= @contract.duration_months %>
 <% if @contract.last_payment %>
 Last payment: <%= link_to @contract.last_payment, @contract.last_payment.money_transfer %>
