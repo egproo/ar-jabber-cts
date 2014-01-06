@@ -5,7 +5,7 @@
 	<%= f.input :comment %>
 
 	<% @contracts.each do |c| %>
-		<%= f.input "contract_#{c.id}", label: c.to_s, input_html: {class: 'span3'}, wrapper_html: {class: 'controls controls-row'} do %>
+		<%= f.input "contract_#{c.id}", label: "#{c.to_s}#{" (#{c.next_payment_date.to_date})" if c.next_payment_date}", input_html: {class: 'span3'}, wrapper_html: {class: 'controls controls-row'} do %>
 			<%= f.input "amount_contract_#{c.id}", label: "Amount", as: :contract_payment_amount, input_html: { value: params["amount_contract_#{c.id}"] || c.next_amount_estimate } %>
 			<%= f.input "duration_contract_#{c.id}", label: "Months", as: :contract_payment_new_duration, input_html: { value: params["duration_contract_#{c.id}"] || c.duration_months } %>
 		<% end %>

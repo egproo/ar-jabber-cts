@@ -5,6 +5,9 @@ Contract Creator: <%= @contract.seller.name %>
 Duration (months): <%= @contract.duration_months %>
 <% if @contract.last_payment %>
 Last payment: <%= link_to @contract.last_payment, @contract.last_payment.money_transfer %>
+<% if @contract.duration_months %>
+Next payment: <%= @contract.next_payment_date.to_date %>
+<% end %>
 <% end %>
 
 First appeared: <%= @contract.created_at.to_date %>
