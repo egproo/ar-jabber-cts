@@ -1,4 +1,8 @@
 JabberServiceAccounting::Application.routes.draw do
+  get "money_transfer/new"
+
+  get "money_transfer/create"
+
   get 'tracking' => 'tracking#index'
 
   # The priority is based upon order of creation:
