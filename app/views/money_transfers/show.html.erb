@@ -5,4 +5,11 @@ Money transfer:
 	Date:    <%= @money_transfer.created_at.to_date %>
 	Amount:  $<%= @money_transfer.amount %>
 	Comment: <%= @money_transfer.comment || '(no comment)' %>
+
+<% if @money_transfer.payments.any? %>
+Payments:
+	<% @money_transfer.payments.each do |p| %>
+	<%= p %>
+	<% end %>
+<% end %>
 </pre>
