@@ -17,14 +17,14 @@
       <% @contracts.each do |c| %>
         <tr>
           <td><%= c[:room_name] %></td>
-          <td><%= c[:room_owner] %></td>
-          <td><%= c[:contract_creator] %></td>
+          <td><%= c[:room_owner].name %></td>
+          <td><%= c[:contract_creator].name %></td>
           <td><%= c[:first_appeared] %></td>
           <td><%= c[:contract_period] %></td>
           <td><%= c[:payment_amount] %></td>
           <td><%= c[:payment_date] %></td>
-          <td><%= c[:next_payment_date] || 'n/a' %></td>
-          <td><%= c[:next_payment_estimate] || 'n/a' %></td>
+          <td><%= c[:next_payment_date] %></td>
+          <td><%= c[:next_payment_estimate] %></td>
         </tr>
       <% end %>
     </tbody>
