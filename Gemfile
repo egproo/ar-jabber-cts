@@ -20,7 +20,6 @@ group :assets do
 
   gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-rails.git'
   gem 'lodash-rails'
-  gem 'twitter-typeahead-rails'
 end
 
 group :production do
