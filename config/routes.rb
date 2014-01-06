@@ -1,4 +1,6 @@
 JabberCTS::Application.routes.draw do
+  get "i18n/datatable"
+
   get "public_activity/index"
 
   get 'users/home'

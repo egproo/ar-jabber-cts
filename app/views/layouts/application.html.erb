@@ -8,7 +8,7 @@
 </head>
 <body>
 
-USER: <%= link_to current_user, '/users/home' %> LOCALE: <%= I18n.locale %>
+<%=t 'User' %>: <%= link_to current_user, '/users/home' %> LOCALE: <%= I18n.locale %>
 
 <%= yield %>
 

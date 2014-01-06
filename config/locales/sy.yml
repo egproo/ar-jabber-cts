@@ -1,8 +1,13 @@
 sy:
+  helpers:
+    submit:
+      money_transfer:
+        create: "ﺖﺴﺠﻴﻟ ﺪﻔﻋ ﺭﻮﻣ"
   Room Name: "إسم الروم"
   Room Owner: "حساب صاحب العقد"
   Contract Creator: "كاتب العقد"
   Contract Period: "مدة العقد"
   Payment Amount: "مبلغ التحصيل"
   Payment Date: "آخر ميعاد تحصيل"
-  Next Payment Date: "ميعاد الدفعه القادمه"
+  Next Date: "ميعاد الدفعه القادمه"
+  User: "إسم المستخدك"
