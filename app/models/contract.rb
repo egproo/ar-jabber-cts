@@ -8,6 +8,8 @@ class Contract < ActiveRecord::Base
   has_many :payments
   attr_accessible :name, :duration_months, :next_amount_estimate, :type
 
+  validates_uniqueness_of :name
+
   self.inheritance_column = :_type_disabled
 
   def last_payment
