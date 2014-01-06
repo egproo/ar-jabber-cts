@@ -18,4 +18,9 @@ Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @us
   <%= link_to 'Receive money transfer from client', "/money_transfers/new?receiver_id=#{@user.id}", class: 'btn' %>
   <%= link_to 'Send money transfer', "/money_transfers/new?sender_id=#{@user.id}", class: 'btn' %>
   <%= link_to 'Add contract', '/', class: 'btn' %>
+
+  <%= simple_form_for @user do |f| %>
+	  <%= f.input :password %>
+  	  <%= f.submit 'Save Password' %>
+  <% end %>
 <% end %>
