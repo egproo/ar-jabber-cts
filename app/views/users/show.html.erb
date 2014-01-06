@@ -10,9 +10,8 @@ Debt: $<%= @user.debt %>
 <% if @user.salary_contract %>
 Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @user.salary_contract.next_payment_date %>
 <% end %>
-
-<%= link_to 'Receive money transfer from client', "/money_transfers/new?receiver_id=#{@user.id}" %>
-<%= link_to 'Send money transfer', "/money_transfers/new?sender_id=#{@user.id}" %>
-<%= link_to 'Add contract' %>
-
 </pre>
+
+<%= link_to 'Receive money transfer from client', "/money_transfers/new?receiver_id=#{@user.id}", class: 'btn' %>
+<%= link_to 'Send money transfer', "/money_transfers/new?sender_id=#{@user.id}", class: 'btn' %>
+<%= link_to 'Add contract', '/', class: 'btn' %>

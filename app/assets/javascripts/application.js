@@ -13,15 +13,16 @@
 //= require jquery
 //= require jquery_ujs
 //= require lodash
-//= require bootstrap
+//= require twitter/bootstrap
+//= require twitter/typeahead
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap3
 //= require dataTables/jquery.dataTables.responsive
-//= require twitter/typeahead
 //= require_tree .
 
 $(document).ready(function() {
     $('.typeahead_user').typeahead({
+        name: 'user',
         prefetch: '/users.json?map=name'
     });
 })
