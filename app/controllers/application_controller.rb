@@ -16,4 +16,6 @@ class ApplicationController < ActionController::Base
         User.first(conditions: { name: [@current_user_name, 'stub'] })
       end
   end
+
+  helper_method :current_user
 end

@@ -19,3 +19,5 @@
 
 # vim swap files
 *.swp
+
+/.htpasswd

@@ -40,4 +40,14 @@ class User < ActiveRecord::Base
   def to_s
     "#{name} [#{ROLE_NAMES[role]}]#{" (JID/MAIL: #{jid})" if jid}#{" CELL #{phone}" if phone}"
   end
+
+  def self.dump_htaccess
+    File.open(File.join(Rails.root, '.htpasswd'), 'w') do |htaccess|
+      User.all(conditions: 'password IS NOT NULL').each do |user|
+        htaccess.puts "#{user.name}:{PLAIN}#{user.password}"
+      end
+    end
+  end
+
+  after_save { User.dump_htaccess }
 end
