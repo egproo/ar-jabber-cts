@@ -22,7 +22,7 @@ $(document).ready(function() {
 
     tableContainer.dataTable({
         bProcessing: true,
-        sAjaxSource: '/tracking.json',
+        sAjaxSource: '/tracking.datatable',
         oLanguage      : {
             sLengthMenu: '_MENU_ records per page'
         },

@@ -1,0 +1,2 @@
+module PublicActivityHelper
+end

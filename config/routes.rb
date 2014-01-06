@@ -1,4 +1,6 @@
 JabberCTS::Application.routes.draw do
+  get "public_activity/index"
+
   get 'users/home'
   resources :users
 
