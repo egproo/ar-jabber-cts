@@ -53,7 +53,7 @@ salary1 = Contract.new(
 
 require 'csv'
 
-print "Parsing CSV"
+puts "Parsing CSV"
 CSV.foreach(File.join(Rails.root, 'db/seeds.csv')) do |row|
   break if row.first.nil?
   next if row.first.start_with?('room name') # header
