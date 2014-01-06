@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  var tableContainer = $('#users');
+  var tableContainer = $('#money_transfers');
 
   tableContainer.dataTable({
     sPaginationType: 'bootstrap',

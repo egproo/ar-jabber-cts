@@ -1,4 +1,14 @@
-<br/>
-<% @money_transfers.each do |mt| %>
-	<%= link_to mt, mt %><br/>
-<% end %>
+<table id="money_transfers" class="table table-bordered" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th><%=t 'Money transfers' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @money_transfers.each do |mt| %>
+      <tr>
+        <td><%= link_to mt, mt %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

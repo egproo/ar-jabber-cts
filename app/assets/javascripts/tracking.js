@@ -21,6 +21,7 @@ $(document).ready(function() {
     };
 
     tableContainer.dataTable({
+        sPaginationType: 'bootstrap',
         bProcessing: true,
         sAjaxSource: '/tracking.datatable',
         oLanguage      : {
