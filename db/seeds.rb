@@ -23,7 +23,7 @@ employee = User.create(
 )
 
 stub = User.create(
-  name: 'stub',
+  name: User::STUB,
   phone: nil,
   jid: 'stub@dget.cc',
   password: nil,

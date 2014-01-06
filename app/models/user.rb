@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  STUB_NAME = 'stub'
+
   ROLE_STUB = -1
   ROLE_CLIENT = 0
 

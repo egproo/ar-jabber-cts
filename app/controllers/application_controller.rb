@@ -13,7 +13,8 @@ class ApplicationController < ActionController::Base
     @current_user ||=
       begin
         @current_user_name ||= ActionController::HttpAuthentication::Basic::user_name_and_password(request).first rescue nil
-        User.first(conditions: { name: [@current_user_name, 'stub'] })
+        User.find_by_name(@current_user_name) ||
+          (Rails.env.development? && User.find_by_name(User::STUB_NAME))
       end
   end
 
