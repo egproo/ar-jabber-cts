@@ -7,7 +7,7 @@ $(document).ready(function() {
     bProcessing: true,
     sAjaxSource: '/tracking.datatable',
     oLanguage      : {
-        sLengthMenu: '_MENU_ records per page'
+        sUrl: '/i18n/datatable.json'
     },
     aoColumnDefs: [
       {
