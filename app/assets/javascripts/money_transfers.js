@@ -2,27 +2,31 @@ $(document).ready(function() {
 
   var tableContainer = $('#money_transfers');
 
+
+
   tableContainer.dataTable({
     sPaginationType: 'bootstrap',
     bProcessing: true,
-    sAjaxSource: '/money_transfers.json',
+    sAjaxSource: '/money_transfers.datatable',
+    oLanguage: {
+      sLengthMenu: '_MENU_ records per page'
+    },
 
-    // var userRenderer = function(data, type, row) {
-    //     var displayName = data.role > 0 ? data.name : data.jid;
-    //     return "<a href='/users/" + data.id + "'>" + displayName + "</a>";
-    // };
-    // var dateRenderer = function(data, type, row) {
-    //     return new Date(Date.parse(data)).toLocaleDateString();
-    // };
-
-    // aoColumnDefs: [
-    //   {
-    //       mRender: userRenderer,
-    //       aTargets: [0]
-    //   }, {
-    //       mRender: dateRenderer,
-    //       aTargets: [3]
-    //   }
-    // ]
+    aoColumns: [
+      {
+        mData: "sender",
+        mRender: userRenderer,
+        aTargets: [1]
+      }, {
+        mData: "receiver",
+        mRender: userRenderer,
+        aTargets: [2]
+      }, {
+        mData: "amount"
+      }, {
+        mData: "created_at",
+        mRender: dateRenderer
+      },
+    ]
   });
 });
