@@ -9,7 +9,7 @@ $(document).ready(function() {
     bProcessing: true,
     sAjaxSource: '/money_transfers.datatable',
     oLanguage: {
-      sLengthMenu: '_MENU_ records per page'
+      sUrl: '/i18n/datatable.json'
     },
 
     aoColumns: [

@@ -33,8 +33,8 @@ class User < ActiveRecord::Base
 
   attr_accessible :jid, :name, :password, :phone, :role, :locale
 
-  has_many :sent_transactions, class_name: 'Transaction', foreign_key: 'sender_id'
-  has_many :received_transactions, class_name: 'Transaction', foreign_key: 'receiver_id'
+  has_many :sent_transfers, class_name: 'MoneyTransfer', foreign_key: 'sender_id'
+  has_many :received_transfers, class_name: 'MoneyTransfer', foreign_key: 'receiver_id'
 
   has_many :bought_contracts, class_name: 'Contract', foreign_key: 'buyer_id'
   has_many :sold_contracts, class_name: 'Contract', foreign_key: 'seller_id'

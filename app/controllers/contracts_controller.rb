@@ -1,4 +1,4 @@
-class TrackingController < ApplicationController
+class ContractsController < ApplicationController
   def index
     contracts = Contract.all(include: [:buyer, :seller, :payments]).map do |contract|
       [

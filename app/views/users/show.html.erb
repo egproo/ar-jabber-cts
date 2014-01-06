@@ -24,3 +24,8 @@ Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @us
   	  <%= f.submit 'Save Password' %>
   <% end %>
 <% end %>
+
+Money Transfers:<br/>
+<% (@user.sent_transfers + @user.received_transfers).each do |t| %>
+	<br/><%= link_to t, t %>
+<% end %>

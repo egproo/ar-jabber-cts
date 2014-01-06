@@ -5,7 +5,7 @@ $(document).ready(function() {
   tableContainer.dataTable({
     sPaginationType: 'bootstrap',
     bProcessing: true,
-    sAjaxSource: '/tracking.datatable',
+    sAjaxSource: '/contracts.datatable',
     oLanguage: {
         sUrl: '/i18n/datatable.json'
     },
