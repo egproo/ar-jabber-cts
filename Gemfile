@@ -20,6 +20,10 @@ group :assets do
   gem 'lodash-rails'
 end
 
+group :production do
+  gem 'unicorn'
+end
+
 gem 'jquery-rails'
 gem 'simple_form'
 
