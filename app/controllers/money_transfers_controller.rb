@@ -40,11 +40,11 @@ class MoneyTransfersController < ApplicationController
 
   def index
     # FIXME: security issue (full read: major)
-    @money_transfers = MoneyTransfer.all
+    @money_transfers = MoneyTransfer.all(include: [:sender, :receiver])
     respond_to do |format|
       format.html
       format.json { render json: @money_transfers }
-      format.datatable { render json: { aaData: @money_transfers } }
+      format.datatable { render text: ({ aaData: @money_transfers }).to_json(include: [:sender, :receiver]) }
     end
   end
 
