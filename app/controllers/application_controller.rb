@@ -5,9 +5,15 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = current_user.locale
+  rescue
+    render text: 'No current user'
   end
 
   def current_user
-    User.all(conditions: { role: [User::ROLE_ADMIN, User::ROLE_SUPER_MANAGER] }).sample
+    @current_user ||=
+      begin
+        @current_user_name ||= ActionController::HttpAuthentication::Basic::user_name_and_password(request).first rescue nil
+        User.first(conditions: { name: [@current_user_name, 'stub'] })
+      end
   end
 end

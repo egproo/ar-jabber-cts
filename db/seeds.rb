@@ -22,6 +22,14 @@ employee = User.create(
   role: User::ROLE_ADMIN,
 )
 
+stub = User.create(
+  name: 'stub',
+  phone: nil,
+  jid: 'stub@dget.cc',
+  password: nil,
+  role: User::ROLE_ADMIN,
+) if Rails.env.development?
+
 User.create [{
     name: 'dot',
     phone: nil,
