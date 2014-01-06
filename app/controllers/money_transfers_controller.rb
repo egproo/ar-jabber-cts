@@ -62,10 +62,11 @@ class MoneyTransfersController < ApplicationController
   private
   def money_transfer_contracts(mt)
     if mt.sender && mt.receiver
-      Contract.all(conditions: {
-        buyer_id: mt.sender,
-        seller_id: mt.receiver,
-      })
+      conditions = { buyer_id: mt.sender }
+      if current_user.role < User::ROLE_SUPER_MANAGER
+        conditions[:seller_id] = mt.receiver
+      end
+      Contract.all(conditions: conditions)
     else
       []
     end
