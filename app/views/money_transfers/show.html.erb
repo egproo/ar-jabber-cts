@@ -1,0 +1,8 @@
+<pre>
+Money transfer:
+	From:    <%= link_to *([@money_transfer.sender]*2) %>
+	To:      <%= link_to *([@money_transfer.receiver]*2) %>
+	Date:    <%= @money_transfer.created_at.to_date %>
+	Amount:  $<%= @money_transfer.amount %>
+	Comment: <%= @money_transfer.comment || '(no comment)' %>
+</pre>

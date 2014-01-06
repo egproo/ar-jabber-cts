@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  STUB_NAME = 'stub'
+  STUB_NAME = 'damascus'
 
   ROLE_STUB = -1
   ROLE_CLIENT = 0
@@ -49,8 +49,12 @@ class User < ActiveRecord::Base
     Payment.all(joins: :contract, conditions: { contracts: { type: Contract::TYPE_SALARY, seller_id: self } }).sum(&:amount)
   end
 
-  def to_s
+  def inspect
     "#{name} [#{role_name}]#{" (JID/MAIL: #{jid})" if jid}#{" CELL #{phone}" if phone}"
+  end
+
+  def to_s
+    name
   end
 
   def role_name

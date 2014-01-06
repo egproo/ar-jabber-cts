@@ -36,21 +36,7 @@ $(document).ready(function() {
                 mRender: dateRenderer,
                 aTargets: [3, 6, 7]
             }
-        ],
-        // Setup for responsive datatables helper.
-        bAutoWidth     : false,
-        fnPreDrawCallback: function () {
-            // Initialize the responsive datatables helper once.
-            if (!responsiveHelper) {
-                responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
-            }
-        },
-        fnRowCallback  : function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-            responsiveHelper.createExpandIcon(nRow);
-        },
-        fnDrawCallback : function (oSettings) {
-            responsiveHelper.respond();
-        }
+        ]
     });
 
 });

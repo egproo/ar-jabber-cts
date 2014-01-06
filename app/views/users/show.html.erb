@@ -12,6 +12,10 @@ Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @us
 <% end %>
 </pre>
 
-<%= link_to 'Receive money transfer from client', "/money_transfers/new?receiver_id=#{@user.id}", class: 'btn' %>
-<%= link_to 'Send money transfer', "/money_transfers/new?sender_id=#{@user.id}", class: 'btn' %>
-<%= link_to 'Add contract', '/', class: 'btn' %>
+<% if @user.role == User::ROLE_CLIENT %>
+  <%= link_to 'Receive money transfer from this client', "/money_transfers/new?sender_id=#{@user.id}&receiver_id=#{current_user.id}", class: 'btn' %>
+<% elsif @user == current_user %>
+  <%= link_to 'Receive money transfer from client', "/money_transfers/new?receiver_id=#{@user.id}", class: 'btn' %>
+  <%= link_to 'Send money transfer', "/money_transfers/new?sender_id=#{@user.id}", class: 'btn' %>
+  <%= link_to 'Add contract', '/', class: 'btn' %>
+<% end %>

@@ -1,6 +1,12 @@
 <%= simple_form_for @money_transfer, html: { class: 'form-horizontal' } do |f| %>
 	<%= f.input :sender, readonly: !!@money_transfer.sender, input_html: { class: 'typeahead_user' } %>
 	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead_user' } %>
+	<%= f.input :amount, input_html: { class: 'amount-usd' } %>
 	<%= f.input :comment %>
+
+	<% @contracts.each do |c| %>
+		<%= f.input "pay_contract_#{c.id}", label: c.name.sub('@conference.syriatalk.biz', ''), as: :contract_payment_amount %>
+	<% end %>
+
 	<%= f.submit class: 'btn btn-primary' %>
 <% end %>
