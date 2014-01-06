@@ -34,8 +34,7 @@ $(document).ready(function() {
             }, {
                 mRender: dateRenderer,
                 aTargets: [3, 6]
-            }, 
-            {
+            }, {
                 mRender: paymentRenderer,
                 aTargets: [7]
             }
