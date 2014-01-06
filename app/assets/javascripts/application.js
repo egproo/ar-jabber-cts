@@ -17,4 +17,11 @@
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap3
 //= require dataTables/jquery.dataTables.responsive
+//= require twitter/typeahead
 //= require_tree .
+
+$(document).ready(function() {
+    $('.typeahead_user').typeahead({
+        prefetch: '/users.json?map=name'
+    });
+})

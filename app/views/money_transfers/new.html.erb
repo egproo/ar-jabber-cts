@@ -1,4 +1,6 @@
-<%= simple_form_for MoneyTransfer.new do |f| %>
+<%= simple_form_for @money_transfer do |f| %>
+	<%= f.input :sender, readonly: !!@money_transfer.sender, input_html: { class: 'typeahead_user' } %>
+	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead_user' } %>
 	<%= f.input :comment %>
 	<%= f.submit %>
 <% end %>

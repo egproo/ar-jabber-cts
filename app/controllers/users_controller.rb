@@ -16,5 +16,10 @@ class UsersController < ApplicationController
 
   def index
     @users = current_user.role >= User::ROLE_SUPER_MANAGER ? User.all : current_user.clients
+
+    respond_to do |format|
+      format.json { render json: @users.map(&:name) }
+      format.html
+    end
   end
 end
