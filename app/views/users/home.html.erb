@@ -1,0 +1,13 @@
+<pre>
+Name: <%= current_user.name %>
+Role: <%= current_user.role_name %>
+
+Contracts:
+	Sold  : <%= current_user.sold_contracts.count %>
+	Bought: <%= current_user.bought_contracts.count %>
+
+Debt: $<%= current_user.debt %>
+<% if current_user.salary_contract %>
+Salary (expected): $<%= current_user.salary_contract.next_amount_estimate %> at <%= current_user.salary_contract.next_payment_date %>
+<% end %>
+</pre>
