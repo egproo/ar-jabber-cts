@@ -1,0 +1,8 @@
+<%= simple_form_for @contract, html: { class: 'form-horizontal' } do |f| %>
+	<%= f.input :name, label: 'Room name' %>
+	<%= f.input :buyer, label: 'Room owner', input_html: { class: 'typeahead_user' } %>
+	<%= f.input :seller, readonly: true, input_html: { class: 'typeahead_user' } %>
+	<%= f.input :duration_months, label: 'Months' %>
+
+	<%= f.submit class: 'btn btn-primary' %>
+<% end %>

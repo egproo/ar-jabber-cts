@@ -1,17 +1,10 @@
 JabberCTS::Application.routes.draw do
   get "i18n/datatable"
-
   get "public_activity/index"
-
   get 'users/home'
   resources :users
-
-
-  get "money_transfer/new"
-
-  get "money_transfer/create"
-
-  get 'contracts' => 'contracts#index'
+  resources :contracts
+  resources :money_transfers
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -26,11 +19,6 @@ JabberCTS::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-
-  resources :money_transfers
-  resources :users do
-    resources :money_transfers
-  end
 
   # Sample resource route with options:
   #   resources :products do

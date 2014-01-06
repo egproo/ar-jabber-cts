@@ -19,4 +19,28 @@ class ContractsController < ApplicationController
       format.html
     end
   end
+
+  def show
+    @contract = Contract.find(params[:id])
+  end
+
+  def new
+    @contract = Contract.new
+    @contract.seller = current_user
+  end
+
+  def create
+    @contract = Contract.new(
+      name: params[:contract][:name],
+      duration_months: params[:contract][:duration_months],
+      type: Contract::TYPE_ROOM,
+    )
+    @contract.seller = current_user
+    @contract.buyer = User.find_by_name(params[:contract][:buyer])
+    if @contract.save
+      redirect_to @contract
+    else
+      render :new
+    end
+  end
 end

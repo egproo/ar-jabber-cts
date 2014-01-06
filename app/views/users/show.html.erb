@@ -17,7 +17,7 @@ Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @us
 <% elsif @user == current_user %>
   <%#= link_to 'Receive money transfer from client', "/money_transfers/new?receiver_id=#{@user.id}", class: 'btn' %>
   <%#= link_to 'Send money transfer', "/money_transfers/new?sender_id=#{@user.id}", class: 'btn' %>
-  <%#= link_to 'Add contract', '/', class: 'btn' %>
+  <%= link_to 'Add contract', '/contracts/new', class: 'btn' %>
 
   <%= simple_form_for @user do |f| %>
 	  <%= f.input :password %>
@@ -25,7 +25,7 @@ Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @us
   <% end %>
 <% end %>
 
-Money Transfers:<br/>
-<% (@user.sent_transfers + @user.received_transfers).each do |t| %>
+<br/>Money Transfers:<br/>
+<% (@user.sent_transfers + @user.received_transfers).sort_by(&:created_at).reverse_each do |t| %>
 	<br/><%= link_to t, t %>
 <% end %>
