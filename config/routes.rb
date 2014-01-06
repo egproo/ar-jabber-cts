@@ -1,4 +1,4 @@
-JabberServiceAccounting::Application.routes.draw do
+JabberCTS::Application.routes.draw do
   get "money_transfer/new"
 
   get "money_transfer/create"

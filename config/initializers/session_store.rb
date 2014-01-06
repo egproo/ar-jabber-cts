@@ -1,8 +1,8 @@
 # Be sure to restart your server when you modify this file.
 
-JabberServiceAccounting::Application.config.session_store :cookie_store, key: '_jabber-service-accounting_session'
+JabberCTS::Application.config.session_store :cookie_store, key: '_jabber-service-accounting_session'
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
 # (create the session table with "rails generate session_migration")
-# JabberServiceAccounting::Application.config.session_store :active_record_store
+# JabberCTS::Application.config.session_store :active_record_store
