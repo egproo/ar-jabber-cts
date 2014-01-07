@@ -1,6 +1,6 @@
 class Contract < ActiveRecord::Base
   include PublicActivity::Model
-  tracked owner: Proc.new{ |controller, model| controller.current_user }
+  tracked owner: Proc.new{ |controller, model| controller.try(:current_user) }
 
   TYPE_ROOM = 1
   TYPE_ANNOUNCEMENT = 2

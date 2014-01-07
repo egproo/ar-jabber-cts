@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   include PublicActivity::Model
-  tracked owner: Proc.new{ |controller, model| controller.current_user }
+  tracked owner: Proc.new{ |controller, model| controller.try(:current_user) }
 
   STUB_NAME = 'stub'
 
