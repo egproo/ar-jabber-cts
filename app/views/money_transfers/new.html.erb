@@ -1,6 +1,6 @@
 <%= simple_form_for @money_transfer, html: { class: 'form-horizontal' } do |f| %>
-	<%= f.input :sender, readonly: !!@money_transfer.sender, input_html: { class: 'typeahead_user' } %>
-	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead_user' } %>
+	<%= f.input :sender, readonly: !!@money_transfer.sender, input_html: { class: 'typeahead-user' } %>
+	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead-user' } %>
 	<%= f.input :amount, input_html: { class: 'amount-usd' } %>
 	<%= f.input :comment %>
 

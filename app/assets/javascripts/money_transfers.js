@@ -13,17 +13,15 @@ $(document).ready(function() {
     aoColumns: [
       {
         mData: "sender",
-        mRender: userRenderer,
-        aTargets: [1]
+        mRender: renderers.user
       }, {
         mData: "receiver",
-        mRender: userRenderer,
-        aTargets: [2]
+        mRender: renderers.user
       }, {
         mData: "amount"
       }, {
         mData: "created_at",
-        mRender: dateRenderer
+        mRender: renderers.date
       },
     ]
   });

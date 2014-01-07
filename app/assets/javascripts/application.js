@@ -21,7 +21,7 @@
 //= require_tree .
 
 $(document).ready(function() {
-    $('.typeahead_user').typeahead({
+    $('.typeahead-user').typeahead({
         name: 'user',
         prefetch: '/users.json?map=name'
     });

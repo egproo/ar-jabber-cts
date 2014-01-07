@@ -22,7 +22,7 @@ Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @us
 
   <%= simple_form_for @user do |f| %>
 	  <%= f.input :password %>
-  	  <%= f.submit 'Save Password' %>
+  	  <%= f.submit 'Save Password', class: 'btn' %>
   <% end %>
 <% end %>
 
