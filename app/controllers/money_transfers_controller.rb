@@ -5,7 +5,26 @@ class MoneyTransfersController < ApplicationController
     @money_transfer.sender = User.find(params[:sender_id]) if params[:sender_id]
     @money_transfer.receiver = User.find(params[:receiver_id]) if params[:receiver_id]
 
-    @contracts = money_transfer_contracts(@money_transfer)
+    @contracts = money_transfer_contracts(@money_transfer).sort do |c1, c2|
+      if c1.next_payment_date && c2.next_payment_date
+        c1.next_payment_date <=> c2.next_payment_date
+      else
+        if c1.next_payment_date
+          1
+        elsif c2.next_payment_date
+          -1
+        else
+          0
+        end
+      end
+    end
+
+    if highlight_contract_id = params[:contract_id]
+      highlight_contract_id = highlight_contract_id.to_i
+      highlight_contract = @contracts.find { |c| c.id == highlight_contract_id }
+      @contracts.delete(highlight_contract)
+      @contracts.unshift(highlight_contract)
+    end
   end
 
   def create

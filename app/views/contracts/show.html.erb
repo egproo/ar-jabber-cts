@@ -13,4 +13,4 @@ Next payment: <%= @contract.next_payment_date.to_date %>
 First appeared: <%= @contract.created_at.to_date %>
 </pre>
 
-<%= link_to 'Receive money transfer from this client', "/money_transfers/new?sender_id=#{@contract.buyer.id}&receiver_id=#{current_user.id}", class: 'btn' %>
+<%= link_to 'Receive money transfer for this contract', "/money_transfers/new?sender_id=#{@contract.buyer.id}&receiver_id=#{current_user.id}&contract_id=#{@contract.id}", class: 'btn' %>
