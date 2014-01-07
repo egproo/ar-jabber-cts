@@ -1,0 +1,21 @@
+<ul class="nav">
+  <li class="divider-vertical">
+    <%= link_to 'Contracts', root_path %>
+  </li>
+  <li class="divider-vertical">
+    <%= link_to 'Money Transfers', money_transfers_path %>
+  </li>
+  <li class="divider-vertical">
+    <%= link_to 'Users', users_path %>
+  </li>
+  <li>
+    <%= link_to 'Add contract', new_contract_path %>
+  </li>
+</ul>
+<ul class="nav pull-right">
+  <li>
+    <p class="navbar-text">
+      <%=t 'Welcome' %>, <%= link_to current_user, '/users/home' %> [<%= I18n.locale %>]
+    </p>
+  </li>
+</ul>

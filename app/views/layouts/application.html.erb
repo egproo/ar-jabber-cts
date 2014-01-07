@@ -6,13 +6,17 @@
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
-<body style="padding: 20px">
-
+<body>
+  <div class="navbar navbar-fixed-top">
+    <nav class="navbar-inner">
+      <div class="container">
+        <%= render 'layouts/navigation' %>
+      </div>
+    </nav>
+  </div>
 <% if flash[:error] %>
 	<div style="color: red"><%= flash[:error] %></div>
 <% end %>
-
-<%=t 'User' %>: <%= link_to current_user, '/users/home' %> LOCALE: <%= I18n.locale %>
 
 <%= yield %>
 
