@@ -8,7 +8,6 @@ var dateRenderer = function(data, type, row) {
 };
 
 var paymentRenderer = function(data, type, row) {
-  console.log(data, type, row)
   var nextDate = new Date(Date.parse(data));
   var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
