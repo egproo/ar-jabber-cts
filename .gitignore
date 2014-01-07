@@ -21,3 +21,4 @@
 *.swp
 
 /.htpasswd
+/vendor/bundle
