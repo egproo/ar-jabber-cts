@@ -1,33 +1,41 @@
 $(document).ready(function() {
-  $('.room-name').input_field_addons({ postfix: '@conference.syriatalk.biz' });
+    $('.room-name').input_field_addons({ postfix: '@conference.syriatalk.biz' });
 
-  var tableContainer = $('#contracts');
+    var tableContainer = $('#contracts');
 
-  var cnr = function(data, format, row) {
-      return "<a href='/contracts/" + row[9] + "'>" + data + "</a>";
-  }
-
-  tableContainer.dataTable({
-    sPaginationType: 'bootstrap',
-    bProcessing: true,
-    sAjaxSource: '/contracts.datatable',
-    oLanguage: {
-        sUrl: '/i18n/datatable.json'
-    },
-    aoColumnDefs: [
-      {
-          mRender: cnr,
-          aTargets: [0]
-      }, {
-        mRender: userRenderer,
-        aTargets: [1, 2]
-      }, {
-        mRender: dateRenderer,
-        aTargets: [3, 6]
-      }, {
-        mRender: paymentRenderer,
-        aTargets: [7]
-      }
-    ]
-  });
+    tableContainer.dataTable({
+            sPaginationType: 'bootstrap',
+            bProcessing: true,
+            sAjaxSource: '/contracts.datatable',
+            oLanguage: {
+                sUrl: '/i18n/datatable.json'
+            },
+            aoColumns: [{
+                    mData: null,
+                    mRender: function(data, type, row) { return renderers.contract(row, type, row); }
+                }, {
+                    mData: 'buyer',
+                    mRender: renderers.user
+                }, {
+                    mData: 'seller',
+                    mRender: renderers.user
+                }, {
+                    mData: 'created_at',
+                    mRender: renderers.date
+                }, {
+                    mData: 'duration_months'
+                }, {
+                    mData: 'last_payment.amount',
+                    mRender: renderers.amount
+                }, {
+                    mData: 'last_payment.created_at',
+                    mRender: renderers.date
+                }, {
+                    mData: 'next_payment_date',
+                    mRender: renderers.nextPaymentDate
+                }, {
+                    mData: 'next_amount_estimate',
+                    mRender: renderers.amount
+            }]
+    });
 });

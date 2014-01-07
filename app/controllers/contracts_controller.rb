@@ -1,22 +1,18 @@
 class ContractsController < ApplicationController
   def index
-    contracts = Contract.all(include: [:buyer, :seller, :last_payment]).map do |contract|
-      [
-        contract.name,
-        contract.buyer,
-        contract.seller,
-        contract.created_at,
-        contract.duration_months,
-        contract.last_payment.try(:amount),
-        contract.last_payment.try(:created_at),
-        contract.next_payment_date,
-        contract.next_amount_estimate,
-        contract.id,
-      ]
-    end
     respond_to do |format|
-      format.datatable { render json: { aaData: contracts } }
-      format.xml { render xml: contracts }
+      format.datatable {
+        contracts = Contract.all(include: [:buyer, :seller, :last_payment])
+        render json: {
+            aaData: contracts
+          },
+          include: [
+            { buyer: { except: [:password] } },
+            { seller: { except: [:password] } },
+            :last_payment
+          ],
+          methods: [:next_payment_date]
+      }
       format.html
     end
   end
