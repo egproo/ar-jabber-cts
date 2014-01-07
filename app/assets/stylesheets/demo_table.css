@@ -26,6 +26,16 @@
  *     ../images/ - relative to this CSS file.
  */
 
+table th {
+  font-size: 85%;
+  text-align: left;
+  vertical-align: center;
+}
+
+.highlight_date {
+	color: #ff1919;
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables features
  */
@@ -500,11 +510,6 @@ tr.even.gradeU td.sorting_3 {
 /*
  * Row highlighting example
  */
-.highlight_date {
-	color: #ff1919;
-	font-weight: bold;
-	/*font-size: 120%;*/
-}
 
 .ex_highlight #example tbody tr.odd:hover, #example tbody tr.odd td.highlighted {
 	background-color: #E6FF99;

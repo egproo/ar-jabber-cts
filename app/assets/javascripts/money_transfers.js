@@ -14,16 +14,20 @@ $(document).ready(function() {
         aoColumns: [
             {
                 mData: "sender",
-                mRender: renderers.user
+                mRender: renderers.user,
+                sWidth: "40%"
             }, {
                 mData: "receiver",
-                mRender: renderers.user
+                mRender: renderers.user,
+                sWidth: "20%"
             }, {
                 mData: "amount",
-                mRender: renderers.amount
+                mRender: renderers.amount,
+                sWidth: "10%"
             }, {
                 mData: "created_at",
-                mRender: renderers.date
+                mRender: renderers.date,
+                sWidth: "30%"
             },
         ]
     });
