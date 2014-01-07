@@ -16,6 +16,7 @@
   <li>
     <p class="navbar-text">
       <%=t 'Welcome' %>, <%= link_to current_user, '/users/home' %> [<%= I18n.locale %>]
+	  <%= link_to t('Logout'), "http://log:out@#{request.host}/" %>
     </p>
   </li>
 </ul>
