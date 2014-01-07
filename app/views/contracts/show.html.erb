@@ -14,3 +14,10 @@ First appeared: <%= @contract.created_at.to_date %>
 </pre>
 
 <%= link_to 'Receive money transfer for this contract', "/money_transfers/new?sender_id=#{@contract.buyer.id}&receiver_id=#{current_user.id}&contract_id=#{@contract.id}", class: 'btn' %>
+
+<% if @contract.payments.any? %>
+	<br/>Money transfer history:
+<% @contract.payments.sort_by(&:created_at).reverse_each do |p| %>
+	<br/><%= link_to p, p.money_transfer %>
+<% end %>
+<% end %>
