@@ -18,7 +18,8 @@ $(document).ready(function() {
                 mData: "receiver",
                 mRender: renderers.user
             }, {
-                mData: "amount"
+                mData: "amount",
+                mRender: renderers.amount
             }, {
                 mData: "created_at",
                 mRender: renderers.date

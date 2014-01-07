@@ -17,6 +17,8 @@
 
 body {
 	font-family: Verdana;
+  padding: 20px;
+  margin-top: 40px;
 }
 
 input {
