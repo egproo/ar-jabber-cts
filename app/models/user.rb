@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
 
 
   ROLE_NAMES = {
+    ROLE_STUB => 'stub',
     ROLE_CLIENT => 'client',
     ROLE_MINI_MANAGER => 'manager',
     ROLE_MANAGER => 'manager',

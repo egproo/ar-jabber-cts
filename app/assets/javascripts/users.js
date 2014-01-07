@@ -15,7 +15,7 @@ $(document).ready(function() {
                 mData: null,
                 mRender: function(data, type, row) { return renderers.user(row, type, row); }
             }, {
-                mData: "jid",
+                mData: "jid"
             }, {
                 mData: "phone"
             }, {

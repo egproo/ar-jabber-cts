@@ -7,8 +7,9 @@ $(document).ready(function() {
         bProcessing: true,
         sAjaxSource: '/money_transfers.datatable',
         oLanguage: {
-        sUrl: '/i18n/datatable.json'
+            sUrl: '/i18n/datatable.json'
         },
+        aaSorting: [[3, 'desc']],
 
         aoColumns: [
             {

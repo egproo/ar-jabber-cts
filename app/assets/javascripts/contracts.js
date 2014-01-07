@@ -10,6 +10,8 @@ $(document).ready(function() {
             oLanguage: {
                 sUrl: '/i18n/datatable.json'
             },
+            bAutoWidth: false,
+            aaSorting: [[7, 'asc']],
             aoColumns: [{
                     mData: null,
                     mRender: function(data, type, row) { return renderers.contract(row, type, row); }
