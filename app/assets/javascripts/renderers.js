@@ -10,7 +10,7 @@ var renderers = {
 
     date: function(data, type, row) {
         if (type === 'display') {
-            return new Date(Date.parse(data)).toLocaleDateString();
+            return new Date(Date.parse(data)).toISOString().replace(/T.*/, '');
         }
         return data;
     },
@@ -20,10 +20,11 @@ var renderers = {
             var nextDate = new Date(Date.parse(data));
             var tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
+            var nextDateString = nextDate.toISOString().replace(/T.*/, '');
             if (nextDate <= tomorrow) {
-                return '<span class="highlight_date">' + nextDate.toLocaleDateString() + '</span>';
+                return '<span class="highlight_date">' + nextDateString + '</span>';
             }
-            return nextDate.toLocaleDateString();
+            return nextDateString;
         }
         return data;
     },

@@ -42,6 +42,10 @@ class User < ActiveRecord::Base
 
   has_one :salary_contract, class_name: 'Contract', foreign_key: 'seller_id', conditions: { type: Contract::TYPE_SALARY }
 
+  validates_format_of :jid, with: /\A.*@.*\z/
+  validates_numericality_of :phone
+  validates_uniqueness_of :name
+
   def debt
     return 0 if role <= ROLE_CLIENT
 
