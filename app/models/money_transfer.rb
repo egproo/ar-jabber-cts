@@ -5,10 +5,11 @@ class MoneyTransfer < ActiveRecord::Base
   belongs_to :sender, class_name: 'User'
   belongs_to :receiver, class_name: 'User'
   has_many :payments, dependent: :destroy
-  attr_accessible :amount, :comment, :received
+  attr_accessible :amount, :comment, :received, :created_at
 
   validates_inclusion_of :amount, in: 1..5000
   validates_presence_of :sender, :receiver, :amount
+  validates_presence_of :created_at
 
   validate :validate_payment_amounts
 

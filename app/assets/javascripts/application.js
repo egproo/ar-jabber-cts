@@ -15,6 +15,7 @@
 //= require lodash
 //= require twitter/bootstrap
 //= require twitter/typeahead
+//= require bootstrap-datetimepicker.min
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
 //= require jquery.bootstrap-input-addon.js
@@ -26,4 +27,5 @@ $(document).ready(function() {
         prefetch: '/users.json?map=name'
     });
     $('.amount-usd').input_field_addons({ prefix: '$' });
+    $('.date-picker').datetimepicker({ pickTime: false });
 })

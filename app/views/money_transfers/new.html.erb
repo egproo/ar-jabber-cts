@@ -2,14 +2,18 @@
 	<%= f.input :sender, readonly: !!@money_transfer.sender, input_html: { class: 'typeahead-user' } %>
 	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead-user' } %>
 	<%= f.input :amount, input_html: { class: 'amount-usd' } %>
+	<%= f.input :created_at, label: 'Received on', wrapper: :append, append_html: { class: 'date-picker' } do %>
+		<%= f.input_field :created_at, 'data-format' => 'yyyy-MM-dd', as: :string %>
+		<span class="add-on"><i></i></span>
+	<% end %>
 	<%= f.input :comment %>
 
 	<% @contracts.each do |c| %>
 		<% if c.id == params[:contract_id].to_i %>
-			<div style="background-color: #c5c5f5; padding-top: 10px">
+			<div class="well">
 		<% end %>
 		<%= f.input "contract_#{c.id}", label: "#{c.to_s}#{" (#{c.next_payment_date.to_date})" if c.next_payment_date}", input_html: {class: 'span3'}, wrapper_html: {class: 'controls controls-row'} do %>
-			<%= f.input "amount_contract_#{c.id}", label: "Amount", as: :contract_payment_amount, input_html: { value: params["amount_contract_#{c.id}"] || c.next_amount_estimate } %>
+			<%= f.input "amount_contract_#{c.id}", label: "Amount", as: :contract_payment_amount, input_html: { value: params["amount_contract_#{c.id}"] || c.next_amount_estimate, class: 'amount-usd' } %>
 			<%= f.input "duration_contract_#{c.id}", label: "Months", as: :contract_payment_new_duration, input_html: { value: params["duration_contract_#{c.id}"] || c.duration_months } %>
 		<% end %>
 		<% if c.id == params[:contract_id].to_i %>

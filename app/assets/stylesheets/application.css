@@ -10,7 +10,8 @@
  *
  *= require twitter/bootstrap
  *= require twitter/typeahead
- *= require dataTables/jquery.dataTables.bootstrap3
+ *= require bootstrap-datetimepicker.min
+ *= require dataTables/jquery.dataTables.bootstrap
  *= require dataTables/jquery.dataTables.responsive
  *= require_tree .
  */
