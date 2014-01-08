@@ -8,12 +8,19 @@
   <li>
     <%= link_to 'Users', users_path %>
   </li>
+  <% if current_user.role >= User::ROLE_MANAGER %>
   <li>
     <%= link_to 'Add contract', new_contract_path %>
   </li>
   <li>
     <%= link_to 'Add user', new_user_path %>
   </li>
+  <% end %>
+  <% if current_user.role == User::ROLE_ADMIN %>
+  <li>
+    <%= link_to 'Activity', '/public_activity/index' %>
+  </li>
+  <% end %>
 </ul>
 <ul class="nav pull-right">
   <li>
