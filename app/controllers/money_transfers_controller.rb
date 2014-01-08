@@ -20,9 +20,9 @@ class MoneyTransfersController < ApplicationController
       end
     end
 
-    if highlight_contract_id = params[:contract_id]
-      highlight_contract_id = highlight_contract_id.to_i
-      highlight_contract = @contracts.find { |c| c.id == highlight_contract_id }
+    if @highlight_contract_id = params[:contract_id]
+      @highlight_contract_id = @highlight_contract_id.to_i
+      highlight_contract = @contracts.find { |c| c.id == @highlight_contract_id }
       @contracts.delete(highlight_contract)
       @contracts.unshift(highlight_contract)
     end
