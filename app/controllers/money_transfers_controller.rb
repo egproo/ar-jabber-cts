@@ -90,7 +90,7 @@ class MoneyTransfersController < ApplicationController
       if current_user.role < User::ROLE_SUPER_MANAGER
         conditions[:seller_id] = mt.receiver
       end
-      Contract.all(conditions: conditions)
+      Contract.all(conditions: conditions, include: :last_payment)
     else
       []
     end
