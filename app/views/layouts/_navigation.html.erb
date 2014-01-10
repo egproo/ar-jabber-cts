@@ -8,17 +8,14 @@
   <li>
     <%= link_to 'Users', users_path %>
   </li>
-  <% if current_user.role >= User::ROLE_MANAGER %>
+  <% if current_user.role >= User::ROLE_SUPER_MANAGER %>
   <li>
     <%= link_to 'Add contract', new_room_path %>
   </li>
-  <li>
-    <%= link_to 'Add user', new_user_path %>
-  </li>
   <% end %>
-  <% if current_user.role == User::ROLE_ADMIN %>
+  <% if current_user.role >= User::ROLE_ADMIN %>
   <li>
-    <%= link_to 'Activity', '/public_activity/index' %>
+    <%= link_to 'Activity', public_activity_path %>
   </li>
   <% end %>
 </ul>

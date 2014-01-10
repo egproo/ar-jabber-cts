@@ -15,3 +15,6 @@
   <tbody>
   </tbody>
 </table>
+<% if current_user.role >= User::ROLE_MANAGER %>
+	<%= link_to 'Add contract', new_contract_path, class: 'btn' %>
+<% end %>

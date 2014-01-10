@@ -34,6 +34,7 @@ class UsersController < ApplicationController
   end
 
   def index
+    @user = User.new
     @users = current_user.role >= User::ROLE_SUPER_MANAGER ? User.all : current_user.clients.uniq
 
     respond_to do |format|

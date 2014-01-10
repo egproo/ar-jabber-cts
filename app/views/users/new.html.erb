@@ -1,7 +1,7 @@
-<%= simple_form_for @user, html: { class: 'form-horizontal' } do |f| %>
-	<%= f.input :name %>
-	<%= f.input :jid %>
-	<%= f.input :phone %>
+<%= simple_form_for @user do |f| %>
+	<%= f.input_field :name %>
+	<%= f.input_field :jid %>
+	<%= f.input_field :phone %>
 
 	<%= f.submit class: 'btn btn-primary controls' %>
 <% end %>
