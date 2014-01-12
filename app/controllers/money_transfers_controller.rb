@@ -1,7 +1,7 @@
 class MoneyTransfersController < ApplicationController
   def new
     @money_transfer = MoneyTransfer.new
-    @money_transfer.created_at = Time.now.to_date
+    @money_transfer.received_at = Time.now.to_date
     # FIXME: security issue (minor: r/o access)
     @money_transfer.sender = User.find(params[:sender_id]) if params[:sender_id]
     @money_transfer.receiver = User.find(params[:receiver_id]) if params[:receiver_id]
@@ -32,7 +32,7 @@ class MoneyTransfersController < ApplicationController
     @money_transfer = MoneyTransfer.new(
       amount: params[:money_transfer][:amount],
       comment: params[:money_transfer][:comment],
-      created_at: params[:money_transfer][:created_at],
+      received_at: params[:money_transfer][:received_at],
     )
 
     @money_transfer.sender = User.find_by_name(params[:money_transfer][:sender])
@@ -57,15 +57,16 @@ class MoneyTransfersController < ApplicationController
       end
     end
 
-    MoneyTransfer.transaction do
-      @money_transfer.payments.each do |p|
-        p.contract.update_attributes!(duration_months: params["duration_contract_#{p.contract.id}"])
-      end
-      if @money_transfer.save
+    begin
+      MoneyTransfer.transaction do
+        @money_transfer.payments.each do |p|
+          p.contract.update_attributes!(duration_months: params["duration_contract_#{p.contract.id}"])
+        end
+        @money_transfer.save!
         redirect_to @money_transfer
-      else
-        render :new
       end
+    rescue
+      render :new
     end
   end
 

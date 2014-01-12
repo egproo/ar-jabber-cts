@@ -25,7 +25,7 @@ $(document).ready(function() {
                 mRender: renderers.amount,
                 sWidth: "10%"
             }, {
-                mData: "created_at",
+                mData: "received_at",
                 mRender: renderers.date,
                 sWidth: "30%"
             },
