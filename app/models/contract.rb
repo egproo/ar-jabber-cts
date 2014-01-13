@@ -16,6 +16,7 @@ class Contract < ActiveRecord::Base
   validates_presence_of :seller
   validates_format_of :name, with: /.@conference.syriatalk.biz\z/
   validates_presence_of :duration_months
+  validates_inclusion_of :duration_months, in: (1..12)
 
   def next_payment_date
     last_payment.try(:created_at).try(:+, duration_months.months) if duration_months
