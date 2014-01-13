@@ -13,11 +13,14 @@ class Contract < ActiveRecord::Base
   attr_accessible :name, :duration_months, :next_amount_estimate, :type
 
   validates_uniqueness_of :name
+  validates_presence_of :type
   validates_presence_of :buyer
   validates_presence_of :seller
-  validates_format_of :name, with: /.@conference.syriatalk.biz\z/
+  validates_format_of :name, with: /.@conference.syriatalk.biz\z/, if: proc { |x| x.type == TYPE_ROOM }
 
   self.inheritance_column = :_type_disabled
+
+  scope :rooms, -> { where(type: TYPE_ROOM) }
 
   def next_payment_date
     last_payment.try(:created_at).try(:+, duration_months.months) if duration_months

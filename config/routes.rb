@@ -6,9 +6,9 @@ JabberCTS::Application.routes.draw do
   resources :users
   get 'users/home'
 
-  resources :contracts
+  resources :rooms
 
   resources :money_transfers
 
-  root :to => 'contracts#index'
+  root :to => 'rooms#index'
 end
