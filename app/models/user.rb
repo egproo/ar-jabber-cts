@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
     # Minus total sent
     MoneyTransfer.all(conditions: { sender_id: self }).sum(&:amount) -
     # Minus salary payoffs
-    Payment.all(joins: :contract, conditions: { contracts: { type: Contract::TYPE_SALARY, seller_id: self } }).sum(&:amount)
+    Payment.all(joins: :contract, conditions: { contracts: { type: 'Salary', seller_id: self } }).sum(&:amount)
   end
 
   def inspect

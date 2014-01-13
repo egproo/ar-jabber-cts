@@ -1,0 +1,23 @@
+<pre>
+Name:  <%= @room.name %>
+Room Owner: <%= link_to @room.buyer.name, @room.buyer %>
+Contract Creator: <%= link_to @room.seller.name, @room.seller %>
+Duration (months): <%= @room.duration_months %>
+<% if @room.last_payment %>
+Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer %>
+<% if @room.duration_months %>
+Next payment: <%= @room.next_payment_date.to_date %>
+<% end %>
+<% end %>
+
+First appeared: <%= @room.created_at.to_date %>
+</pre>
+
+<%= link_to 'Receive money transfer for this contract', "/money_transfers/new?sender_id=#{@room.buyer.id}&receiver_id=#{current_user.id}&contract_id=#{@room.id}", class: 'btn' %>
+
+<% if @room.payments.any? %>
+	<br/>Money transfer history:
+<% @room.payments.sort_by(&:created_at).reverse_each do |p| %>
+	<br/><%= link_to p, p.money_transfer %>
+<% end %>
+<% end %>

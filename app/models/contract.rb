@@ -9,6 +9,7 @@ class Contract < ActiveRecord::Base
   attr_accessible :name, :duration_months, :next_amount_estimate, :type
 
   validates_uniqueness_of :name
+  validates_presence_of :type
   validates_presence_of :buyer
   validates_presence_of :seller
   validates_format_of :name, with: /.@conference.syriatalk.biz\z/
