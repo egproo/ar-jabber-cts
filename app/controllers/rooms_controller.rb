@@ -25,6 +25,7 @@ class RoomsController < ApplicationController
     @room = Room.new
     @room.buyer = User.new
     @room.seller = current_user
+    @room.payments.build
   end
 
   def create
@@ -37,10 +38,28 @@ class RoomsController < ApplicationController
     @room.buyer = User.find_by_name(params[:room][:buyer_attributes][:name]) ||
                   User.new(params[:room][:buyer_attributes].merge(role: User::ROLE_CLIENT))
 
-    if @room.save
+    money_transfer = MoneyTransfer.new(
+      sender: @room.buyer,
+      receiver: @room.seller,
+      amount: params[:room][:payments_attributes].values.first[:amount],
+      received_at: Time.now,
+    )
+    payment = money_transfer.payments.build(
+      contract: @room,
+      amount: money_transfer.amount,
+    )
+
+    @room.payments << payment
+
+    begin
+      Room.transaction do
+        money_transfer.save!
+        @room.save!
+      end
       redirect_to @room
-    else
-      Rails.logger.debug(@room.errors.inspect)
+    rescue
+      Rails.logger.debug(@room.errors.inspect + payment.errors.inspect)
+      Rails.logger.debug $!.inspect
       @room.name.sub!('@conference.syriatalk.biz', '')
       render :new
     end

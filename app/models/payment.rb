@@ -4,7 +4,7 @@ class Payment < ActiveRecord::Base
 
   belongs_to :money_transfer
   belongs_to :contract
-  attr_accessible :amount
+  attr_accessible :amount, :contract
   validates_inclusion_of :amount, in: (1..200)
 
   def to_s

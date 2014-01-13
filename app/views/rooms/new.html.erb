@@ -1,15 +1,22 @@
 <%= simple_form_for @room, html: { class: 'form-horizontal' } do |f| %>
+	<%= f.simple_fields_for :seller do |s| %>
+		<%= s.input :name, label: 'Contract owner', readonly: true, input_html: { class: 'typeahead-user' } %>
+	<% end %>
 	<%= f.input :name, label: 'Room name', input_html: { class: 'room-name' } %>
 	<%= f.simple_fields_for :buyer do |b| %>
 		<%= b.input :name, label: 'Room owner', input_html: { class: 'typeahead-user' } %>
-		<%= content_tag :div, class: 'well' + ((@room.buyer.name.present? && @room.buyer.new_record?) ? '' : ' hidden') do %>
+		<%= field_set_tag 'New user', class: ('hidden' if @room.buyer.name.blank? || !@room.buyer.new_record?) do %>
 			<p>This user does not exist. Please provide more information to create a new one:</p>
 			<%= b.input :jid %>
 			<%= b.input :phone %>
 		<% end %>
 	<% end %>
-	<%= f.simple_fields_for :seller do |s| %>
-		<%= s.input :name, label: 'Contract owner', readonly: true, input_html: { class: 'typeahead-user' } %>
+
+	<%= field_set_tag 'First payment' do %>
+		<%= f.simple_fields_for :payments do |p| %>
+			<%= p.input :amount, label: 'Payment amount' %>
+		<% end %>
+		<%= f.input :duration_months, label: 'Pay for months' %>
 	<% end %>
 
 	<%= f.submit class: 'btn btn-primary controls' %>
