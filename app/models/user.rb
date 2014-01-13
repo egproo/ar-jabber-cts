@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   has_many :bought_contracts, class_name: 'Contract', foreign_key: 'buyer_id'
   has_many :sold_contracts, class_name: 'Contract', foreign_key: 'seller_id'
 
-  has_one :salary_contract, class_name: 'Contract', foreign_key: 'seller_id', conditions: { type: Contract::TYPE_SALARY }
+  has_one :salary_contract, class_name: 'Contract', foreign_key: 'seller_id', conditions: { type: 'Salary' }
 
   validates_format_of :jid, with: /\A.*@.*\z/
   validates_numericality_of :phone
@@ -74,7 +74,7 @@ class User < ActiveRecord::Base
       joins: :bought_contracts,
       conditions: {
         contracts: {
-          type: [Contract::TYPE_ROOM, Contract::TYPE_ANNOUNCEMENT],
+          type: ['Room', 'Announcement'],
           seller_id: self
         }
       })

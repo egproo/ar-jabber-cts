@@ -6,16 +6,15 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = current_user.locale
-  rescue
-    render text: 'No current user'
+  rescue => e
+    render text: "No current user: #{e}"
   end
 
   def current_user
     @current_user ||=
       begin
         @current_user_name ||= ActionController::HttpAuthentication::Basic::user_name_and_password(request).first rescue nil
-        User.find_by_name(@current_user_name) ||
-          (Rails.env.development? && User.find_by_name(User::STUB_NAME))
+        User.find_by_name(@current_user_name || (Rails.env.development? && User::STUB_NAME))
       end
   end
 

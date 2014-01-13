@@ -2,7 +2,7 @@ class ContractsController < ApplicationController
   def index
     respond_to do |format|
       format.datatable {
-        contracts = Contract.all(include: [:buyer, :seller, :last_payment])
+        contracts = Room.all(include: [:buyer, :seller, :last_payment])
         render json: {
             aaData: contracts
           },
@@ -18,19 +18,18 @@ class ContractsController < ApplicationController
   end
 
   def show
-    @contract = Contract.find(params[:id])
+    @contract = Room.find(params[:id])
   end
 
   def new
-    @contract = Contract.new
+    @contract = Room.new
     @contract.seller = current_user
   end
 
   def create
-    @contract = Contract.new(
+    @contract = Room.new(
       name: params[:contract][:name],
       duration_months: params[:contract][:duration_months],
-      type: Contract::TYPE_ROOM,
     )
     @contract.name += '@conference.syriatalk.biz' unless @contract.name.include?('@')
     @contract.seller = current_user
