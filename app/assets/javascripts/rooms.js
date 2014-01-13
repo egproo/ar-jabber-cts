@@ -1,6 +1,21 @@
 $(document).ready(function() {
     $('.room-name').input_field_addons({ postfix: '@conference.syriatalk.biz' });
 
+    var seller_typeahead_selector = '.typeahead-user[name="room[buyer_attributes][name]"]';
+    var seller_info_div = function(seller_input) {
+        return seller_input.parent().parent().parent().next();
+    }
+
+    $(seller_typeahead_selector).on('typeahead:uservalue', function(e, value) {
+        if (value) {
+            seller_info_div($(e.target)).fadeIn();
+        }
+    });
+
+    $(seller_typeahead_selector).on('typeahead:selected', function(e, datum) {
+        seller_info_div($(e.target)).fadeOut();
+    });
+
     var tableContainer = $('#rooms');
 
     tableContainer.dataTable({

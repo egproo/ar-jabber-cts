@@ -29,3 +29,7 @@ input {
 .spacer {
 	clear: both;
 }
+
+.hidden {
+	display: none;
+}

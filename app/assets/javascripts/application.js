@@ -26,6 +26,18 @@ $(document).ready(function() {
         name: 'user',
         prefetch: '/users.json?map=name'
     });
+
+    $('.typeahead-user').on('change', function() {
+        var $input = $(this);
+        var available = $input.data('ttView').datasets[0].itemHash;
+        var datum = _.findWhere(available, {value: $(this).val()});
+        if (datum) {
+            $input.trigger('typeahead:selected', datum);
+        } else {
+            $input.trigger('typeahead:uservalue', $(this).val());
+        }
+    });
+
     $('.amount-usd').input_field_addons({ prefix: '$' });
     $('.date-picker').datetimepicker({ pickTime: false });
 })

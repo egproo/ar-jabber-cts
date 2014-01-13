@@ -8,6 +8,8 @@ class Contract < ActiveRecord::Base
   has_one :last_payment, class_name: 'Payment', order: 'created_at DESC'
   attr_accessible :name, :duration_months, :next_amount_estimate, :type
 
+  accepts_nested_attributes_for :buyer, :seller
+
   validates_uniqueness_of :name
   validates_presence_of :type
   validates_presence_of :buyer

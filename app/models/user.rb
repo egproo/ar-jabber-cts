@@ -43,7 +43,8 @@ class User < ActiveRecord::Base
   has_one :salary_contract, class_name: 'Contract', foreign_key: 'seller_id', conditions: { type: 'Salary' }
 
   validates_format_of :jid, with: /\A.*@.*\z/
-  validates_numericality_of :phone
+  validates_numericality_of :phone, if: 'phone.present?'
+  validates_presence_of :name
   validates_uniqueness_of :name
 
   def debt
