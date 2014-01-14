@@ -9,7 +9,7 @@ var renderers = {
     },
 
     date: function(data, type, row) {
-        if (type === 'display' && data) {
+        if (type === 'display') {
             return new Date(Date.parse(data)).toISOString().replace(/T.*/, '');
         } 
         return data;
@@ -39,7 +39,7 @@ var renderers = {
     },
 
     amount: function(data, type, row) {
-        if (type === 'display' && data) {
+        if (type === 'display' && data != null) {
             return '$' + data;
         } 
         return data;
@@ -48,7 +48,7 @@ var renderers = {
     lastPaymentAmount: function(data, type, row) {
         var lastPayment = row.last_payment;
         if (type === 'display' && lastPayment) {
-            return '$' + lastPayment.amount;
+            return renderers.amount(lastPayment.amount, type, row);
         } else if (!lastPayment) {
             return '';
         }
@@ -58,7 +58,7 @@ var renderers = {
     lastPaymentDate: function(data, type, row) {
         var lastPaymentDate = row.last_payment;
         if (type === 'display' && lastPaymentDate) {
-            return new Date(Date.parse(lastPaymentDate.created_at)).toISOString().replace(/T.*/, '');
+            return renderers.date(lastPaymentDate.created_at, type, row);
         } else if (!lastPaymentDate) {
             return '';
         }

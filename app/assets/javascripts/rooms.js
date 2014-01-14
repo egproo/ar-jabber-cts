@@ -50,13 +50,11 @@ $(document).ready(function() {
                 }, {
                     mData: null,
                     mRender: renderers.lastPaymentAmount,
-                    //mRender: function() { console.log(arguments); },
                     sType: "string",
                     sWidth: "5%"
                 }, {
                     mData: null,
                     mRender: renderers.lastPaymentDate,
-                    //mRender: function() { console.log(arguments); },
                     sType: "date",
                     sWidth: "10%"
                 }, {
