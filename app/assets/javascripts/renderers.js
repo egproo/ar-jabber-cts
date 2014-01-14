@@ -9,16 +9,14 @@ var renderers = {
     },
 
     date: function(data, type, row) {
-        if (type === 'display' && data !== null) {
+        if (type === 'display' && data) {
             return new Date(Date.parse(data)).toISOString().replace(/T.*/, '');
-        } else if (!data) {
-            return 'n/a';
-        }
+        } 
         return data;
     },
 
     nextPaymentDate: function(data, type, row) {
-        if (type === 'display' && data !== null) {
+        if (type === 'display' && data) {
             var nextDate = new Date(Date.parse(data));
             var tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
@@ -28,7 +26,7 @@ var renderers = {
             }
             return nextDateString;
         } else if (!data) {
-            return 'n/a';
+            return '';
         }
         return data;
     },
@@ -43,18 +41,27 @@ var renderers = {
     amount: function(data, type, row) {
         if (type === 'display' && data) {
             return '$' + data;
-        } else if (!data) {
-            return 'n/a';
-        }
+        } 
         return data;
     },
 
-    payment_amount: function(data, type, row) {
-        if (type === 'display' && row) {
-            return '$' + row.last_payment.amount;
-        } else if (!row) {
-            return 'n/a';
+    lastPaymentAmount: function(data, type, row) {
+        var lastPayment = row.last_payment;
+        if (type === 'display' && lastPayment) {
+            return '$' + lastPayment.amount;
+        } else if (!lastPayment) {
+            return '';
         }
-        return row;
+        return renderers.amount(lastPayment.amount, type, row);
+    },
+
+    lastPaymentDate: function(data, type, row) {
+        var lastPaymentDate = row.last_payment;
+        if (type === 'display' && lastPaymentDate) {
+            return new Date(Date.parse(lastPaymentDate.created_at)).toISOString().replace(/T.*/, '');
+        } else if (!lastPaymentDate) {
+            return '';
+        }
+        return renderers.date(lastPaymentDate.created_at, type, row);
     }
 }

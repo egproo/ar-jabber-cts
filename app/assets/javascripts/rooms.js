@@ -26,6 +26,7 @@ $(document).ready(function() {
                 sUrl: '/i18n/datatable.json'
             },
             bAutoWidth: false,
+            bDeferRender: true,
             aaSorting: [[7, 'asc']],
             aoColumns: [{
                     mData: null,
@@ -48,11 +49,15 @@ $(document).ready(function() {
                     sWidth: "5%",
                 }, {
                     mData: null,
-                    mRender: function(data, type, row) { return renderers.payment_amount(data, type, row); },
+                    mRender: renderers.lastPaymentAmount,
+                    //mRender: function() { console.log(arguments); },
+                    sType: "string",
                     sWidth: "5%"
                 }, {
-                    mData: 'last_payment.created_at',
-                    mRender: renderers.date,
+                    mData: null,
+                    mRender: renderers.lastPaymentDate,
+                    //mRender: function() { console.log(arguments); },
+                    sType: "date",
                     sWidth: "10%"
                 }, {
                     mData: 'next_payment_date',
