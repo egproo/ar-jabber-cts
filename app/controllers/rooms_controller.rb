@@ -2,7 +2,7 @@ class RoomsController < ApplicationController
   def index
     respond_to do |format|
       format.datatable {
-        contracts = Room.all(include: [:buyer, :seller, :last_payment])
+        contracts = Room.all(include: [:buyer, :seller, { last_payment: :money_transfer }])
         render json: {
             aaData: contracts
           },
