@@ -8,12 +8,12 @@ $(document).ready(function() {
 
     $(seller_typeahead_selector).on('typeahead:uservalue', function(e, value) {
         if (value) {
-            seller_info_div($(e.target)).fadeIn();
+            seller_info_div($(e.target)).slideDown();
         }
     });
 
     $(seller_typeahead_selector).on('typeahead:selected', function(e, datum) {
-        seller_info_div($(e.target)).fadeOut();
+        seller_info_div($(e.target)).slideUp();
     });
 
     var tableContainer = $('#rooms');

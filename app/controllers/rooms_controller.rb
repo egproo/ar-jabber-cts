@@ -25,7 +25,7 @@ class RoomsController < ApplicationController
     @room = Room.new
     @room.buyer = User.new
     @room.seller = current_user
-    @room.payments.build
+    @room.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date))
   end
 
   def create
@@ -42,11 +42,12 @@ class RoomsController < ApplicationController
       sender: @room.buyer,
       receiver: @room.seller,
       amount: params[:room][:payments_attributes].values.first[:amount],
-      received_at: Time.now,
+      received_at: params[:room][:payments_attributes].values.first[:money_transfer_attributes][:received_at],
     )
     payment = money_transfer.payments.build(
       contract: @room,
       amount: money_transfer.amount,
+      money_transfer: money_transfer,
     )
 
     @room.payments << payment

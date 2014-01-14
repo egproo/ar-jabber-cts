@@ -22,7 +22,7 @@ class Contract < ActiveRecord::Base
   validates_inclusion_of :duration_months, in: (1..12)
 
   def next_payment_date
-    last_payment.try(:created_at).try(:+, duration_months.months) if duration_months
+    last_payment.try(:money_transfer).try(:received_at).try(:+, duration_months.months) if duration_months
   end
 
   def to_s

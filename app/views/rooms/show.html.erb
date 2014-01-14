@@ -9,8 +9,6 @@ Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer 
 Next payment: <%= @room.next_payment_date.to_date %>
 <% end %>
 <% end %>
-
-First appeared: <%= @room.created_at.to_date %>
 </pre>
 
 <%= link_to 'Receive money transfer for this contract', "/money_transfers/new?sender_id=#{@room.buyer.id}&receiver_id=#{current_user.id}&contract_id=#{@room.id}", class: 'btn' %>

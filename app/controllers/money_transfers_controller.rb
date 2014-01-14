@@ -43,11 +43,9 @@ class MoneyTransfersController < ApplicationController
     @contracts.each do |contract|
       if (amount = params["amount_contract_#{contract.id}"]).present?
         @money_transfer.payments.build(
-          amount: amount
-        ).tap { |mt|
-          mt.contract = contract
-          mt.created_at = @money_transfer.created_at
-        }
+          amount: amount,
+          contract: contract,
+        )
 
         duration = params["duration_contract_#{contract.id}"].to_i
         unless (1..12).include?(duration)
