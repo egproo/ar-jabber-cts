@@ -10,7 +10,7 @@
   </li>
   <% if current_user.role >= User::ROLE_MANAGER %>
   <li>
-    <%= link_to 'Add contract', new_room_path %>
+    <%= link_to 'Add room', new_room_path %>
   </li>
   <% end %>
   <% if current_user.role >= User::ROLE_ADMIN %>

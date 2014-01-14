@@ -11,12 +11,12 @@ var renderers = {
     date: function(data, type, row) {
         if (type === 'display') {
             return new Date(Date.parse(data)).toISOString().replace(/T.*/, '');
-        }
+        } 
         return data;
     },
 
     nextPaymentDate: function(data, type, row) {
-        if (type === 'display') {
+        if (type === 'display' && data) {
             var nextDate = new Date(Date.parse(data));
             var tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
@@ -25,6 +25,8 @@ var renderers = {
                 return '<span class="highlight_date">' + nextDateString + '</span>';
             }
             return nextDateString;
+        } else if (!data) {
+            return '';
         }
         return data;
     },
@@ -37,9 +39,29 @@ var renderers = {
     },
 
     amount: function(data, type, row) {
-        if (type === 'display' && data) {
+        if (type === 'display' && data != null) {
             return '$' + data;
-        }
+        } 
         return data;
+    },
+
+    lastPaymentAmount: function(data, type, row) {
+        var lastPayment = row.last_payment;
+        if (type === 'display' && lastPayment) {
+            return renderers.amount(lastPayment.amount, type, row);
+        } else if (!lastPayment) {
+            return '';
+        }
+        return renderers.amount(lastPayment.amount, type, row);
+    },
+
+    lastPaymentDate: function(data, type, row) {
+        var lastPaymentDate = row.last_payment;
+        if (type === 'display' && lastPaymentDate) {
+            return renderers.date(lastPaymentDate.created_at, type, row);
+        } else if (!lastPaymentDate) {
+            return '';
+        }
+        return renderers.date(lastPaymentDate.created_at, type, row);
     }
 }
