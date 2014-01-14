@@ -31,7 +31,7 @@ var renderers = {
 
     contract: function(data, type, row) {
         if (type === 'display') {
-            return "<a href='/contracts/" + data.id + "'>" + data.name.replace(/@conference.syriatalk.biz$/, '') + "</a>";
+            return "<a href='/rooms/" + data.id + "'>" + data.name.replace(/@conference.syriatalk.biz$/, '') + "</a>";
         }
         return data.name;
     },
