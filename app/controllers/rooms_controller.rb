@@ -64,4 +64,9 @@ class RoomsController < ApplicationController
       render :new
     end
   end
+
+  def destroy
+    Room.find(params[:id]).update_attributes(active: false)
+    render :index
+  end
 end

@@ -2,11 +2,13 @@ class Contract < ActiveRecord::Base
   include PublicActivity::Model
   tracked owner: Proc.new{ |controller, model| controller.try(:current_user) }
 
+  default_scope where(active: true)
+
   belongs_to :buyer, class_name: 'User'
   belongs_to :seller, class_name: 'User'
-  has_many :payments
+  has_many :payments, dependent: :destroy
   has_one :last_payment, class_name: 'Payment', order: 'created_at DESC'
-  attr_accessible :name, :duration_months, :next_amount_estimate, :type
+  attr_accessible :name, :duration_months, :next_amount_estimate, :type, :active
 
   accepts_nested_attributes_for :buyer, :seller, :payments
 
