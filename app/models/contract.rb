@@ -14,6 +14,7 @@ class Contract < ActiveRecord::Base
   validates_presence_of :type
   validates_presence_of :buyer
   validates_presence_of :seller
+  validates_presence_of :name
   validates_format_of :name, with: /.@conference.syriatalk.biz\z/
   validates_presence_of :duration_months
   validates_inclusion_of :duration_months, in: (1..12)

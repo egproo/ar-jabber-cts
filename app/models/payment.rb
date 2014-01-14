@@ -6,6 +6,7 @@ class Payment < ActiveRecord::Base
   belongs_to :contract
   attr_accessible :amount, :contract
   validates_inclusion_of :amount, in: (1..200)
+  validates_presence_of :amount
 
   def to_s
     "$#{amount} for #{contract} at #{created_at.to_date}"
