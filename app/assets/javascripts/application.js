@@ -27,8 +27,16 @@ $(document).ready(function() {
         prefetch: '/users.json?map=name'
     });
 
-    $('.typeahead-user').on('change', function() {
+    $('.typeahead-user').on('typeahead:opened', function() {
+        $(this).data('ttOpened', true);
+    });
+    $('.typeahead-user').on('typeahead:closed', function() {
+        $(this).data('ttOpened', false);
+    });
+
+    $('.typeahead-user').on('blur', function() {
         var $input = $(this);
+        if ($input.data('ttOpened')) { return; }
         var available = $input.data('ttView').datasets[0].itemHash;
         var datum = _.findWhere(available, {value: $(this).val()});
         if (datum) {
