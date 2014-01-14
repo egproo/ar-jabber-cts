@@ -47,8 +47,8 @@ $(document).ready(function() {
                     mData: 'duration_months',
                     sWidth: "5%",
                 }, {
-                    mData: 'last_payment.amount',
-                    mRender: renderers.amount,
+                    mData: null,
+                    mRender: function(data, type, row) { return renderers.payment_amount(data, type, row); },
                     sWidth: "5%"
                 }, {
                     mData: 'last_payment.created_at',

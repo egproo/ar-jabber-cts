@@ -9,14 +9,16 @@ var renderers = {
     },
 
     date: function(data, type, row) {
-        if (type === 'display') {
+        if (type === 'display' && data !== null) {
             return new Date(Date.parse(data)).toISOString().replace(/T.*/, '');
+        } else if (!data) {
+            return 'n/a';
         }
         return data;
     },
 
     nextPaymentDate: function(data, type, row) {
-        if (type === 'display') {
+        if (type === 'display' && data !== null) {
             var nextDate = new Date(Date.parse(data));
             var tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
@@ -25,6 +27,8 @@ var renderers = {
                 return '<span class="highlight_date">' + nextDateString + '</span>';
             }
             return nextDateString;
+        } else if (!data) {
+            return 'n/a';
         }
         return data;
     },
@@ -39,7 +43,18 @@ var renderers = {
     amount: function(data, type, row) {
         if (type === 'display' && data) {
             return '$' + data;
+        } else if (!data) {
+            return 'n/a';
         }
         return data;
+    },
+
+    payment_amount: function(data, type, row) {
+        if (type === 'display' && row) {
+            return '$' + row.last_payment.amount;
+        } else if (!row) {
+            return 'n/a';
+        }
+        return row;
     }
 }
