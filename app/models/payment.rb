@@ -5,8 +5,9 @@ class Payment < ActiveRecord::Base
   belongs_to :money_transfer
   belongs_to :contract
   attr_accessible :amount, :contract, :money_transfer
-  validates_inclusion_of :amount, in: (1..200)
-  validates_presence_of :amount
+
+  validates :amount, inclusion: { in: (1..200), message: "from 1 to 200" }
+  validates :amount, presence: true
 
   accepts_nested_attributes_for :money_transfer
 
