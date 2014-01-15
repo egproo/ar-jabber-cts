@@ -7,9 +7,11 @@ class MoneyTransfer < ActiveRecord::Base
   has_many :payments, dependent: :destroy
   attr_accessible :amount, :comment, :received, :received_at, :sender, :receiver
 
-  validates_inclusion_of :amount, in: 1..5000
-  validates_presence_of :sender, :receiver, :amount
-  validates_presence_of :received_at
+  validates :amount, inclusion: { in: (1..5000), message: "from 1 to 5000" }
+  validates :amount, presence: true
+  validates :sender, presence: true
+  validates :receiver, presence: true
+  validates :received_at, presence: true
 
   validate :validate_payment_amounts
 

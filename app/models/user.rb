@@ -42,11 +42,11 @@ class User < ActiveRecord::Base
 
   has_one :salary_contract, class_name: 'Contract', foreign_key: 'seller_id', conditions: { type: 'Salary' }
 
-  validates_format_of :jid, with: /\A.*@.*\z/
-  validates_numericality_of :phone, if: 'phone.present?'
-  validates_presence_of :name
-  validates_uniqueness_of :name
-  validates_presence_of :jid
+  validates :jid, format: { with: /\A.+@.+\z/ }
+  validates :phone, format: { with: /\A\+?\d{8,15}\z/, if: 'phone.present?', message: "from 8 to 15" }
+  validates :name, presence: true
+  validates :name, uniqueness: true
+  validates :jid, presence: true
 
   def debt
     return 0 if role <= ROLE_CLIENT

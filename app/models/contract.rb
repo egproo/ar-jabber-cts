@@ -12,14 +12,14 @@ class Contract < ActiveRecord::Base
 
   accepts_nested_attributes_for :buyer, :seller, :payments
 
-  validates_uniqueness_of :name
-  validates_presence_of :type
-  validates_presence_of :buyer
-  validates_presence_of :seller
-  validates_presence_of :name
-  validates_format_of :name, with: /.@conference.syriatalk.biz\z/
-  validates_presence_of :duration_months
-  validates_inclusion_of :duration_months, in: (1..12)
+  validates :name, uniqueness: true
+  validates :type, presence: true
+  validates :buyer, presence: true
+  validates :seller, presence: true
+  validates :name, presence: true
+  validates :name, format: { with: /.@conference.syriatalk.biz\z/ }
+  validates :duration_months, presence: true
+  validates :duration_months, inclusion: { in: (1..12), message: "from 1 to 12" }
 
   def next_payment_date
     last_payment.try(:money_transfer).try(:received_at).try(:+, duration_months.months) if duration_months
