@@ -1,4 +1,4 @@
-worker_processes 1
+worker_processes 3
 preload_app true
 timeout 30
 listen File.expand_path('tmp/sockets/unicorn.sock'), :backlog => 2048
