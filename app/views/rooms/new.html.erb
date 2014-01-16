@@ -23,5 +23,5 @@
     <% end %>
     <%= f.input :duration_months, label: 'Pay for months' %>
   <% end %>
-  <%= f.submit class: 'btn btn-primary controls' %>
+  <%= f.submit class: 'btn btn-primary controls', data: { disable_with: 'Saving...' } %>
 <% end %>
