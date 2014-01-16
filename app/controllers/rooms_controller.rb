@@ -53,18 +53,13 @@ class RoomsController < ApplicationController
 
     @room.payments << payment
 
-    begin
-      Room.transaction do
-        @room.save!
-      end
+    if @room.save
       if request.xhr?
         render status: 200, json: { location: Rails.application.routes.url_helpers.room_path(@room) }
       else
         redirect_to @room
       end
-    rescue
-      Rails.logger.debug(@room.errors.inspect + payment.errors.inspect)
-      Rails.logger.debug $!.inspect
+    else
       @room.name.sub!('@conference.syriatalk.biz', '')
       render :new, status: 400, layout: !request.xhr?
     end
