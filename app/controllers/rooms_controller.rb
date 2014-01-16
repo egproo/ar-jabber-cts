@@ -32,6 +32,7 @@ class RoomsController < ApplicationController
     @room = Room.new(
       name: params[:room][:name],
       duration_months: params[:room][:duration_months],
+      active: true,
     )
     @room.name += '@conference.syriatalk.biz' unless @room.name.include?('@')
     @room.seller = current_user
@@ -54,15 +55,18 @@ class RoomsController < ApplicationController
 
     begin
       Room.transaction do
-        money_transfer.save!
         @room.save!
       end
-      redirect_to @room
+      if request.xhr?
+        render status: 200, json: { location: Rails.application.routes.url_helpers.room_path(@room) }
+      else
+        redirect_to @room
+      end
     rescue
       Rails.logger.debug(@room.errors.inspect + payment.errors.inspect)
       Rails.logger.debug $!.inspect
       @room.name.sub!('@conference.syriatalk.biz', '')
-      render :new
+      render :new, status: 400, layout: !request.xhr?
     end
   end
 

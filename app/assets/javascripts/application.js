@@ -21,7 +21,7 @@
 //= require jquery.bootstrap-input-addon.js
 //= require_tree .
 
-$(document).ready(function() {
+$(document).on('decorate', function(e, updated) {
     $('.typeahead-user').typeahead({
         name: 'user',
         prefetch: '/users.json?map=name'
@@ -48,4 +48,8 @@ $(document).ready(function() {
 
     $('.amount-usd').input_field_addons({ prefix: '$' });
     $('.date-picker').datetimepicker({ pickTime: false });
+});
+
+$(document).ready(function() {
+    $(document).trigger('decorate');
 })

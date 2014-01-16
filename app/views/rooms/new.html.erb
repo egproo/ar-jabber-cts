@@ -1,4 +1,4 @@
-<%= simple_form_for @room, html: { class: 'form-horizontal' } do |f| %>
+<%= simple_form_for @room, html: { class: 'form-horizontal' }, remote: true do |f| %>
   <%= f.simple_fields_for :seller do |s| %>
     <%= s.input :name, label: 'Contract owner', readonly: true, input_html: { class: 'typeahead-user' } %>
   <% end %>

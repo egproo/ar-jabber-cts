@@ -1,4 +1,13 @@
-$(document).ready(function() {
+$(document).on('decorate', function(e, updated) {
+    $('#new_room').on('ajax:success', function(e, data, status, xhr) {
+        window.location.href = data.location;
+    });
+
+    $('#new_room').on('ajax:error', function(e, xhr, status, error) {
+        $(this).html(xhr.responseText);
+        $(document).trigger('decorate', this);
+    });
+
     $('.room-name').input_field_addons({ postfix: '@conference.syriatalk.biz' });
 
     var seller_typeahead_selector = '.typeahead-user[name="room[buyer_attributes][name]"]';
@@ -15,7 +24,9 @@ $(document).ready(function() {
     $(seller_typeahead_selector).on('typeahead:selected', function(e, datum) {
         seller_info_div($(e.target)).slideUp();
     });
+});
 
+$(document).ready(function() {
     var tableContainer = $('#rooms');
 
     tableContainer.dataTable({
