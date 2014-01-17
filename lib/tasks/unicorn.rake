@@ -27,7 +27,7 @@ namespace :unicorn do
     if File.exists?(PIDFILE)
       puts 'Already running (pidfile present)'
     else
-      puts 'OK' if system('bundle exec unicorn_rails -E development -c config/unicorn.rb -D')
+      puts 'OK' if system('bundle exec unicorn_rails -E production -c config/unicorn.rb -D')
     end
   end
 

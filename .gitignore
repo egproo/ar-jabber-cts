@@ -22,4 +22,5 @@
 
 /.htpasswd
 /vendor/bundle
+/public/assets
 .ruby-version
