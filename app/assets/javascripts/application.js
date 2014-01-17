@@ -37,11 +37,18 @@ $(document).on('decorate', function(e, updated) {
         var $input = $(this);
         if ($input.data('ttOpened')) { return; }
         var available = $input.data('ttView').datasets[0].itemHash;
-        var datum = _.findWhere(available, {value: $(this).val()});
+        var datum = null;
+        var search_value = $(this).val();
+        for (var i = 0; available[i]; ++i) {
+            if (available[i].value == search_value) {
+                datum = available[i];
+                break;
+            }
+        }
         if (datum) {
             $input.trigger('typeahead:selected', datum);
         } else {
-            $input.trigger('typeahead:uservalue', $(this).val());
+            $input.trigger('typeahead:uservalue', search_value);
         }
     });
 
