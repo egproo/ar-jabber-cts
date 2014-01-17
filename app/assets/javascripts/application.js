@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require lodash
 //= require twitter/bootstrap
 //= require twitter/typeahead
 //= require bootstrap-datetimepicker.min
