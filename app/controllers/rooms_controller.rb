@@ -2,7 +2,7 @@ class RoomsController < ApplicationController
   def index
     respond_to do |format|
       format.datatable {
-        contracts = Room.all(include: [:buyer, :seller, { last_payment: :money_transfer }])
+        contracts = Room.active.all(include: [:buyer, :seller, { last_payment: :money_transfer }])
         render json: {
             aaData: contracts
           },
@@ -18,7 +18,7 @@ class RoomsController < ApplicationController
   end
 
   def show
-    @room = Room.find(params[:id])
+    @room = Room.active.find(params[:id])
   end
 
   def new
@@ -66,7 +66,7 @@ class RoomsController < ApplicationController
   end
 
   def destroy
-    Room.find(params[:id]).update_attributes(active: false)
+    Room.active.find(params[:id]).update_attributes(active: false)
     render :index
   end
 end

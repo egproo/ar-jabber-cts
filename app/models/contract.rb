@@ -2,7 +2,7 @@ class Contract < ActiveRecord::Base
   include PublicActivity::Model
   tracked owner: Proc.new{ |controller, model| controller.try(:current_user) }
 
-  default_scope where(active: true)
+  scope :active, -> { where(active: true) }
 
   belongs_to :buyer, class_name: 'User'
   belongs_to :seller, class_name: 'User'
