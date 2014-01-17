@@ -79,7 +79,8 @@ class User < ActiveRecord::Base
           type: ['Room', 'Announcement'],
           seller_id: self
         }
-      })
+      },
+      group: 'users.name')
   end
 
   def self.dump_htpasswd
