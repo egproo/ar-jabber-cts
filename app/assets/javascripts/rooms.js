@@ -61,7 +61,6 @@ $(document).ready(function() {
                 }, {
                     mData: null,
                     mRender: renderers.lastPaymentAmount,
-                    sType: "string",
                     sWidth: "5%"
                 }, {
                     mData: null,
