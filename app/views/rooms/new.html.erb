@@ -15,9 +15,9 @@
     <%= f.simple_fields_for :payments do |p| %>
       <%= p.input :amount, label: 'Payment amount', input_html: { class: 'amount-usd' } %>
       <%= p.simple_fields_for :money_transfer do |mt| %>
-        <%= mt.input :received_at, label: 'Received at', wrapper: :append, append_html: { class: 'date-picker' } do %>
-        <%= mt.input_field :received_at, 'data-format' => 'yyyy-MM-dd', as: :string %>
-          <span class="add-on"><i></i></span>
+        <%= mt.input :received_at, label: 'Received at', wrapper: :append do %>
+        <%= mt.input_field :received_at, as: :string %>
+          <span class="add-on"><i class="icon-calendar"></i></span>
         <% end %>
       <% end %>
     <% end %>

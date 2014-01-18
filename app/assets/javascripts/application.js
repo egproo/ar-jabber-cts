@@ -12,7 +12,7 @@
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
 //= require twitter/typeahead
-//= require bootstrap-datetimepicker.min
+//= require bootstrap-datepicker
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
 //= require jquery.bootstrap-input-addon.js
@@ -51,9 +51,16 @@ $(document).on('decorate', function(e, updated) {
     });
 
     $('.amount-usd').input_field_addons({ prefix: '$' });
-    $('.date-picker').datetimepicker({ pickTime: false });
+
+    
 });
 
 $(function() {
     $(document).trigger('decorate');
-})
+
+    $(".input-append.date").datepicker({ 
+      autoclose: true,
+      format: 'yyyy-mm-dd',
+      update: new Date()
+    });
+});
