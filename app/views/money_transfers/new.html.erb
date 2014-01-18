@@ -2,10 +2,7 @@
 	<%= f.input :sender, readonly: !!@money_transfer.sender, input_html: { class: 'typeahead-user' } %>
 	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead-user' } %>
 	<%= f.input :amount, input_html: { class: 'amount-usd' } %>
-	<%= f.input :received_at, label: 'Received at', wrapper: :append, append_html: { class: 'date-picker' } do %>
-		<%= f.input_field :received_at, 'data-format' => 'yyyy-MM-dd', as: :string %>
-		<span class="add-on"><i></i></span>
-	<% end %>
+	<%= f.input :received_at, label: 'Received at', input_html: { class: 'date' }, as: :string %>
 	<%= f.input :comment %>
 
 	<% @contracts.each do |c| %>
@@ -15,5 +12,5 @@
 		<% end %>
 	<% end %>
 
-	<%= f.submit class: 'btn btn-primary' %>
+	<%= f.submit class: 'btn btn-primary controls' %>
 <% end %>
