@@ -4,8 +4,8 @@
   <% end %>
   <%= f.input :name, label: 'Room name', input_html: { class: 'room-name' } %>
   <%= f.simple_fields_for :buyer do |b| %>
-    <%= b.input :name, label: 'Room owner', input_html: { class: 'typeahead-user' } %>
-    <%= field_set_tag 'New user', class: ('hidden' if @room.buyer.name.blank? || !@room.buyer.new_record?) do %>
+    <%= b.input :name, label: 'Room owner', input_html: { class: 'typeahead-user', autocomplete: 'off' } %>
+    <%= field_set_tag 'New user', style: ('display: none' if @room.buyer.name.blank? || !@room.buyer.new_record?) do %>
       <p>This user does not exist. Please provide more information to create a new one:</p>
       <%= b.input :jid %>
       <%= b.input :phone %>
