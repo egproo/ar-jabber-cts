@@ -52,7 +52,7 @@ $(document).on('decorate', function(e, updated) {
 
     $('.amount-usd').input_field_addons({ prefix: '$' });
 
-    $(".input-append.date").datepicker({ 
+    $('input.date').datepicker({ 
       autoclose: true,
       format: 'yyyy-mm-dd',
       update: new Date()

@@ -45,6 +45,7 @@ class MoneyTransfersController < ApplicationController
         @money_transfer.payments.build(
           amount: amount,
           contract: contract,
+          money_transfer: @money_transfer,
         )
 
         duration = params["duration_contract_#{contract.id}"].to_i

@@ -27,7 +27,7 @@ class Contract < ActiveRecord::Base
     inclusion: { in: (1..12), message: "from 1 to 12" }
 
   def next_payment_date
-    last_payment.try(:money_transfer).try(:received_at).try(:+, duration_months.months) if duration_months
+    last_payment.try(:effective_from).try(:+, duration_months.months) if duration_months
   end
 
   def to_s

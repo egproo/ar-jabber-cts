@@ -4,8 +4,8 @@
   <% end %>
   <%= f.input :name, label: 'Room name', input_html: { class: 'room-name' } %>
   <%= f.simple_fields_for :buyer do |b| %>
-    <%= b.input :name, label: 'Room owner', input_html: { class: 'typeahead-user' } %>
-    <%= field_set_tag 'New user', class: ('hidden' if @room.buyer.name.blank? || !@room.buyer.new_record?) do %>
+    <%= b.input :name, label: 'Room owner', input_html: { class: 'typeahead-user', autocomplete: 'off' } %>
+    <%= field_set_tag 'New user', style: ('display: none' if @room.buyer.name.blank? || !@room.buyer.new_record?) do %>
       <p>This user does not exist. Please provide more information to create a new one:</p>
       <%= b.input :jid %>
       <%= b.input :phone %>
@@ -15,10 +15,7 @@
     <%= f.simple_fields_for :payments do |p| %>
       <%= p.input :amount, label: 'Payment amount', input_html: { class: 'amount-usd' } %>
       <%= p.simple_fields_for :money_transfer do |mt| %>
-        <%= mt.input :received_at, label: 'Received at', wrapper_html: { class: 'input-append date' } do %>
-        <%= mt.input_field :received_at, as: :string %>
-          <span class="add-on"><i class="icon-calendar"></i></span>
-        <% end %>
+        <%= mt.input :received_at, input_html: { class: 'date' }, as: :string %>
       <% end %>
     <% end %>
     <%= f.input :duration_months, label: 'Pay for months' %>

@@ -4,14 +4,25 @@ class Payment < ActiveRecord::Base
 
   belongs_to :money_transfer
   belongs_to :contract
-  attr_accessible :amount, :contract, :money_transfer
+  attr_accessible :amount, :contract, :money_transfer, :effective_from
 
-  validates :amount, inclusion: { in: (1..200), message: "from 1 to 200" }
-  validates :amount, presence: true
+  validates :amount, inclusion: { in: (1..200), message: "from 1 to 200" }, presence: true
+  validates :money_transfer, presence: true
+  validates :contract, presence: true
 
   accepts_nested_attributes_for :money_transfer
 
+  before_create :set_effective_from
+
   def to_s
     "$#{amount} for #{contract} at #{money_transfer.received_at.to_date}"
+  end
+
+  def set_effective_from
+    self.effective_from = if next_payment_date = contract.next_payment_date
+                            [money_transfer.received_at, next_payment_date].max
+                          else
+                            money_transfer.received_at
+                          end
   end
 end
