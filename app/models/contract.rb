@@ -7,7 +7,7 @@ class Contract < ActiveRecord::Base
   belongs_to :buyer, class_name: 'User'
   belongs_to :seller, class_name: 'User'
   has_many :payments, dependent: :destroy
-  has_one :last_payment, class_name: 'Payment', order: 'created_at DESC'
+  has_one :last_payment, class_name: 'Payment', order: 'effective_from DESC'
   attr_accessible :name, :duration_months, :next_amount_estimate, :type, :active
 
   accepts_nested_attributes_for :buyer, :seller, :payments
