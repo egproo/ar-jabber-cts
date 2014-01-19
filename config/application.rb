@@ -64,5 +64,14 @@ module JabberCTS
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Speed up precompiling a little
+    config.assets.initialize_on_precompile = false
+
+    Dir[Rails.root.join('app', 'assets', 'javascripts', '*.js')].each do |p|
+      if File.exists? Rails.root.join('app', 'controllers', File.basename(p, '.js') + '_controller.rb')
+        config.assets.precompile << File.basename(p)
+      end
+    end
   end
 end
