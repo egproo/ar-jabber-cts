@@ -4,12 +4,12 @@ class Contract < ActiveRecord::Base
 
   scope :active, -> { where(active: true) }
 
-  belongs_to :buyer, class_name: 'User'
-  belongs_to :seller, class_name: 'User'
-  has_many :payments, dependent: :destroy
-  has_one :last_payment, class_name: 'Payment', order: 'effective_from DESC'
-  attr_accessible :name, :duration_months, :next_amount_estimate, :type, :active
+  belongs_to :buyer, class_name: 'User', inverse_of: :bought_contracts
+  belongs_to :seller, class_name: 'User', inverse_of: :sold_contracts
+  has_many :payments, dependent: :destroy, inverse_of: :contract
+  has_one :last_payment, class_name: 'Payment', order: 'effective_from DESC', inverse_of: :contract
 
+  attr_accessible :name, :duration_months, :next_amount_estimate, :type, :active
   accepts_nested_attributes_for :buyer, :seller, :payments
 
   validates :name,

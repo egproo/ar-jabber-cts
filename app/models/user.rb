@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   include PublicActivity::Model
   tracked owner: Proc.new{ |controller, model| controller.try(:current_user) }
 
-  STUB_NAME = 'stub'
+  STUB_NAME = 'damascus'
 
   ROLE_STUB = -1
   ROLE_CLIENT = 0
@@ -32,15 +32,13 @@ class User < ActiveRecord::Base
     ROLE_ADMIN => 'admin',
   }
 
-  attr_accessible :jid, :name, :password, :phone, :role, :locale
-
   has_many :sent_transfers, class_name: 'MoneyTransfer', foreign_key: 'sender_id'
   has_many :received_transfers, class_name: 'MoneyTransfer', foreign_key: 'receiver_id'
-
   has_many :bought_contracts, class_name: 'Contract', foreign_key: 'buyer_id'
   has_many :sold_contracts, class_name: 'Contract', foreign_key: 'seller_id'
-
   has_one :salary_contract, class_name: 'Contract', foreign_key: 'seller_id', conditions: { type: 'Salary' }
+
+  attr_accessible :jid, :name, :password, :phone, :role, :locale
 
   validates :jid, format: { with: /\A.+@.+\z/ }
   validates :phone, format: { with: /\A\+?\d{8,15}\z/, if: 'phone.present?', message: "from 8 to 15" }

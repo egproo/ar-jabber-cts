@@ -1,16 +1,1 @@
-<%= simple_form_for @money_transfer, html: { class: 'form-horizontal' } do |f| %>
-	<%= f.input :sender, readonly: !!@money_transfer.sender, input_html: { class: 'typeahead-user' } %>
-	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead-user' } %>
-	<%= f.input :amount, input_html: { class: 'amount-usd' } %>
-	<%= f.input :received_at, label: 'Received at', input_html: { class: 'date' }, as: :string %>
-	<%= f.input :comment %>
-
-	<% @contracts.each do |c| %>
-		<%= f.input "contract_#{c.id}", label: "#{c.to_s}#{" #{c.next_payment_date.to_date}" if c.next_payment_date}", wrapper_html: {class: "controls-row#{' well' if @highlight_contract_id == c.id}"} do %>
-			<%= f.input "amount_contract_#{c.id}", label: "Amount", as: :contract_payment_amount, input_html: { value: params["amount_contract_#{c.id}"] || c.next_amount_estimate, class: 'amount-usd' } %>
-			<%= f.input "duration_contract_#{c.id}", label: "Months", as: :contract_payment_new_duration, input_html: { value: params["duration_contract_#{c.id}"] || c.duration_months } %>
-		<% end %>
-	<% end %>
-
-	<%= f.submit class: 'btn btn-primary controls' %>
-<% end %>
+<%= render partial: 'form' %>

@@ -2,15 +2,15 @@ class Payment < ActiveRecord::Base
   include PublicActivity::Model
   tracked owner: Proc.new{ |controller, model| controller.try(:current_user) }
 
-  belongs_to :money_transfer
-  belongs_to :contract
+  belongs_to :money_transfer, inverse_of: :payments
+  belongs_to :contract, inverse_of: :payments
+
   attr_accessible :amount, :contract, :money_transfer, :effective_from
+  accepts_nested_attributes_for :money_transfer, :contract
 
   validates :amount, inclusion: { in: (1..200), message: "from 1 to 200" }, presence: true
   validates :money_transfer, presence: true
   validates :contract, presence: true
-
-  accepts_nested_attributes_for :money_transfer
 
   before_create :set_effective_from
 

@@ -48,7 +48,6 @@ class RoomsController < ApplicationController
     payment = money_transfer.payments.build(
       contract: @room,
       amount: money_transfer.amount,
-      money_transfer: money_transfer,
     )
 
     @room.payments << payment
