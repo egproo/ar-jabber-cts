@@ -12,11 +12,12 @@
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
 //= require twitter/typeahead
+//= require bootstrap
+//= require renderers
 //= require bootstrap-datepicker
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
 //= require jquery.bootstrap-input-addon.js
-//= require_tree .
 
 $(document).on('decorate', function(e, updated) {
     $('.typeahead-user').typeahead({
