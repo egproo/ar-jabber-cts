@@ -5,11 +5,15 @@ Money transfer:
 	Date:    <%= @money_transfer.created_at.to_date %>
 	Amount:  $<%= @money_transfer.amount %>
 	Comment: <%= @money_transfer.comment || '(no comment)' %>
+</pre>
+
+<%= link_to 'Edit this money transfer', edit_money_transfer_path(@money_transfer), class: 'btn' %>
 
 <% if @money_transfer.payments.any? %>
-Payments:
+	<br/>Payments:
+	<ul>
 	<% @money_transfer.payments.each do |p| %>
-	<%= link_to p, p.contract %>
+		<li><%= link_to p, p.contract %></li>
 	<% end %>
+	</ul>
 <% end %>
-</pre>

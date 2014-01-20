@@ -46,7 +46,41 @@ class MoneyTransfersController < ApplicationController
   end
 
   def show
-    @money_transfer = MoneyTransfer.find(params[:id])
+    @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
+    @money_transfer.received_at = @money_transfer.received_at.to_date
+  end
+
+  def edit
+    @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
+    @money_transfer.received_at = @money_transfer.received_at.to_date
+  end
+
+  def update
+    @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
+    @money_transfer.received_at = @money_transfer.received_at.to_date
+
+    @money_transfer.assign_attributes(
+      amount: params[:money_transfer][:amount],
+      comment: params[:money_transfer][:comment],
+      received_at: params[:money_transfer][:received_at],
+    )
+
+    @money_transfer.payments.each do |p|
+      index, payment_hash = params[:money_transfer][:payments_attributes].find do |index, payment_hash|
+        payment_hash[:id].to_i == p.id
+      end
+      next unless payment_hash
+
+      p.contract.duration_months = payment_hash[:contract_attributes][:duration_months]
+      p.amount = payment_hash[:amount]
+    end
+
+    if @money_transfer.save
+      redirect_to @money_transfer
+    else
+      logger.debug "Validation errors: #{@money_transfer.errors.inspect}"
+      render :edit
+    end
   end
 
   def index
