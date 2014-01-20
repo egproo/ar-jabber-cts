@@ -22,7 +22,7 @@ $(document).ready(function() {
                 sWidth: "20%"
             }, {
                 mData: "amount",
-                mRender: renderers.amount,
+                mRender: renderers.mtAmount,
                 sWidth: "10%"
             }, {
                 mData: "received_at",
