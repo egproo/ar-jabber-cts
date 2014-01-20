@@ -25,7 +25,15 @@ Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @us
   <% end %>
 <% end %>
 
-<br/>Money Transfers:<br/>
-<% (@user.sent_transfers + @user.received_transfers).sort_by(&:created_at).reverse_each do |t| %>
-	<br/><%= link_to t, t %>
-<% end %>
+<ul>
+<br/>Money Transfers:
+  <% (@user.sent_transfers + @user.received_transfers).sort_by(&:created_at).reverse_each do |t| %>
+  	<li><%= link_to t, t %></li>
+  <% end %>
+</ul>
+<ul>
+<br/>Contracts:
+  <% @user.bought_contracts.each do |c| %>
+    <li><%= link_to c, c %></li>
+  <% end %>
+</ul>
