@@ -63,5 +63,12 @@ var renderers = {
             return '';
         }
         return renderers.date(lastPaymentDate.created_at, type, row);
+    },
+
+    mtAmount: function(data, type, row) {
+        if (type === 'display' && data) {
+            return "<a href='/money_transfers/" + row.id + "'>" + renderers.amount(data, type, row) + "</a>";
+        }
+        return renderers.amount(data, type, row);
     }
 }
