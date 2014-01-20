@@ -31,23 +31,25 @@ class RoomsController < ApplicationController
   def create
     @room = Room.new(
       name: params[:room][:name],
-      duration_months: params[:room][:duration_months],
       active: true,
     )
     @room.name += '@conference.syriatalk.biz' unless @room.name.include?('@')
     @room.seller = current_user
     @room.buyer = User.find_by_name(params[:room][:buyer_attributes][:name]) ||
                   User.new(params[:room][:buyer_attributes].merge(role: User::ROLE_CLIENT))
+    
 
+    payment_hash = params[:room][:payments_attributes].values.first
     money_transfer = MoneyTransfer.new(
       sender: @room.buyer,
       receiver: @room.seller,
-      amount: params[:room][:payments_attributes].values.first[:amount],
-      received_at: params[:room][:payments_attributes].values.first[:money_transfer_attributes][:received_at],
+      amount: payment_hash[:amount],
+      received_at: payment_hash[:money_transfer_attributes][:received_at],
     )
     payment = money_transfer.payments.build(
       contract: @room,
       amount: money_transfer.amount,
+      effective_months: payment_hash[:effective_months]
     )
 
     @room.payments << payment

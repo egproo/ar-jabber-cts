@@ -17,8 +17,8 @@
       <%= p.simple_fields_for :money_transfer do |mt| %>
         <%= mt.input :received_at, input_html: { class: 'date' }, as: :string %>
       <% end %>
+      <%= p.input :effective_months, label: 'Months' %>
     <% end %>
-    <%= f.input :duration_months, label: 'Pay for months' %>
   <% end %>
   <%= f.submit class: 'btn btn-primary controls', data: { disable_with: 'Saving...' } %>
 <% end %>

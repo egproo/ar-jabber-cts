@@ -8,6 +8,7 @@ class MoneyTransfersController < ApplicationController
 
     @highlight_contract_id = params[:contract_id].try(:to_i)
     fill_payments(@money_transfer)
+    sort_payments(@money_transfer)
   end
 
   def create
@@ -26,13 +27,13 @@ class MoneyTransfersController < ApplicationController
       if contract = Contract.first(conditions: {
             buyer_id: @money_transfer.sender,
             seller_id: @money_transfer.receiver,
-            id: payment_hash[:contract_attributes][:id]
+            id: payment_hash[:contract_attributes][:id],
           })
         payment = @money_transfer.payments.build(
           contract: contract,
           amount: payment_hash[:amount],
+          effective_months: payment_hash[:effective_months],
         )
-        contract.duration_months = payment_hash[:contract_attributes][:duration_months]
       end
     end
 
@@ -41,6 +42,7 @@ class MoneyTransfersController < ApplicationController
     else
       logger.debug "Validation errors: #{@money_transfer.errors.inspect}"
       fill_payments(@money_transfer)
+      sort_payments(@money_transfer)
       render :new
     end
   end
@@ -53,6 +55,7 @@ class MoneyTransfersController < ApplicationController
   def edit
     @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
     @money_transfer.received_at = @money_transfer.received_at.to_date
+    sort_payments(@money_transfer)
   end
 
   def update
@@ -69,9 +72,9 @@ class MoneyTransfersController < ApplicationController
       index, payment_hash = params[:money_transfer][:payments_attributes].find do |index, payment_hash|
         payment_hash[:id].to_i == p.id
       end
-      next unless payment_hash
+      next unless payment_hash && p.editable?
 
-      p.contract.duration_months = payment_hash[:contract_attributes][:duration_months]
+      p.effective_months = payment_hash[:effective_months]
       p.amount = payment_hash[:amount]
     end
 
@@ -109,7 +112,9 @@ class MoneyTransfersController < ApplicationController
         mt.payments.build(contract: contract)
       end
     end
+  end
 
+  def sort_payments(mt)
     mt.payments.sort! do |p1, p2|
       if p1.contract.id == @highlight_contract_id
         -1

@@ -57,7 +57,7 @@ $(document).ready(function() {
                     mRender: renderers.date,
                     sWidth: "10%"
                 }, {
-                    mData: 'duration_months',
+                    mData: 'last_payment.effective_months',
                     sWidth: "5%",
                 }, {
                     mData: null,

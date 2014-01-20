@@ -9,7 +9,7 @@ class Contract < ActiveRecord::Base
   has_many :payments, dependent: :destroy, inverse_of: :contract
   has_one :last_payment, class_name: 'Payment', order: 'effective_from DESC', inverse_of: :contract
 
-  attr_accessible :name, :duration_months, :next_amount_estimate, :type, :active
+  attr_accessible :name, :next_amount_estimate, :type, :active
   accepts_nested_attributes_for :buyer, :seller, :payments
 
   validates :name,
@@ -22,12 +22,9 @@ class Contract < ActiveRecord::Base
   validates :type, presence: true
   validates :buyer, presence: true
   validates :seller, presence: true
-  validates :duration_months,
-    presence: true,
-    inclusion: { in: (1..12), message: "from 1 to 12" }
 
   def next_payment_date
-    last_payment.try(:effective_from).try(:+, duration_months.months) if duration_months
+    last_payment.try(:effective_to)
   end
 
   def to_s

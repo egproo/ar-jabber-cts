@@ -2,12 +2,10 @@
 Name:  <%= @room.name %>
 Room Owner: <%= link_to @room.buyer.name, @room.buyer %>
 Contract Creator: <%= link_to @room.seller.name, @room.seller %>
-Duration (months): <%= @room.duration_months %>
+Duration (months): <%= @room.last_payment.try(:effective_months) %>
 <% if @room.last_payment %>
 Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer %>
-<% if @room.duration_months %>
 Next payment: <%= @room.next_payment_date.to_date %>
-<% end %>
 <% end %>
 </pre>
 

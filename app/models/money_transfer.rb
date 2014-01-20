@@ -17,7 +17,7 @@ class MoneyTransfer < ActiveRecord::Base
   validates :received_at, presence: true
   validate :validate_payment_amounts
   validate :validate_received_at_in_future
-  validate :valudate_received_at_recent, on: :create
+  validate :validate_received_at_recent, on: :create
 
   def to_s
     "#{sender.try(:name)} -> #{receiver.try(:name)} $#{amount} at #{created_at.try(:to_date)}"
@@ -32,7 +32,7 @@ class MoneyTransfer < ActiveRecord::Base
 
   def validate_received_at_in_future
     return unless received_at.present?
-    errors.add(:received_at, 'is in future') if received_at > Time.now
+    errors.add(:received_at, 'is in future') if received_at > 1.day.from_now # TODO: fix time zone issues
   end
 
   def validate_received_at_recent
