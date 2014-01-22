@@ -18,7 +18,7 @@ class Contract < ActiveRecord::Base
       if: :active
     },
     presence: true,
-    format: { with: /.@conference.syriatalk.biz\z/ }
+    format: { with: /.@conference\.syriatalk\.biz\z/ }
   validates :type, presence: true
   validates :buyer, presence: true
   validates :seller, presence: true
