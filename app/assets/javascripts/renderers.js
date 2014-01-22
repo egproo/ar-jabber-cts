@@ -85,8 +85,10 @@ var renderers = {
     },
 
     modelText: function(data, type, row) {
-        if (type === 'display') {
+        if (type === 'display' && row.trackable) {
             return "<a href='/" + renderers.modelType(row.key) + 's' + "/" + row.trackable.id + "'>" + row.trackable.to_s + "</a>";
+        } else if (!row.trackable) {
+            return '';
         }
         return row.trackable.to_s;
     },
@@ -97,6 +99,6 @@ var renderers = {
         } else if (!row.owner) {
             return '';
         }
-        return row;
+        return row.owner.name;
     }
 }

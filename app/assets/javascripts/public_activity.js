@@ -24,8 +24,9 @@ $(document).ready(function(){
                     mRender: renderers.modelType,
                     sWidth: "20%"
                 }, {
-                    mData: 'trackable.to_s',
+                    mData: null,
                     mRender: renderers.modelText,
+                    //mRender: function() { console.log(arguments) },
                     sWidth: "35%"
                 }, {
                     mData: null,
