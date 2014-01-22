@@ -70,5 +70,33 @@ var renderers = {
             return "<a href='/money_transfers/" + row.id + "'>" + renderers.amount(data, type, row) + "</a>";
         }
         return renderers.amount(data, type, row);
+    },
+
+    operation: function(data, type, row) {
+        return data.split('.');
+    },
+
+    operationType: function(data, type, row) {
+        return renderers.operation(data, type, row)[1];
+    },
+
+    modelType: function(data, type, row) {
+        return renderers.operation(data, type, row)[0];
+    },
+
+    modelText: function(data, type, row) {
+        if (type === 'display') {
+            return "<a href='/" + renderers.modelType(row.key) + 's' + "/" + row.trackable.id + "'>" + row.trackable.to_s + "</a>";
+        }
+        return row.trackable.to_s;
+    },
+
+    owner: function(data, type, row) {
+        if (type === 'display' && row.owner) {
+            return "<a href='/users/" + row.owner.id + "'>" + row.owner.name + "</a>";
+        } else if (!row.owner) {
+            return '';
+        }
+        return row;
     }
 }
