@@ -58,11 +58,11 @@ var renderers = {
     lastPaymentDate: function(data, type, row) {
         var lastPaymentDate = row.last_payment;
         if (type === 'display' && lastPaymentDate) {
-            return renderers.date(lastPaymentDate.created_at, type, row);
+            return renderers.date(lastPaymentDate.effective_from, type, row);
         } else if (!lastPaymentDate) {
             return '';
         }
-        return renderers.date(lastPaymentDate.created_at, type, row);
+        return renderers.date(lastPaymentDate.effective_from, type, row);
     },
 
     mtAmount: function(data, type, row) {
