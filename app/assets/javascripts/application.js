@@ -51,7 +51,7 @@ $(document).on('decorate', function(e, updated) {
         }
     });
 
-    $('.amount-usd').input_field_addons({ prefix: '$' });
+    $('input[name*=amount]').input_field_addons({ prefix: '$' });
 
     $('input.date').datepicker({ 
       autoclose: true,

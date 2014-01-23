@@ -13,7 +13,7 @@
   <% end %>
   <%= field_set_tag 'First payment' do %>
     <%= f.simple_fields_for :payments do |p| %>
-      <%= p.input :amount, label: 'Payment amount', input_html: { class: 'amount-usd' } %>
+      <%= p.input :amount, label: 'Payment amount' %>
       <%= p.simple_fields_for :money_transfer do |mt| %>
         <%= mt.input :received_at, input_html: { class: 'date' }, as: :string %>
       <% end %>

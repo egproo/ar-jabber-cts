@@ -1,7 +1,7 @@
 <%= simple_form_for @money_transfer, html: { class: 'form-horizontal' } do |f| %>
 	<%= f.input :sender, readonly: !!@money_transfer.sender, input_html: { class: 'typeahead-user' } %>
 	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead-user' } %>
-	<%= f.input :amount, input_html: { class: 'amount-usd' } %>
+	<%= f.input :amount %>
 	<%= f.input :received_at, label: 'Received at', input_html: { class: 'date' }, as: :string %>
 	<%= f.input :comment %>
 
@@ -9,7 +9,7 @@
 		<%= f.simple_fields_for :payments do |p| %>
 			<% payment_readonly = @money_transfer.new_record? ? false : !p.object.editable? %>
 			<p><%= link_to "#{p.object.contract.name} (paid until #{p.object.contract.next_payment_date.to_date})", p.object.contract %></p>
-			<%= p.input :amount, input_html: { class: 'amount-usd', disabled: payment_readonly } %>
+			<%= p.input :amount, input_html: { disabled: payment_readonly } %>
 			<%= p.input :effective_months, label: 'Months', disabled: payment_readonly %>
 			<%= p.simple_fields_for :contract do |c| %>
 				<%# we keep it here for id, is there a better way? %>

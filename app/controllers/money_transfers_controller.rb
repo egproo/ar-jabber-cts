@@ -49,7 +49,6 @@ class MoneyTransfersController < ApplicationController
 
   def show
     @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
-    @money_transfer.received_at = @money_transfer.received_at.to_date
   end
 
   def edit
@@ -60,7 +59,6 @@ class MoneyTransfersController < ApplicationController
 
   def update
     @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
-    @money_transfer.received_at = @money_transfer.received_at.to_date
 
     @money_transfer.assign_attributes(
       amount: params[:money_transfer][:amount],

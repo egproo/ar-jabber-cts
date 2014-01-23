@@ -1,6 +1,5 @@
 class Contract < ActiveRecord::Base
-  include PublicActivity::Model
-  tracked owner: Proc.new{ |controller, model| controller.try(:current_user) }
+  include Trackable
 
   scope :active, -> { where(active: true) }
 
@@ -24,7 +23,7 @@ class Contract < ActiveRecord::Base
   validates :seller, presence: true
 
   def next_payment_date
-    last_payment.try(:effective_to).try(:+, 1.day)
+    last_payment.try(:next_expected_date)
   end
 
   def to_s

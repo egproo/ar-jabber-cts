@@ -1,6 +1,5 @@
 class Payment < ActiveRecord::Base
-  include PublicActivity::Model
-  tracked owner: Proc.new{ |controller, model| controller.try(:current_user) }
+  include Trackable
 
   belongs_to :money_transfer, inverse_of: :payments
   belongs_to :contract, inverse_of: :payments
@@ -20,7 +19,11 @@ class Payment < ActiveRecord::Base
 
   def to_s
     "$#{amount} for #{contract} at #{money_transfer.received_at.to_date} " <<
-      "(effective #{effective_from.try(:to_date)} .. #{effective_to.try(:to_date)})"
+      "(effective #{effective_from.try(:to_date)} — #{effective_to.try(:to_date)})"
+  end
+
+  def editable?
+    true
   end
 
   def effective_to
@@ -29,6 +32,10 @@ class Payment < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  def next_expected_date
+    effective_to.try(:+, 1.day)
   end
 
   # Note: this method is not intended to be called twice
@@ -43,11 +50,7 @@ class Payment < ActiveRecord::Base
     self.class.where(contract_id: contract_id)
   end
 
-  def editable?
-    contract.last_payment == self
-  end
-
-  def overlaps?
+  def overlapper
     return false unless effective_to = self.effective_to
     siblings.find { |p|
       p_effective_to = p.effective_to
@@ -65,25 +68,23 @@ class Payment < ActiveRecord::Base
   end
 
   def validate_not_overlaps
-    return unless overlapper = overlaps?
+    return unless overlapper = self.overlapper
     errors.add(:effective_from, "overlaps with #{overlapper}")
     errors.add(:effective_months, "overlaps with #{overlapper}")
   end
 
   def set_effective_from
     self.effective_from = if new_record?
-                            # We cannot add new Payment between existing ones.
-                            if next_payment_date = contract.next_payment_date
-                              [money_transfer.received_at, next_payment_date].max
-                            else
-                              money_transfer.received_at
-                            end
+                            contract.next_payment_date
                           else
-                            if previous_payment = self.previous
-                              [previous_payment.effective_to + 1.day, money_transfer.received_at].max
-                            else
-                              money_transfer.received_at
-                            end
+                            # We cannot add new Payment between existing ones.
+                            self.previous.try(:next_expected_date)
                           end
+
+    if money_transfer.received_at
+      if !self.effective_from || self.effective_from < money_transfer.received_at
+        self.effective_from = money_transfer.received_at
+      end
+    end
   end
 end
