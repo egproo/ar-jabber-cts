@@ -8,7 +8,7 @@ class Contract < ActiveRecord::Base
   has_many :payments, dependent: :destroy, inverse_of: :contract
   has_one :last_payment, class_name: 'Payment', order: 'effective_from DESC', inverse_of: :contract
 
-  attr_accessible :name, :next_amount_estimate, :type, :active
+  attr_accessible :name, :next_amount_estimate, :type, :active, :comment
   accepts_nested_attributes_for :buyer, :seller, :payments
 
   validates :name,

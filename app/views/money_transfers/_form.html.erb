@@ -3,7 +3,7 @@
 	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead-user' } %>
 	<%= f.input :amount %>
 	<%= f.input :received_at, label: 'Received at', input_html: { class: 'date' }, as: :string %>
-	<%= f.input :comment %>
+	<%= f.input :comment, input_html: { rows: 4 } %>
 
 	<%= field_set_tag 'Payments' do %>
 		<%= f.simple_fields_for :payments do |p| %>

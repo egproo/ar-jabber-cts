@@ -32,6 +32,7 @@ class RoomsController < ApplicationController
     @room = Room.new(
       name: params[:room][:name],
       active: true,
+      comment: params[:room][:comment],
     )
     @room.name += '@conference.syriatalk.biz' unless @room.name.include?('@')
     @room.seller = current_user

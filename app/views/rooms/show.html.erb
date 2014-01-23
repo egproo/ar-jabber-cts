@@ -3,6 +3,7 @@ Name:  <%= @room.name %>
 Room Owner: <%= link_to @room.buyer.name, @room.buyer %>
 Contract Creator: <%= link_to @room.seller.name, @room.seller %>
 Duration (months): <%= @room.last_payment.try(:effective_months) %>
+Comment: <%= @room.comment || '(no comment)' %>
 <% if @room.last_payment %>
 Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer %>
 Next payment: <%= @room.next_payment_date.to_date %>

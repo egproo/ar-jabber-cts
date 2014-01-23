@@ -11,6 +11,7 @@
       <%= b.input :phone %>
     <% end %>
   <% end %>
+  <%= f.input :comment, input_html: { rows: 4 } %>
   <%= field_set_tag 'First payment' do %>
     <%= f.simple_fields_for :payments do |p| %>
       <%= p.input :amount, label: 'Payment amount' %>
