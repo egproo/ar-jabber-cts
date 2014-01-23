@@ -1,4 +1,6 @@
 JabberCTS::Application.routes.draw do
+  get "statistics/income"
+
   get 'i18n/datatable'
 
   get 'public_activity/index', as: 'public_activity'
