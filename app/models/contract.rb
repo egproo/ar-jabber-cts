@@ -24,7 +24,7 @@ class Contract < ActiveRecord::Base
   validates :seller, presence: true
 
   def next_payment_date
-    last_payment.try(:effective_to)
+    last_payment.try(:effective_to).try(:+, 1.day)
   end
 
   def to_s

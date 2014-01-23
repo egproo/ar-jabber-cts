@@ -2,8 +2,6 @@ class MoneyTransfer < ActiveRecord::Base
   include PublicActivity::Model
   tracked owner: Proc.new{ |controller, model| controller.try(:current_user) }
 
-  POST_FACTUM_DAYS_LIMIT = 5
-
   belongs_to :sender, class_name: 'User', inverse_of: :sent_transfers
   belongs_to :receiver, class_name: 'User', inverse_of: :received_transfers
   has_many :payments, dependent: :destroy, inverse_of: :money_transfer
@@ -16,8 +14,7 @@ class MoneyTransfer < ActiveRecord::Base
   validates :receiver, presence: true
   validates :received_at, presence: true
   validate :validate_payment_amounts
-  validate :validate_received_at_in_future
-  validate :validate_received_at_recent, on: :create
+  validate :validate_received_at
 
   def to_s
     "#{sender.try(:name)} -> #{receiver.try(:name)} $#{amount} at #{created_at.try(:to_date)}"
@@ -30,13 +27,8 @@ class MoneyTransfer < ActiveRecord::Base
     errors.add(:amount, "is smaller than total payments amount #{payments_sum}") if payments_sum > amount
   end
 
-  def validate_received_at_in_future
+  def validate_received_at
     return unless received_at.present?
     errors.add(:received_at, 'is in future') if received_at > 1.day.from_now # TODO: fix time zone issues
-  end
-
-  def validate_received_at_recent
-    return unless received_at.present?
-    errors.add(:received_at, "is older than #{POST_FACTUM_DAYS_LIMIT} days") if received_at < POST_FACTUM_DAYS_LIMIT.days.ago
   end
 end
