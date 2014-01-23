@@ -46,13 +46,9 @@ class Payment < ActiveRecord::Base
     )
   end
 
-  def siblings
-    self.class.where(contract_id: contract_id)
-  end
-
   def overlapper
     return false unless effective_to = self.effective_to
-    siblings.find { |p|
+    self.class.where(contract_id: contract_id).find { |p|
       p_effective_to = p.effective_to
 
       p.id != self.id &&
