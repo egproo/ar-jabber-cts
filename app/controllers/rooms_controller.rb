@@ -7,10 +7,11 @@ class RoomsController < ApplicationController
             aaData: contracts
           },
           include: [
-            { buyer: { except: [:password] } },
-            { seller: { except: [:password] } },
-            :last_payment
+            { buyer: { only: [:name, :role, :jid, :id] } },
+            { seller: { only: [:name, :role, :jid, :id] } },
+            { last_payment: { only: [:amount, :effective_from, :effective_months] } },
           ],
+          except: [:active, :updated_at, :comment, :seller_id, :buyer_id],
           methods: [:next_payment_date]
       }
       format.html
