@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     I18n.locale = current_user.locale
   rescue => e
+    logger.error("#{e.inspect}\n#{e.backtrace*$/}")
     render text: "No current user: #{e}"
   end
 

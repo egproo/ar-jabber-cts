@@ -3,6 +3,7 @@
     <%= s.input :name, label: 'Contract owner', readonly: true, input_html: { class: 'typeahead-user' } %>
   <% end %>
   <%= f.input :name, label: 'Room name', input_html: { class: 'room-name' } %>
+  <%= f.input :comment, input_html: { rows: 4 } %>
   <%= f.simple_fields_for :buyer do |b| %>
     <%= b.input :name, label: 'Room owner', input_html: { class: 'typeahead-user', autocomplete: 'off' } %>
     <%= field_set_tag 'New user', style: ('display: none' if @room.buyer.name.blank? || !@room.buyer.new_record?) do %>
@@ -11,7 +12,6 @@
       <%= b.input :phone %>
     <% end %>
   <% end %>
-  <%= f.input :comment, input_html: { rows: 4 } %>
   <%= field_set_tag 'First payment' do %>
     <%= f.simple_fields_for :payments do |p| %>
       <%= p.input :amount, label: 'Payment amount' %>
