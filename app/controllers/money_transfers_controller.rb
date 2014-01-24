@@ -70,7 +70,7 @@ class MoneyTransfersController < ApplicationController
       index, payment_hash = params[:money_transfer][:payments_attributes].find do |index, payment_hash|
         payment_hash[:id].to_i == p.id
       end
-      next unless payment_hash && p.editable?
+      next unless payment_hash
 
       p.effective_months = payment_hash[:effective_months]
       p.amount = payment_hash[:amount]

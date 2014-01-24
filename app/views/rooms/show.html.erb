@@ -1,3 +1,7 @@
+<% unless @room.active %>
+	<h4>This room is disabled</h4>
+<% end %>
+
 <pre>
 Name:  <%= @room.name %>
 Room Owner: <%= link_to @room.buyer.name, @room.buyer %>
@@ -10,8 +14,10 @@ Next payment: <%= @room.next_payment_date.to_date %>
 <% end %>
 </pre>
 
+<% if @room.active %>
 <%= link_to 'Receive money transfer for this contract', "/money_transfers/new?sender_id=#{@room.buyer.id}&receiver_id=#{current_user.id}&contract_id=#{@room.id}", class: 'btn' %>
 <%= link_to 'Delete this contract', @room, class: 'btn btn-danger', confirm: 'Are you sure?', method: :delete %>
+<% end %>
 
 <% if @room.payments.any? %>
 	<br/>Money transfer history:

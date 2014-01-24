@@ -22,10 +22,6 @@ class Payment < ActiveRecord::Base
       "(effective #{effective_from.try(:to_date)} — #{effective_to.try(:to_date)})"
   end
 
-  def editable?
-    true
-  end
-
   def effective_to
     if effective_from
       effective_months ? effective_from + effective_months.months - 1.day : effective_from
@@ -63,6 +59,7 @@ class Payment < ActiveRecord::Base
     }
   end
 
+  private
   def validate_not_overlaps
     return unless overlapper = self.overlapper
     errors.add(:effective_from, "overlaps with #{overlapper}")

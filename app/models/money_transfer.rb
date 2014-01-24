@@ -24,6 +24,8 @@ class MoneyTransfer < ActiveRecord::Base
     # to_a to use real values instead of DB
     payments_sum = payments.to_a.sum(&:amount)
     errors.add(:amount, "is smaller than total payments amount #{payments_sum}") if payments_sum > amount
+  rescue
+    errors.add(:amount, 'may not be counted')
   end
 
   def validate_received_at
@@ -38,6 +40,7 @@ class MoneyTransfer < ActiveRecord::Base
           if new_record?
             errors.add(:received_at, "is before an existing money transfer (#{last_mt.received_at.to_date}) for #{p.contract.name}")
           else
+            # Otherwise MT may be pushed in front forever
             errors.add(:received_at, "is superceded by another money transfer and cannot be changed (was #{received_at_was.to_date})")
           end
           break
