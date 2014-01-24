@@ -5,7 +5,7 @@ $(document).ready(function(){
     var tableContainer = $('#public_activities');
 
     tableContainer.dataTable({
-        "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+            sDom: "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             sPaginationType: 'bootstrap',
             bProcessing: true,
             sAjaxSource: '/public_activity/index.datatable',
@@ -14,7 +14,7 @@ $(document).ready(function(){
             },
             bAutoWidth: false,
             bDeferRender: true,
-            aaSorting: [[4, 'asc']],
+            aaSorting: [[4, 'desc']],
             aoColumns: [{
                     mData: 'key',
                     mRender: renderers.operationType,
