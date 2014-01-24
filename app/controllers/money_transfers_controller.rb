@@ -86,7 +86,7 @@ class MoneyTransfersController < ApplicationController
 
   def index
     # FIXME: security issue (full read: major)
-    money_transfers = MoneyTransfer.all(include: [:sender, :receiver])
+    money_transfers = MoneyTransfer.received_by(current_user).all(include: [:sender, :receiver])
     respond_to do |format|
       format.html
       format.datatable {
