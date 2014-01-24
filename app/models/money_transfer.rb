@@ -23,7 +23,8 @@ class MoneyTransfer < ActiveRecord::Base
     return unless amount.present?
     # to_a to use real values instead of DB
     payments_sum = payments.to_a.sum(&:amount)
-    errors.add(:amount, "is smaller than total payments amount #{payments_sum}") if payments_sum > amount
+    # TODO: allow Manager+ to receive MT w/o payments
+    errors.add(:amount, "is not the same as total payments amount #{payments_sum}") if payments_sum != amount
   rescue
     errors.add(:amount, 'may not be counted')
   end
@@ -35,13 +36,14 @@ class MoneyTransfer < ActiveRecord::Base
 
     if new_record? or received_at_changed?
       payments.each do |p|
-        last_mt = p.contract.last_payment.try(:money_transfer)
-        if last_mt && last_mt != self && last_mt.received_at >= self.received_at
+        last_mt = p.contract.payments.map(&:money_transfer).sort_by(&:received_at).select { |mt| mt.id != self.id }.last
+        if last_mt && last_mt.received_at >= self.received_at
           if new_record?
             errors.add(:received_at, "is before an existing money transfer (#{last_mt.received_at.to_date}) for #{p.contract.name}")
           else
             # Otherwise MT may be pushed in front forever
-            errors.add(:received_at, "is superceded by another money transfer and cannot be changed (was #{received_at_was.to_date})")
+            errors.add(:received_at, "is superceded by another money transfer (#{last_mt.id} #{last_mt.received_at.to_date}) " <<
+                       "and cannot be changed (was #{received_at_was.to_date})")
           end
           break
         end

@@ -114,22 +114,20 @@ class MoneyTransfersController < ApplicationController
 
   def sort_payments(mt)
     mt.payments.sort! do |p1, p2|
-      if p1.contract.id == @highlight_contract_id
-        -1
-      elsif p2.contract.id == @highlight_contract_id
-        1
-      else
-        c1npd, c2npd = p1.contract.next_payment_date, p2.contract.next_payment_date
-        if c1npd && c2npd
-          if !!p1.amount == !!p2.amount
-            c1npd <=> c2npd
-          else
-            p1.amount ? -1 : 1
-          end
-        else
-          c1npd ? -1 : c2npd ? 1 : 0
-        end
-      end
+      PreferenceArrayComparator.compare(
+        payment_preference_values_array(p1),
+        payment_preference_values_array(p2),
+      )
     end
+  end
+
+  def payment_preference_values_array(p)
+    p p.errors
+    [
+      p.contract.id == @highlight_contract_id,
+      p.errors.any?,
+      !!p.amount,
+      p.contract.next_payment_date,
+    ]
   end
 end
