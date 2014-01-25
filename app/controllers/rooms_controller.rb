@@ -1,21 +1,6 @@
 class RoomsController < ApplicationController
   def index
-    respond_to do |format|
-      format.datatable {
-        contracts = Room.active.sold_by(current_user).all(include: [:buyer, :seller, :last_payment])
-        render json: {
-            aaData: contracts
-          },
-          include: [
-            { buyer: { only: [:name, :role, :jid, :id] } },
-            { seller: { only: [:name, :role, :jid, :id] } },
-            { last_payment: { only: [:amount, :effective_from, :effective_months] } },
-          ],
-          except: [:active, :updated_at, :comment, :seller_id, :buyer_id],
-          methods: [:next_payment_date]
-      }
-      format.html
-    end
+    @contracts = Room.active.sold_by(current_user).all(include: [:buyer, :seller, :last_payment])
   end
 
   def show
