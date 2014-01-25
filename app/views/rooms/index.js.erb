@@ -1,10 +1,12 @@
-roomsData = <%=
-	@contracts.to_json(
-		include: [
-			{ buyer: { only: [:name, :role, :jid, :id] } },
-			{ seller: { only: [:name, :role, :jid, :id] } },
-			{ last_payment: { only: [:amount, :effective_from, :effective_months] } },
-		],
-		except: [:active, :updated_at, :comment, :seller_id, :buyer_id],
-		methods: [:next_payment_date]).html_safe
-%>
+<% cache('all_rooms') do %>
+	roomsData = <%=
+		@contracts.call.to_json(
+			include: [
+				{ buyer: { only: [:name, :role, :jid, :id] } },
+				{ seller: { only: [:name, :role, :jid, :id] } },
+				{ last_payment: { only: [:amount, :effective_from, :effective_months] } },
+			],
+			except: [:active, :updated_at, :comment, :seller_id, :buyer_id],
+			methods: [:next_payment_date]).html_safe
+	%>
+<% end %>

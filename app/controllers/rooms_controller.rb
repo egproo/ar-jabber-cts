@@ -1,7 +1,7 @@
 class RoomsController < ApplicationController
   def index
     respond_to do |format|
-      format.js { @contracts = Room.active.sold_by(current_user).all(include: [:buyer, :seller, :last_payment]) }
+      format.js { @contracts = -> { Room.active.sold_by(current_user).all(include: [:buyer, :seller, :last_payment]) } }
       format.html
     end
   end
@@ -45,6 +45,7 @@ class RoomsController < ApplicationController
     @room.payments << payment
 
     if @room.save
+      expire_fragment('all_rooms')
       if request.xhr?
         render status: 200, json: { location: Rails.application.routes.url_helpers.room_path(@room) }
       else
@@ -58,6 +59,7 @@ class RoomsController < ApplicationController
 
   def destroy
     Room.active.find(params[:id]).update_attributes(active: false)
+    expire_fragment('all_rooms')
     render :index
   end
 end
