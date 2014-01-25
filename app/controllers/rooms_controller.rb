@@ -1,6 +1,9 @@
 class RoomsController < ApplicationController
   def index
-    @contracts = Room.active.sold_by(current_user).all(include: [:buyer, :seller, :last_payment])
+    respond_to do |format|
+      format.js { @contracts = Room.active.sold_by(current_user).all(include: [:buyer, :seller, :last_payment]) }
+      format.html
+    end
   end
 
   def show
