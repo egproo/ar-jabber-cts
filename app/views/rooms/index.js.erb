@@ -1,4 +1,4 @@
-<% cache('all_rooms') do %>
+<% cache ['rooms-index', current_user] do %>
 	roomsData = <%=
 		@contracts.call.to_json(
 			include: [

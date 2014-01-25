@@ -19,7 +19,7 @@ gem 'twitter-bootstrap-rails', git: 'git://github.com/seyhunak/twitter-bootstrap
 
 group :production do
   gem 'unicorn'
-  gem 'dalli' # memcached
+  gem 'memcache-client'
 end
 
 gem 'simple_form'

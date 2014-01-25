@@ -59,7 +59,6 @@ GEM
       railties (>= 3.0)
     builder (3.0.4)
     commonjs (0.2.7)
-    dalli (2.7.0)
     erubis (2.7.0)
     execjs (2.0.2)
     hike (1.2.3)
@@ -79,6 +78,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memcache-client (1.8.5)
     mime-types (1.25.1)
     multi_json (1.8.4)
     polyglot (0.3.3)
@@ -150,10 +150,10 @@ PLATFORMS
 
 DEPENDENCIES
   bootstrap-datepicker-rails
-  dalli
   jquery-datatables-rails!
   jquery-rails
   less-rails
+  memcache-client
   public_activity
   rails (= 3.2.16)
   sass-rails

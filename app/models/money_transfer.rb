@@ -3,8 +3,8 @@ class MoneyTransfer < ActiveRecord::Base
 
   scope :received_by, proc { |receiver| receiver.role >= User::ROLE_SUPER_MANAGER ? {} : where(receiver_id: receiver) }
 
-  belongs_to :sender, class_name: 'User', inverse_of: :sent_transfers
-  belongs_to :receiver, class_name: 'User', inverse_of: :received_transfers
+  belongs_to :sender, class_name: 'User', inverse_of: :sent_transfers, touch: true
+  belongs_to :receiver, class_name: 'User', inverse_of: :received_transfers, touch: true
   has_many :payments, dependent: :destroy, inverse_of: :money_transfer
 
   attr_accessible :amount, :comment, :received_at, :sender, :receiver
