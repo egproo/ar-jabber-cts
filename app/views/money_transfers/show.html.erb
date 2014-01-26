@@ -7,13 +7,19 @@ Money transfer:
 	Comment: <%= @money_transfer.comment || '(no comment)' %>
 </pre>
 
-<%= link_to 'Edit this money transfer', edit_money_transfer_path(@money_transfer), class: 'btn' %>
+<% if @money_transfer.editable? %>
+	<%= link_to 'Edit this money transfer', edit_money_transfer_path(@money_transfer), class: 'btn' %>
+<% else %>
+	<p>You cannot edit this money transfer because one or more of it's payments have a successor (marked with *)</p>
+<% end %>
 
 <% if @money_transfer.payments.any? %>
 	<br/>Payments:
 	<ul>
 	<% @money_transfer.payments.each do |p| %>
-		<li><%= link_to p, p.contract %></li>
+		<li><%= link_to p, p.contract %> <%= '*' if p.has_successor? %></li>
 	<% end %>
 	</ul>
+<% else %>
+	No payments in this money transfer
 <% end %>

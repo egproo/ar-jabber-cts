@@ -43,6 +43,10 @@ class Payment < ActiveRecord::Base
     )
   end
 
+  def has_successor?
+    contract.last_payment != self
+  end
+
   def overlapper
     return false unless effective_to = self.effective_to
     self.class.where(contract_id: contract_id).find { |p|

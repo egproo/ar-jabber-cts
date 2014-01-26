@@ -48,11 +48,12 @@ class MoneyTransfersController < ApplicationController
   end
 
   def show
-    @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
+    @money_transfer = MoneyTransfer.find(params[:id], include: { payments: { contract: :last_payment } })
   end
 
   def edit
     @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
+    return render text: 'Not allowed', status: 404 unless @money_transfer.editable?
     @money_transfer.received_at = @money_transfer.received_at.to_date
     sort_payments(@money_transfer)
   end

@@ -21,6 +21,10 @@ class MoneyTransfer < ActiveRecord::Base
     "#{sender.try(:name)} -> #{receiver.try(:name)} $#{amount} at #{received_at.try(:to_date)}"
   end
 
+  def editable?
+    payments.all? { |p| !p.has_successor? }
+  end
+
   def validate_payment_amounts
     return unless amount.present?
     # to_a to use real values instead of DB
