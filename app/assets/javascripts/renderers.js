@@ -103,13 +103,16 @@ var renderers = {
     },
 
     showDateTime: function(date) {
+        function addLeadingZero(num) {
+            return num < 10 ? '0' + num : num;
+        }
         var currDate = new Date(Date.parse(date)),
             currYear = currDate.getFullYear(),
-            currMonth = currDate.getMonth() < 10 ? '0' + (currDate.getMonth() + 1) : currDate.getMonth() + 1,
-            currDay = currDate.getDate() < 10 ? '0' + currDate.getDate() : currDate.getDate(),
-            currHour = currDate.getHours() < 10 ? '0' + currDate.getHours() : currDate.getHours(),
-            currMin = currDate.getMinutes() < 10 ? '0' + currDate.getMinutes() : currDate.getMinutes(),
-            currSec = currDate.getSeconds() < 10 ? '0' + currDate.getSeconds() : currDate.getSeconds();
+            currMonth = addLeadingZero(currDate.getMonth() + 1),
+            currDay = addLeadingZero(currDate.getDate()),
+            currHour = addLeadingZero(currDate.getHours()),
+            currMin = addLeadingZero(currDate.getMinutes()),
+            currSec = addLeadingZero(currDate.getSeconds());
         return currYear + '-' + currMonth + '-' + currDay + ' ' + currHour + ':' + currMin + ':' + currSec;
     },
 
