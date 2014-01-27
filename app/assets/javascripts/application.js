@@ -54,22 +54,54 @@ $(document).on('decorate', function(e, updated) {
     $('input[name*=amount]').input_field_addons({ prefix: '$' });
 
     $('input.date').datepicker({ 
-      autoclose: true,
-      format: 'yyyy-mm-dd',
-      update: new Date()
+        autoclose: true,
+        format: 'yyyy-mm-dd',
+        update: new Date()
     });
 });
 
+function updateDataTableRowsPerPage() {
+    var $table = $('table.dataTable');
+    var dataTable = $table.dataTable();
+
+    var currentTableHeight = $table.children('tbody').outerHeight();
+    var newTableHeight = $(window).height() - $('body').height() + currentTableHeight;
+
+    var rows = Math.floor(newTableHeight / $table.children('tbody').children('tr').height());
+    if (rows <= 0) {
+        rows = 1;
+    }
+
+    var settings = dataTable.fnSettings();
+    if (settings._iDisplayLength != rows) {
+        settings._iDisplayLength = rows;
+        dataTable.fnDraw();
+    }
+}
+
+function setupDataTable(options, selector) {
+    var container = $(selector || 'table');
+
+    container.dataTable($.extend({
+            sDom: "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+            sPaginationType: 'bootstrap',
+            bProcessing: true,
+            oLanguage: {
+                sUrl: '/i18n/datatable.json'
+            },
+            bAutoWidth: false,
+            bDeferRender: true,
+            fnDrawCallback: function() {
+                var $this = $(this);
+                if (!$this.data('first-draw-done')) {
+                    $this.data('first-draw-done', true);
+                    updateDataTableRowsPerPage();
+                }
+            }
+    }, options));
+}
+
 $(function() {
     $(document).trigger('decorate');
+    $(window).resize(updateDataTableRowsPerPage);
 });
-
-function rowsPerPage(table_selector) {
-    // FIXME: Magic numbers
-    var table = $(table_selector);
-    var bottom = table.position().top + table.outerHeight();
-    var height = $(window).height() - bottom - 60 /* Showing X to Y of N entries + Copyright */;
-    height -= 40; /* Two rows per header after column resizing */
-    var rows = Math.floor(height / 30 /* Estimated row height */);
-    return rows > 0 ? rows : 1;
-}

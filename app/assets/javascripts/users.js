@@ -1,14 +1,6 @@
 $(document).ready(function() {
-
-    var tableContainer = $('#users');
-
-    tableContainer.dataTable({
-        sPaginationType: 'bootstrap',
-        bProcessing: true,
+    setupDataTable({
         sAjaxSource: '/users.datatable',
-        oLanguage: {
-            sUrl: '/i18n/datatable.json'
-        },
         aoColumns: [
             {
                 mData: null,

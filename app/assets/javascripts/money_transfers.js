@@ -1,16 +1,7 @@
 $(document).ready(function() {
-
-    var tableContainer = $('#money_transfers');
-
-    tableContainer.dataTable({
-        sPaginationType: 'bootstrap',
-        bProcessing: true,
+    setupDataTable({
         sAjaxSource: '/money_transfers.datatable',
-        oLanguage: {
-            sUrl: '/i18n/datatable.json'
-        },
         aaSorting: [[3, 'desc']],
-
         aoColumns: [
             {
                 mData: "sender",

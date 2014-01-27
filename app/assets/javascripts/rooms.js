@@ -27,18 +27,8 @@ $(document).ready(function() {
         $(document).trigger('decorate', this);
     });
 
-    var tableContainer = $('#rooms');
-
-    tableContainer.dataTable({
-            sDom: "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-            sPaginationType: 'bootstrap',
-            bProcessing: true,
+    setupDataTable({
             aaData: roomsData,
-            oLanguage: {
-                sUrl: '/i18n/datatable.json'
-            },
-            bAutoWidth: false,
-            bDeferRender: true,
             aaSorting: [[7, 'asc']],
             aoColumns: [{
                     mData: null,
