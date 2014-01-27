@@ -48,7 +48,7 @@ class MoneyTransfer < ActiveRecord::Base
             errors.add(:received_at, "is before an existing money transfer (#{last_mt.received_at.to_date}) for #{p.contract.name}")
           else
             # Otherwise MT may be pushed in front forever
-            errors.add(:received_at, "is superceded by another money transfer (#{last_mt.id} #{last_mt.received_at.to_date}) " <<
+            errors.add(:received_at, "is superseded by another money transfer (#{last_mt.id} #{last_mt.received_at.to_date}) " <<
                        "and cannot be changed (was #{received_at_was.to_date})")
           end
           break
