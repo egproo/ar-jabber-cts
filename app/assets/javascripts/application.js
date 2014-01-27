@@ -63,3 +63,13 @@ $(document).on('decorate', function(e, updated) {
 $(function() {
     $(document).trigger('decorate');
 });
+
+function rowsPerPage(table_selector) {
+    // FIXME: Magic numbers
+    var table = $(table_selector);
+    var bottom = table.position().top + table.outerHeight();
+    var height = $(window).height() - bottom - 60 /* Showing X to Y of N entries + Copyright */;
+    height -= 40; /* Two rows per header after column resizing */
+    var rows = Math.floor(height / 30 /* Estimated row height */);
+    return rows > 0 ? rows : 1;
+}

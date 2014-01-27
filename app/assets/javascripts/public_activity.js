@@ -8,10 +8,11 @@ $(document).ready(function(){
             sDom: "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             sPaginationType: 'bootstrap',
             bProcessing: true,
-            sAjaxSource: '/public_activity/index.datatable',
+            aaData: activityData,
             oLanguage: {
                 sUrl: '/i18n/datatable.json'
             },
+            iDisplayLength: rowsPerPage('#public_activities'),
             bAutoWidth: false,
             bDeferRender: true,
             aaSorting: [[4, 'desc']],

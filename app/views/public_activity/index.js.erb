@@ -1,0 +1,13 @@
+<% cache ['public-activity', @public_activity.hash] do %>
+	activityData = <%= @public_activity.to_json(
+		include: [
+			{ owner: { only: [:id, :name] } },
+			{ trackable: { only: [:id], methods: [:to_s]  } },
+		],
+		except: [
+			:id, :parameters, :updated_at,
+			:recipient_id, :recipient_type,
+			:owner_id, :owner_type,
+			:trackable_id, :trackable_type,
+		]).html_safe %>;
+<% end %>

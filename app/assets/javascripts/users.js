@@ -9,7 +9,6 @@ $(document).ready(function() {
         oLanguage: {
             sUrl: '/i18n/datatable.json'
         },
-
         aoColumns: [
             {
                 mData: null,
