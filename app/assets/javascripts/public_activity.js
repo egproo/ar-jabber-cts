@@ -18,23 +18,22 @@ $(document).ready(function(){
             aoColumns: [{
                     mData: 'key',
                     mRender: renderers.operationType,
-                    sWidth: "10%"
+                    sWidth: "5%"
                 }, {
                     mData: 'key',
                     mRender: renderers.modelType,
-                    sWidth: "20%"
+                    sWidth: "10%"
                 }, {
                     mData: null,
                     mRender: renderers.modelText,
-                    //mRender: function() { console.log(arguments) },
-                    sWidth: "35%"
+                    sWidth: "60%"
                 }, {
                     mData: null,
                     mRender: renderers.owner,
-                    sWidth: "20%"
+                    sWidth: "10%"
                 }, {
                     mData: 'created_at',
-                    mRender: renderers.date,
+                    mRender: renderers.dateTime,
                     sWidth: "15%"
                 }]
     });
