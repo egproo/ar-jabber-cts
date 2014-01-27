@@ -100,5 +100,23 @@ var renderers = {
             return '';
         }
         return row.owner.name;
+    },
+
+    showDateTime: function(date) {
+        var currDate = new Date(Date.parse(date)),
+            currYear = currDate.getFullYear(),
+            currMonth = currDate.getMonth() < 10 ? '0' + (currDate.getMonth() + 1) : currDate.getMonth() + 1,
+            currDay = currDate.getDate() < 10 ? '0' + currDate.getDate() : currDate.getDate(),
+            currHour = currDate.getHours() < 10 ? '0' + currDate.getHours() : currDate.getHours(),
+            currMin = currDate.getMinutes() < 10 ? '0' + currDate.getMinutes() : currDate.getMinutes(),
+            currSec = currDate.getSeconds() < 10 ? '0' + currDate.getSeconds() : currDate.getSeconds();
+        return currYear + '-' + currMonth + '-' + currDay + ' ' + currHour + ':' + currMin + ':' + currSec;
+    },
+
+    dateTime: function(data, type, row) {
+        if (type === 'display') {
+            return renderers.showDateTime(data);
+        }
+        return renderers.date(data, type, row);
     }
 }
