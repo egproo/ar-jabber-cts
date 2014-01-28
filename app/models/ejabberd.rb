@@ -12,6 +12,11 @@ class Ejabberd
       text = @ej.ctl('get_room_occupants_number', @name, @host)
       text.include?('room_not_found') ? 'Room not found' : text
     end
+
+    def affiliations
+      text = @ej.ctl('get_room_affiliations', @name, @host)
+      text.include?('"The room does not exist."') ? nil : text
+    end
   end
 
   def room(name, host = nil)

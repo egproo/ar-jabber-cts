@@ -1,6 +1,8 @@
 class Contract < ActiveRecord::Base
   include Trackable
 
+  serialize :adhoc_data
+
   scope :active, -> { where(active: true) }
   scope :sold_by, proc { |seller| seller.role >= User::ROLE_SUPER_MANAGER ? {} : where(seller_id: seller) }
 

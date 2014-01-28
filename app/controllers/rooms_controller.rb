@@ -57,7 +57,11 @@ class RoomsController < ApplicationController
   end
 
   def destroy
-    Room.active.find(params[:id]).update_attributes(active: false)
+    r = Room.active.find(params[:id])
+    r.active = false
+    r.backup!
+    r.save!
+
     render :index
   end
 end
