@@ -17,6 +17,10 @@ class Ejabberd
       text = @ej.ctl('get_room_affiliations', @name, @host)
       text.include?('"The room does not exist."') ? nil : text
     end
+
+    def destroy
+      @ej.ctl('destroy_room', @name, @host)
+    end
   end
 
   def room(name, host = nil)

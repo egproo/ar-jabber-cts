@@ -61,6 +61,7 @@ class RoomsController < ApplicationController
     r.active = false
     r.backup!
     r.save!
+    r.erase!
 
     render :index
   end

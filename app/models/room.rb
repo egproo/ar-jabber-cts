@@ -15,4 +15,8 @@ class Room < Contract
   def occupants_number
     Ejabberd.new.room(name).occupants_number
   end
+
+  def erase!
+    Ejabberd.new.room(name).destroy
+  end
 end
