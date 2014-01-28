@@ -1,4 +1,4 @@
-<% cache ['rooms-index', @rooms.hash] do %>
+<%# cache ['rooms-index', @rooms.hash] do %>
 	roomsData = <%=
 		@rooms.to_json(
 			include: [
@@ -8,4 +8,4 @@
 			],
 			except: [:active, :updated_at, :comment, :seller_id, :buyer_id],
 			methods: [:next_payment_date]).html_safe %>;
-<% end %>
+<%# end %>
