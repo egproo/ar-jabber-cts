@@ -12,6 +12,7 @@ Comment: <%= @room.comment || '(no comment)' %>
 Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer %>
 Next payment: <%= @room.next_payment_date.to_date %>
 <% end %>
+Occupants: <%= Ejabberd.new.room(@room.name).occupants_number %>
 </pre>
 
 <% if @room.active %>
