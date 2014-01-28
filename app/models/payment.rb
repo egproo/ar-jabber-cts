@@ -12,7 +12,7 @@ class Payment < ActiveRecord::Base
 
   before_validation :set_effective_from
 
-  validates :amount, inclusion: { in: (1..200), message: "from 1 to 200" }, presence: true
+  validates :amount, inclusion: { in: (0..200), message: "from 0 to 200" }, presence: true
   validates :money_transfer, presence: true
   validates :contract, presence: true
   validates :effective_months,

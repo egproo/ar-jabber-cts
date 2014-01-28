@@ -10,7 +10,7 @@ class MoneyTransfer < ActiveRecord::Base
   attr_accessible :amount, :comment, :received_at, :sender, :receiver
   accepts_nested_attributes_for :payments
 
-  validates :amount, presence: true, inclusion: { in: (1..5000), message: "from 1 to 5000" }
+  validates :amount, presence: true, inclusion: { in: (0..5000), message: "from 0 to 5000" }
   validates :sender, presence: true
   validates :receiver, presence: true
   validates :received_at, presence: true
