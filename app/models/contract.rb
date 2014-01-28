@@ -14,6 +14,8 @@ class Contract < ActiveRecord::Base
   attr_accessible :name, :next_amount_estimate, :type, :active, :comment
   accepts_nested_attributes_for :buyer, :seller, :payments
 
+  before_save :normalize_name
+
   validates :name,
     uniqueness: {
       scope: :active,
@@ -32,5 +34,9 @@ class Contract < ActiveRecord::Base
 
   def to_s
     name.sub('@conference.syriatalk.biz', '')
+  end
+
+  def normalize_name
+    self.name = name.strip.downcase
   end
 end
