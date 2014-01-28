@@ -31,6 +31,10 @@ class Ejabberd
     Room.new(name, host, self)
   end
 
+  def room_names(host)
+    ctl('muc_online_rooms', host)
+  end
+
   def ctl(command, *args)
     `ssh #@server sudo /opt/ejabberd/sbin/ejabberdctl #{command} #{args.join(' ')}`
   end
