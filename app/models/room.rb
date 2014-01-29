@@ -20,6 +20,6 @@ class Room < Contract
     backup!
     self.active = false
     save!
-    Ejabberd.new.room(name).destroy
+    #Ejabberd.new.room(name).destroy
   end
 end
