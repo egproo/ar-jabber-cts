@@ -16,7 +16,8 @@ Occupants: <%= @room.occupants_number %>
 </pre>
 
 <% if @room.active %>
-<%= link_to 'Receive money transfer for this contract', "/money_transfers/new?sender_id=#{@room.buyer.id}&receiver_id=#{current_user.id}&contract_id=#{@room.id}", class: 'btn' %>
+<%= link_to 'Receive money transfer for this contract', new_money_transfer_path(sender_id: @room.buyer, receiver_id: current_user, contract_id: @room.id), class: 'btn' %>
+<%= link_to 'Transfer room', transfer_room_path(@room), class: 'btn' %>
 <%= link_to 'Delete this contract', @room, class: 'btn btn-danger', confirm: 'Are you sure?', method: :delete %>
 <% end %>
 

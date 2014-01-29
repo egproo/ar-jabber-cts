@@ -28,6 +28,17 @@ class RoomsController < ApplicationController
     @room.buyer = User.find_by_name(params[:room][:buyer_attributes][:name]) ||
                   User.new(params[:room][:buyer_attributes].merge(role: User::ROLE_CLIENT))
     
+    if existing_room = Room.first(
+          conditions: {
+            name: @room.name,
+            seller_id: @room.seller,
+            buyer_id: @room.buyer,
+            active: false,
+          })
+      @room = existing_room
+      @room.active = true
+      @room.comment = params[:room][:comment] || @room.comment
+    end
 
     payment_hash = params[:room][:payments_attributes].values.first
     money_transfer = MoneyTransfer.new(
@@ -56,13 +67,12 @@ class RoomsController < ApplicationController
     end
   end
 
-  def destroy
-    r = Room.active.find(params[:id])
-    r.active = false
-    r.backup!
-    r.save!
-    #r.erase!
+  def transfer
+    render text: 'Not supported yet'
+  end
 
+  def destroy
+    Room.active.find(params[:id]).deactivate!
     render :index
   end
 end

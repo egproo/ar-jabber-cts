@@ -16,7 +16,10 @@ class Room < Contract
     Ejabberd.new.room(name).occupants_number
   end
 
-  def erase!
+  def deactivate!
+    backup!
+    self.active = false
+    save!
     Ejabberd.new.room(name).destroy
   end
 end

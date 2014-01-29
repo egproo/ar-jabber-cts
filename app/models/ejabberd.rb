@@ -10,7 +10,7 @@ class Ejabberd
 
     def occupants_number
       text = @ej.ctl('get_room_occupants_number', @name, @host)
-      text.include?('room_not_found') ? 'Room not found' : text
+      text.include?('room_not_found') ? nil : text
     end
 
     def affiliations

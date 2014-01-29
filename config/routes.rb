@@ -6,8 +6,8 @@ JabberCTS::Application.routes.draw do
   get 'public_activity/index', as: 'public_activity'
 
   resources :users
-  get 'users/home'
 
+  get 'rooms/transfer', as: 'transfer_room'
   resources :rooms
 
   resources :money_transfers
