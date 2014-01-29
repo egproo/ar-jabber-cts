@@ -1,3 +1,4 @@
+require 'shellwords'
 class Ejabberd
   def initialize(server = 'de2')
     @server = server
@@ -42,7 +43,7 @@ class Ejabberd
 
   def ctl(command, *args)
     Rails.logger.debug("CTL: #{command} #{args}")
-    `ssh #@server sudo /opt/ejabberd/sbin/ejabberdctl #{command} #{args.join(' ')}`.tap { |output|
+    `ssh #@server sudo /opt/ejabberd/sbin/ejabberdctl #{command.shellescape} #{args.shelljoin}`.tap { |output|
       Rails.logger.debug output
     }
   end
