@@ -12,7 +12,7 @@ Comment: <%= @room.comment || '(no comment)' %>
 Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer %>
 Next payment: <%= @room.next_payment_date.to_date %>
 <% end %>
-Occupants: <%= @room.occupants_number %>
+Occupants: <%= @room.occupants_number || 'room does not exist' %>
 </pre>
 
 <% if @room.active %>
