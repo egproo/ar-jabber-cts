@@ -1,3 +1,20 @@
-<% @income.each_pair do |date, amount| %>
-	<%= date %>: <%= amount %><br/>
-<% end %>
+<%= javascript_include_tag "highcharts" %>
+<div id="orders_chart"></div>
+
+<%= javascript_tag defer: 'defer' do -%>
+  $(function() {
+    new Highcharts.Chart({
+      chart: { renderTo: 'orders_chart' },
+      title: { text: 'Income' },
+      xAxis: { type: 'datetime' },
+      yAxis: {
+        title: { text: 'Amount' }
+      },
+      series: [{
+        name: 'Income',
+        pointInterval: <%=raw (1.day * 1000).to_json %>,
+        data: <%=raw @income.to_a.to_json %>
+      }]
+    });
+  });
+<% end -%>
