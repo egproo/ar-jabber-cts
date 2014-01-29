@@ -19,7 +19,12 @@ class Ejabberd
     end
 
     def destroy
-      @ej.ctl('destroy_room', @name, @host)
+      @ej.ctl('destroy_room', @name, @host, 'syriatalk.biz')
+    end
+
+    def create(owner = nil)
+      @ej.ctl('create_room', @name, @host, 'syriatalk.biz') if @host.include?('syriatalk.biz')
+      @ej.ctl('set_room_affiliation', @name, @host, owner, 'owner') if owner
     end
   end
 
@@ -36,6 +41,9 @@ class Ejabberd
   end
 
   def ctl(command, *args)
-    `ssh #@server sudo /opt/ejabberd/sbin/ejabberdctl #{command} #{args.join(' ')}`
+    Rails.logger.debug("CTL: #{command} #{args}")
+    `ssh #@server sudo /opt/ejabberd/sbin/ejabberdctl #{command} #{args.join(' ')}`.tap { |output|
+      Rails.logger.debug output
+    }
   end
 end
