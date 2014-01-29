@@ -1,0 +1,31 @@
+<%= javascript_tag do %>
+	<%# FIXME: JS code injection %>
+	var original_buyer = '<%=j @room.buyer.name %>';
+<% end %>
+<%= simple_form_for @room, html: { class: 'form-horizontal' }, remote: true do |f| %>
+	<%= f.simple_fields_for :seller do |s| %>
+		<%= s.input :name, label: 'Contract owner', readonly: true, input_html: { class: 'typeahead-user' } %>
+	<% end %>
+	<%= f.input :name, label: 'Room name', readonly: !f.object.new_record?, input_html: { class: 'room-name' } %>
+	<%= f.input :comment, input_html: { rows: 4 } %>
+	<%= f.simple_fields_for :buyer do |b| %>
+		<%= b.input :name, label: 'Room owner', input_html: { class: 'typeahead-user', autocomplete: 'off' } %>
+		<%= field_set_tag 'New user', style: ('display: none' if f.object.buyer.name.blank? || !f.object.buyer.new_record?) do %>
+			<p>This user does not exist. Please provide more information to create a new one:</p>
+			<%= b.input :jid %>
+			<%= b.input :phone %>
+		<% end %>
+	<% end %>
+	<%= field_set_tag('First payment', id: 'payment_fs',
+				style: ('display: none' unless f.object.buyer_id_changed? || f.object.new_record?)
+			) do %>
+		<%= f.simple_fields_for :payment_attributes, f.object.payments.last do |p| %>
+			<%= p.input :amount, label: 'Payment amount' %>
+			<%= p.simple_fields_for :money_transfer do |mt| %>
+				<%= mt.input :received_at, input_html: { class: 'date' }, as: :string %>
+			<% end %>
+			<%= p.input :effective_months, label: 'Months' %>
+		<% end %>
+	<% end %>
+	<%= f.submit class: 'btn btn-primary controls', data: { disable_with: 'Saving...' } %>
+<% end %>

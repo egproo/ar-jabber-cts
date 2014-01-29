@@ -37,13 +37,27 @@ Payment.delete_all
 mt = MoneyTransfer.new(
   sender: u_client1,
   receiver: u_sa,
-  received_at: 1.day.ago,
+  received_at: 2.months.ago,
   amount: 15,
 )
 mt.payments.build(
   contract: r1,
   amount: 15,
-  effective_from: Time.now,
   effective_months: 3,
 )
 mt.save!
+r1.reload
+
+mt = MoneyTransfer.new(
+  sender: u_client1,
+  receiver: u_sa,
+  received_at: 1.day.ago,
+  amount: 5,
+)
+mt.payments.build(
+  contract: r1,
+  amount: 5,
+  effective_months: 1,
+)
+mt.save!
+r1.reload

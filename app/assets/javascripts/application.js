@@ -36,19 +36,13 @@ $(document).on('decorate', function(e, updated) {
         var $input = $(this);
         if ($input.data('ttOpened')) { return; }
         var available = $input.data('ttView').datasets[0].itemHash;
-        var datum = null;
         var search_value = $(this).val();
         for (var i = 0; available[i]; ++i) {
-            if (available[i].value == search_value) {
-                datum = available[i];
-                break;
+            if (available[i].value === search_value) {
+                return $input.trigger('typeahead:selected', search_value);
             }
         }
-        if (datum) {
-            $input.trigger('typeahead:selected', datum);
-        } else {
-            $input.trigger('typeahead:uservalue', search_value);
-        }
+        $input.trigger('typeahead:uservalue', search_value);
     });
 
     $('input[name*=amount]').input_field_addons({ prefix: '$' });
@@ -62,6 +56,10 @@ $(document).on('decorate', function(e, updated) {
 
 function updateDataTableRowsPerPage() {
     var $table = $('table.dataTable');
+    if (!$table.length) {
+        return;
+    }
+
     var dataTable = $table.dataTable();
 
     var currentTableHeight = $table.children('tbody').outerHeight();
