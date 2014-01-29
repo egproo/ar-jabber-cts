@@ -1,3 +1,20 @@
-<% @income.each_pair do |date, amount| %>
-	<%= date %>: <%= amount %><br/>
-<% end %>
+<%= javascript_include_tag "highcharts" %>
+<div id="orders_chart"></div>
+
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+    new Highcharts.Chart({
+      chart: { renderTo: 'orders_chart' },
+      title: { text: 'Income' },
+      xAxis: { type: 'datetime' },
+      yAxis: {
+        title: { text: 'Amount' }
+      },
+      series: [{
+        name: 'Income',
+        pointInterval: <%= 1.day * 1000 %>,
+        data: <%= @income.map { |arr| arr if arr[0] <= Date.today.to_datetime.to_i * 1000 }.compact %>
+      }]
+    });
+  });
+</script>
