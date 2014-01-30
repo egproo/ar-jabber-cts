@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   STUB_NAME = 'sa'
 
+  ROLE_STUB = -1
   ROLE_CLIENT = 0
 
   ROLE_MINI_MANAGER = 1
@@ -22,6 +23,7 @@ class User < ActiveRecord::Base
 
 
   ROLE_NAMES = {
+    ROLE_STUB => 'stub',
     ROLE_CLIENT => 'client',
     ROLE_MINI_MANAGER => 'manager',
     ROLE_MANAGER => 'manager',
