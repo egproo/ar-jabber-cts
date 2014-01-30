@@ -3,7 +3,7 @@
 <% end %>
 
 <pre>
-Name:  <%= @room.name %>
+Name: <%= @room.name %>
 Room Owner: <%= link_to @room.buyer.name, @room.buyer %>
 Contract Creator: <%= link_to @room.seller.name, @room.seller %>
 Duration (months): <%= @room.last_payment.try(:effective_months) %>
