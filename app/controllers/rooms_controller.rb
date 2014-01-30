@@ -49,6 +49,7 @@ class RoomsController < ApplicationController
     @room = new_or_existing_room(params[:room])
 
     if @room.save
+      Ejabberd.new.room(@room.name).create(@room.buyer.jid)
       if request.xhr?
         render status: 200, json: { location: Rails.application.routes.url_helpers.room_path(@room) }
       else
