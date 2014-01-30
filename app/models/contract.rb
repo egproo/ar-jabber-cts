@@ -37,6 +37,7 @@ class Contract < ActiveRecord::Base
   end
 
   def normalize_name
-    self.name = name.strip.downcase
+    name, host = self.name.split('@', 2)
+    self.name = "#{name.nodeprep}@#{host.nameprep}"
   end
 end

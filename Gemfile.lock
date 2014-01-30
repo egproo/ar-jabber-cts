@@ -63,6 +63,7 @@ GEM
     execjs (2.0.2)
     hike (1.2.3)
     i18n (0.6.9)
+    idn-ruby (0.1.0)
     journey (1.0.4)
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
@@ -150,6 +151,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootstrap-datepicker-rails
+  idn-ruby
   jquery-datatables-rails!
   jquery-rails
   less-rails
