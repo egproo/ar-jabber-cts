@@ -5,8 +5,6 @@ class Room < Contract
       node, server, affiliation = line.split
       node, server, affiliation = nil, node, server unless affiliation
 
-      p node, server, affiliation
-
       (affiliations[affiliation.to_sym] ||= []) << { node: node, server: server }
     end
     self.adhoc_data = { affiliations: affiliations }
