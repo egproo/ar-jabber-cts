@@ -66,7 +66,7 @@ var renderers = {
     },
 
     mtAmount: function(data, type, row) {
-        if (type === 'display' && data) {
+        if (type === 'display') {
             return "<a href='/money_transfers/" + row.id + "'>" + renderers.amount(data, type, row) + "</a>";
         }
         return renderers.amount(data, type, row);
