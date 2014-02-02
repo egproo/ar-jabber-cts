@@ -48,7 +48,7 @@ var renderers = {
     lastPaymentAmount: function(data, type, row) {
         var lastPayment = row.last_payment;
         if (type === 'display' && lastPayment) {
-            return renderers.amount(lastPayment.amount, type, row);
+            return "<a href='/money_transfers/" + lastPayment.money_transfer_id + "'>" + renderers.amount(lastPayment.amount, type, row) + "</a>";
         } else if (!lastPayment) {
             return '';
         }
