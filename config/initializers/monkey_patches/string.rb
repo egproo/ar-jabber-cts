@@ -19,12 +19,12 @@ class String
 
   def profileprep(profile, fix_errors = true)
     str = IDN::Stringprep.nfkc_normalize(self)
-    IDN::Stringprep.with_profile(str, profile)
+    IDN::Stringprep.with_profile(str, profile).force_encoding('utf-8')
   rescue IDN::Stringprep::StringprepError
     raise unless fix_errors
 
     str.each_char.map { |c, a|
       IDN::Stringprep.with_profile(c, profile) rescue nil
-    }.join
+    }.join.force_encoding('utf-8')
   end
 end
