@@ -1,4 +1,6 @@
 JabberCTS::Application.routes.draw do
+  get "ejabberd/sync", as: 'ejabberd_sync'
+
   get "statistics/income"
 
   get 'i18n/datatable'

@@ -12,6 +12,9 @@
   <li>
     <%= link_to 'Add room', new_room_path %>
   </li>
+  <li>
+    <%= link_to 'Sync', ejabberd_sync_path %>
+  </li>
   <% end %>
   <% if current_user.role >= User::ROLE_ADMIN %>
   <li>
