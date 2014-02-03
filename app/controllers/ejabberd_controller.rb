@@ -4,7 +4,7 @@ class EjabberdController < ApplicationController
   def sync
     server_rooms = Ejabberd.new.room_names('syriatalk.biz').split
     @transactions = server_rooms.map do |room_name|
-      tracked_rooms = Room.find_all_by_name(room_name)
+      tracked_rooms = Room.where(name: room_name).includes(:last_payment).all
       if tracked_rooms.present?
         if tracked_room = tracked_rooms.find(&:active)
           effective_to = tracked_room.last_payment.effective_to
