@@ -106,7 +106,14 @@ class MoneyTransfersController < ApplicationController
   def fill_payments(mt)
     return unless mt.sender && mt.receiver
 
-    Room.all(conditions: { buyer_id: mt.sender, seller_id: mt.receiver, active: true }, include: :last_payment).each do |contract|
+    conditions = {
+      buyer_id: mt.sender,
+      active: true,
+    }
+
+    conditions[:seller_id] = mt.receiver unless current_user.role >= User::ROLE_SUPER_MANAGER
+
+    Room.all(conditions: conditions, include: :last_payment).each do |contract|
       unless mt.payments.index { |x| x.contract == contract }
         mt.payments.build(contract: contract)
       end
