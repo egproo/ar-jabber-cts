@@ -42,9 +42,12 @@ class Ejabberd
   end
 
   def ctl(command, *args)
-    Rails.logger.debug("CTL: #{command} #{args}")
-    `ssh #@server sudo /opt/ejabberd/sbin/ejabberdctl #{command.shellescape} #{args.shelljoin}`.tap { |output|
-      Rails.logger.debug output
+    cmdline = "#{command.shellescape} #{args.shelljoin}"
+    Rails.logger.debug("CTL IN : #{cmdline}")
+    `ssh #@server sudo /opt/ejabberd/sbin/ejabberdctl #{cmdline}`.tap { |output|
+      output.each_line do |line|
+        Rails.logger.debug("CTL OUT: #{line}")
+      end
     }
   end
 end
