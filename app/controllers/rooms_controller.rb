@@ -20,21 +20,29 @@ class RoomsController < ApplicationController
     @room = Room.find(params[:id])
 
     if params[:room][:buyer_attributes][:name] != @room.buyer.name
-      @room.deactivate(false).save!
+      logger.info('Room is changing buyer')
+      old_room = @room
+      old_room.deactivate(false)
       @room = new_or_existing_room(params[:room])
     else
       @room.comment = params[:room][:comment]
     end
 
-    if @room.save
+    begin
+      @room.transaction do
+        old_room.save! if old_room
+        @room.save!
+      end
       if request.xhr?
         render status: 200, json: { location: Rails.application.routes.url_helpers.room_path(@room) }
       else
         redirect_to @room
       end
-    else
-      @room.name.sub!('@conference.syriatalk.biz', '')
-      render :new, status: 400, layout: !request.xhr?
+    rescue
+      render text: 'ERROR' # FIXME: render form with errors
+      #@room.id = old_room.id if old_room
+      #@room.name.sub!('@conference.syriatalk.biz', '')
+      #render :new, status: 400, layout: !request.xhr?
     end
   end
 
@@ -78,7 +86,7 @@ class RoomsController < ApplicationController
     room.seller = current_user
     room.buyer = User.find_by_name(attrs[:buyer_attributes][:name]) ||
                  User.new(attrs[:buyer_attributes].merge(role: User::ROLE_CLIENT))
-    
+
     if existing_room = Room.first(
           conditions: {
             name: room.name,
@@ -86,6 +94,7 @@ class RoomsController < ApplicationController
             buyer_id: room.buyer,
             active: false,
           })
+      logger.info("Existing room #{existing_room.id} found for this seller/buyer")
       room = existing_room
       room.active = true
       room.comment = attrs[:comment] || room.comment
