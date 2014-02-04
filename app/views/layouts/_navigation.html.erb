@@ -16,9 +16,12 @@
     <%= link_to 'Sync', ejabberd_sync_path %>
   </li>
   <% end %>
-  <% if current_user.role >= User::ROLE_ADMIN %>
+  <% if current_user.role >= User::ROLE_SUPER_MANAGER %>
   <li>
     <%= link_to 'Activity', public_activity_path %>
+  </li>
+  <li>
+    <%= link_to 'Statistics', statistics_income_path %>
   </li>
   <% end %>
 </ul>
