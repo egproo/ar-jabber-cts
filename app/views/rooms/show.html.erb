@@ -23,7 +23,7 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 
 <% if @room.payments.any? %>
 	<br/>Money transfer history:
-<% @room.payments.sort_by(&:created_at).reverse_each do |p| %>
+<% @room.payments.sort_by(&:effective_from).reverse_each do |p| %>
 	<br/><%= link_to p, p.money_transfer %>
 <% end %>
 <% end %>

@@ -46,7 +46,7 @@ class Ejabberd
     Rails.logger.debug("CTL IN : #{cmdline}")
     `ssh #@server sudo /opt/ejabberd/sbin/ejabberdctl #{cmdline}`.tap { |output|
       output.each_line do |line|
-        Rails.logger.debug("CTL OUT: #{line}")
+        Rails.logger.debug("CTL OUT: #{line.chomp}")
       end
     }
   end
