@@ -7,7 +7,7 @@
 
 	<%= field_set_tag 'Payments' do %>
 		<%= f.simple_fields_for :payments do |p| %>
-			<p><%= link_to "#{p.object.contract.name} (paid until #{p.object.contract.next_payment_date.to_date})", p.object.contract %></p>
+			<p><%= link_to "#{p.object.contract.name} (paid until #{p.object.contract.next_payment_date.try(:to_date) || 'never'})", p.object.contract %></p>
 			<%= p.input :amount %>
 			<%= p.input :effective_months, label: 'Months' %>
 			<%= p.simple_fields_for :contract do |c| %>
