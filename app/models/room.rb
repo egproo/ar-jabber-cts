@@ -2,8 +2,11 @@ class Room < Contract
   def backup!
     affiliations = {}
     (Ejabberd.new.room(name).affiliations || '').each_line do |line|
-      node, server, affiliation = line.split
+      node, server, affiliation, reason = line.split(nil, 4)
       node, server, affiliation = nil, node, server unless affiliation
+
+      # FIXME: security issue (writable - major): multi-line reason may create fake affiliation entry
+      next unless %w(owner member outcast admin).include?(affiliation)
 
       (affiliations[affiliation.to_sym] ||= []) << { node: node, server: server }
     end
