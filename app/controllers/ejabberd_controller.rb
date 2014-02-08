@@ -2,7 +2,7 @@ class EjabberdController < ApplicationController
   OWL = 5
 
   def sync
-    server_rooms = Ejabberd.new.room_names('syriatalk.biz').split
+    server_rooms = Ejabberd.new.room_names.split
     @transactions = server_rooms.map do |room_name|
       tracked_rooms = Room.where(name: room_name).includes(:last_payment).all
       if tracked_rooms.present?

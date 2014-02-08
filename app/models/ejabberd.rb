@@ -1,5 +1,8 @@
 require 'shellwords'
 class Ejabberd
+  DEFAULT_VHOST = 'syriatalk.biz'
+  DEFAULT_ROOMS_VHOST = "conference.#{DEFAULT_VHOST}"
+
   def initialize(server = 'de2')
     @server = server
   end
@@ -20,11 +23,11 @@ class Ejabberd
     end
 
     def destroy
-      @ej.ctl('destroy_room', @name, @host, 'syriatalk.biz')
+      @ej.ctl('destroy_room', @name, @host, DEFAULT_VHOST)
     end
 
     def create(owner = nil)
-      @ej.ctl('create_room', @name, @host, 'syriatalk.biz') if @host.include?('syriatalk.biz')
+      @ej.ctl('create_room', @name, @host, DEFAULT_VHOST) if @host.include?(DEFAULT_VHOST)
       @ej.ctl('set_room_affiliation', @name, @host, owner, 'owner') if owner
     end
   end
@@ -32,12 +35,12 @@ class Ejabberd
   def room(name, host = nil)
     unless host
       name, host = name.split('@', 2)
-      host = 'conference.syriatalk.biz' unless host
+      host = DEFAULT_ROOMS_VHOST unless host
     end
     Room.new(name, host, self)
   end
 
-  def room_names(host)
+  def room_names(host = DEFAULT_VHOST)
     ctl('muc_online_rooms', host)
   end
 

@@ -19,5 +19,19 @@ class ApplicationController < ActionController::Base
       end
   end
 
+  protected
+  def render_ajax_form(object, success)
+    if success
+      if request.xhr?
+        # FIXME: use Rails.application.routes.url_helpers
+        render status: 200, json: { location: "/#{object.class.name.pluralize.underscore}/#{object.id}" }
+      else
+        redirect_to object
+      end
+    else
+      render (object.new_record? ? :new : :edit), status: 400, layout: !request.xhr?
+    end
+  end
+
   helper_method :current_user
 end

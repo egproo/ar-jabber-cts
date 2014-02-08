@@ -12,7 +12,7 @@ class RoomsController < ApplicationController
 
   def edit
     @room = Room.find(params[:id])
-    @room.name.sub!('@conference.syriatalk.biz', '')
+    @room.name.sub!("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')
     @room.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date))
   end
 
@@ -56,17 +56,13 @@ class RoomsController < ApplicationController
   def create
     @room = new_or_existing_room(params[:room])
 
-    if @room.save
+    if success = @room.save
       Ejabberd.new.room(@room.name).create(@room.buyer.jid)
-      if request.xhr?
-        render status: 200, json: { location: Rails.application.routes.url_helpers.room_path(@room) }
-      else
-        redirect_to @room
-      end
     else
-      @room.name.sub!('@conference.syriatalk.biz', '')
-      render :new, status: 400, layout: !request.xhr?
+      @room.name.sub!("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')
     end
+
+    render_ajax_form(@room, success)
   end
 
   def destroy
@@ -82,7 +78,7 @@ class RoomsController < ApplicationController
       comment: attrs[:comment],
     )
 
-    room.name += '@conference.syriatalk.biz' unless room.name.include?('@')
+    room.name += "@#{Ejabberd::DEFAULT_ROOMS_VHOST}" unless room.name.include?('@')
     room.seller = current_user
     room.buyer = User.find_by_name(attrs[:buyer_attributes][:name]) ||
                  User.new(attrs[:buyer_attributes].merge(role: User::ROLE_CLIENT))

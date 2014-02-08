@@ -33,7 +33,7 @@ class Contract < ActiveRecord::Base
   end
 
   def to_s
-    name.sub('@conference.syriatalk.biz', '')
+    name.sub("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')
   end
 
   def normalize_name

@@ -2,7 +2,7 @@ namespace :cts do
   namespace :rooms do
     task :sync => :environment do
       ej = Ejabberd.new
-      existing_rooms = ej.room_names('syriatalk.biz').split.map { |room|
+      existing_rooms = ej.room_names.split.map { |room|
         room.force_encoding('utf-8')
         name, host = room.split('@', 2)
         "#{name.nodeprep}@#{host.nameprep}".force_encoding('utf-8')
