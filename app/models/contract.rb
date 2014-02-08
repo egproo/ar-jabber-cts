@@ -9,7 +9,11 @@ class Contract < ActiveRecord::Base
   belongs_to :buyer, class_name: 'User', inverse_of: :bought_contracts, touch: true
   belongs_to :seller, class_name: 'User', inverse_of: :sold_contracts, touch: true
   has_many :payments, dependent: :destroy, inverse_of: :contract
-  has_one :last_payment, class_name: 'Payment', order: 'effective_from DESC', inverse_of: :contract
+  has_one :last_payment, class_name: 'Payment', order: 'effective_from DESC'
+
+  def last_payment
+    payments.order('effective_from DESC').limit(1).first
+  end
 
   attr_accessible :name, :next_amount_estimate, :type, :active, :comment
   accepts_nested_attributes_for :buyer, :seller, :payments
@@ -37,8 +41,7 @@ class Contract < ActiveRecord::Base
   end
 
   def normalize_name
-    self.name = self.name.strip.downcase
-    #name, host = self.name.split('@', 2)
-    #self.name = "#{name.nodeprep}@#{host.nameprep}"
+    name, host = self.name.split('@', 2)
+    self.name = "#{name.nodeprep}@#{host.nameprep}"
   end
 end

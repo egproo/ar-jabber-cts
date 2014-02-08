@@ -4,6 +4,9 @@ class EjabberdController < ApplicationController
   def sync
     server_rooms = Ejabberd.new.room_names.split
     @transactions = server_rooms.map do |room_name|
+      node, host = room_name.split('@', 2)
+      room_name = "#{node.nodeprep}@#{host.nameprep}"
+
       tracked_rooms = Room.where(name: room_name).includes(:last_payment).all
       if tracked_rooms.present?
         if tracked_room = tracked_rooms.find(&:active)

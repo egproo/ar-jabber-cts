@@ -2,7 +2,7 @@ require 'idn'
 
 class String
   def nfkc_normalize
-    IDN::Stringprep.nfkc_normalize(self)
+    IDN::Stringprep.nfkc_normalize(self).force_encoding(Encoding::UTF_8)
   end
 
   def nodeprep(fix_errors = true)
@@ -18,7 +18,7 @@ class String
   end
 
   def profileprep(profile, fix_errors = true)
-    str = IDN::Stringprep.nfkc_normalize(self)
+    str = self.nfkc_normalize
     IDN::Stringprep.with_profile(str, profile).force_encoding('utf-8')
   rescue IDN::Stringprep::StringprepError
     raise unless fix_errors
