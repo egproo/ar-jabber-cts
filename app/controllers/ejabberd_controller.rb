@@ -4,6 +4,7 @@ class EjabberdController < ApplicationController
   def sync
     server_rooms = Ejabberd.new.room_names.split
     @transactions = server_rooms.map do |room_name|
+      real_room_name = room_name
       node, host = room_name.split('@', 2)
       room_name = "#{node.nodeprep}@#{host.nameprep}"
 
@@ -18,11 +19,11 @@ class EjabberdController < ApplicationController
           "#{room_name} destroy (contract deleted)"
         end
       else
-        "#{room_name} destroy (not tracked)"
+        "#{real_room_name} destroy (not tracked)"
       end
     end.compact +
       Room.active.all(conditions: ['name not in (?)', server_rooms], include: :last_payment).select do |r|
-        r.last_payment.effective_to >= OWL.days.ago
+        r.last_payment.effective_to >= Time.now
       end.map { |r| ["#{r.name} create", r] }
   end
 end
