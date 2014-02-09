@@ -1,5 +1,5 @@
 class Contract < ActiveRecord::Base
-  include Trackable
+  audited
 
   serialize :adhoc_data
 

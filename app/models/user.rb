@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Trackable
+  audited
 
   STUB_NAME = 'sa'
 

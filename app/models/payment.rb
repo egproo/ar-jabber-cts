@@ -1,8 +1,6 @@
 # encoding: utf-8
 
 class Payment < ActiveRecord::Base
-  include Trackable
-
   # Since we never edit Payment alone there's no need to validate it's parent.
   belongs_to :money_transfer, inverse_of: :payments, validate: false, touch: true
   belongs_to :contract, inverse_of: :payments, touch: true

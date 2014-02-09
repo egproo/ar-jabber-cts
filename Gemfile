@@ -23,5 +23,5 @@ group :production do
 end
 
 gem 'simple_form'
-gem 'public_activity'
+gem 'audited-activerecord'
 gem 'idn-ruby'

@@ -2,24 +2,25 @@ class PublicActivityController < ApplicationController
   def index
     respond_to do |format|
       format.js {
-        @public_activity =
-          fetch_activity_for_model('Payment', [:contract, :money_transfer]).concat(
-          fetch_activity_for_model('User').concat(
-          fetch_activity_for_model('MoneyTransfer', [:sender, :receiver]).concat(
-          fetch_activity_for_model('Contract')
-        )))
+        @public_activity = Audited::Adapters::ActiveRecord::Audit.includes(:user).all.map do |r|
+          {
+            action: r.action,
+            auditable_type: r.auditable_type,
+            auditable_path: "/#{r.auditable_type.pluralize.underscore}/#{r.auditable_id}", # Fixme: use routes?
+            user: r.user.try(:name) || 'Rails Console',
+            changes: r.audited_changes.map { |column, changes|
+              "#{column} " << if Array === changes
+                                old, new = changes
+                                "#{old} => #{new}"
+                              else
+                                changes.to_s
+                              end
+            }.join($/),
+            created_at: r.created_at,
+          }
+        end
       }
       format.html
     end
-  end
-
-  private
-  def fetch_activity_for_model(model, includes = [])
-    PublicActivity::Activity.all(
-      conditions: ['trackable_type = ? AND created_at > ?', model, 1.month.ago],
-      include: [
-        :owner,
-        :trackable => includes,
-      ])
   end
 end

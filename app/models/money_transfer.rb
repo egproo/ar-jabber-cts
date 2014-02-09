@@ -1,5 +1,5 @@
 class MoneyTransfer < ActiveRecord::Base
-  include Trackable
+  audited
 
   scope :received_by, proc { |receiver| receiver.role >= User::ROLE_SUPER_MANAGER ? {} : where(receiver_id: receiver) }
 

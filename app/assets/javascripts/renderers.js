@@ -72,25 +72,11 @@ var renderers = {
         return renderers.amount(data, type, row);
     },
 
-    operation: function(data, type, row) {
-        return data.split('.');
-    },
-
-    operationType: function(data, type, row) {
-        return renderers.operation(data, type, row)[1];
-    },
-
-    modelType: function(data, type, row) {
-        return renderers.operation(data, type, row)[0];
-    },
-
     modelText: function(data, type, row) {
-        if (type === 'display' && row.trackable) {
-            return "<a href='/" + renderers.modelType(row.key) + 's' + "/" + row.trackable.id + "'>" + row.trackable.to_s + "</a>";
-        } else if (!row.trackable) {
-            return '';
+        if (type === 'display') {
+            return "<a href='" + data + "'>" + row.changes.replace(/\n/g, "<br/>") + "</a>";
         }
-        return row.trackable.to_s;
+        return data;
     },
 
     owner: function(data, type, row) {

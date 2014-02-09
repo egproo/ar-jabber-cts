@@ -5,20 +5,17 @@ $(document).ready(function(){
             aaData: activityData,
             aaSorting: [[4, 'desc']],
             aoColumns: [{
-                    mData: 'key',
-                    mRender: renderers.operationType,
+                    mData: 'action',
                     sWidth: "5%"
                 }, {
-                    mData: 'key',
-                    mRender: renderers.modelType,
+                    mData: 'auditable_type',
                     sWidth: "10%"
                 }, {
-                    mData: null,
+                    mData: 'auditable_path',
                     mRender: renderers.modelText,
                     sWidth: "60%"
                 }, {
-                    mData: null,
-                    mRender: renderers.owner,
+                    mData: 'user',
                     sWidth: "10%"
                 }, {
                     mData: 'created_at',

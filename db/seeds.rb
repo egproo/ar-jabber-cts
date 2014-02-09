@@ -7,6 +7,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+Audited::Adapters::ActiveRecord::Audit.delete_all
+
 User.delete_all
 u_sa = User.create!(
   name: 'sa',
