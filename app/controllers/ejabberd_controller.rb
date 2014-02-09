@@ -1,5 +1,5 @@
 class EjabberdController < ApplicationController
-  OWL = 5
+  OWL = 10
 
   def sync
     server_rooms = Ejabberd.new.room_names.split
