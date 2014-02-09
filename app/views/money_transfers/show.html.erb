@@ -5,6 +5,8 @@ Money transfer:
 	Date:    <%= @money_transfer.received_at.to_date %>
 	Amount:  $<%= @money_transfer.amount %>
 	Comment: <%= @money_transfer.comment || '(no comment)' %>
+	Created: <%= @money_transfer.created_at %>
+	Updated: <%= @money_transfer.updated_at %>
 </pre>
 
 <% if @money_transfer.editable? %>
