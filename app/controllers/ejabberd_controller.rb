@@ -8,7 +8,7 @@ class EjabberdController < ApplicationController
       node, host = room_name.split('@', 2)
       room_name = "#{node.nodeprep}@#{host.nameprep}"
 
-      tracked_rooms = Room.where(name: room_name).includes(:last_payment).all
+      tracked_rooms = Room.preload(:last_payment).where(name: room_name).all
       if tracked_rooms.present?
         if tracked_room = tracked_rooms.find(&:active)
           effective_to = tracked_room.last_payment.effective_to
@@ -22,7 +22,7 @@ class EjabberdController < ApplicationController
         "#{real_room_name} destroy (not tracked)"
       end
     end.compact +
-      Room.active.all(conditions: ['name not in (?)', server_rooms], include: :last_payment).select do |r|
+      Room.active.preload(:last_payment).where(['name not in (?)', server_rooms]).to_a.select do |r|
         r.last_payment.effective_to >= Time.now
       end.map { |r| ["#{r.name} create", r] }
   end

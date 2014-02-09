@@ -113,7 +113,7 @@ class MoneyTransfersController < ApplicationController
 
     conditions[:seller_id] = mt.receiver unless current_user.role >= User::ROLE_SUPER_MANAGER
 
-    Room.all(conditions: conditions, include: :last_payment).each do |contract|
+    Room.where(conditions).each do |contract|
       unless mt.payments.index { |x| x.contract == contract }
         mt.payments.build(contract: contract)
       end
