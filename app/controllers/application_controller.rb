@@ -4,18 +4,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
 
   def set_locale
-    I18n.locale = current_user.locale
-  rescue => e
-    logger.error("#{e.inspect}\n#{e.backtrace*$/}")
-    render text: "No current user: #{e}"
-  end
-
-  def current_user
-    @current_user ||=
-      begin
-        @current_user_name ||= ActionController::HttpAuthentication::Basic::user_name_and_password(request).first rescue nil
-        User.find_by_name(@current_user_name || (Rails.env.development? && User::STUB_NAME))
-      end
+    I18n.locale = current_user.locale if current_user
   end
 
   protected
@@ -32,5 +21,4 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  helper_method :current_user
 end

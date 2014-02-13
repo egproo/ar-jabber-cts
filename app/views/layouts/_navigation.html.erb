@@ -1,3 +1,4 @@
+<% if user_signed_in? %>
 <ul class="nav">
   <li>
     <%= link_to 'Rooms', rooms_path %>
@@ -29,7 +30,8 @@
   <li>
     <p class="navbar-text">
       <%=t 'Welcome' %>, <%= link_to current_user, '/users/home' %> [<%= I18n.locale %>]
-	  <%= link_to t('Logout'), "http://log:out@#{request.host}/" %>
+	    <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
     </p>
   </li>
 </ul>
+<% end %>

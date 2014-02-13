@@ -1,5 +1,12 @@
 JabberCTS::Application.routes.draw do
-  get "ejabberd/sync", as: 'ejabberd_sync'
+  devise_for :users
+
+  
+
+  #root :to => 'rooms#index'
+  authenticated :user do
+    root :to => 'rooms#index', :as => :authenticated_root
+    get "ejabberd/sync", as: 'ejabberd_sync'
 
   get "statistics/income", as: 'statistics_income'
 
@@ -13,6 +20,7 @@ JabberCTS::Application.routes.draw do
   resources :rooms
 
   resources :money_transfers
+  end
 
-  root :to => 'rooms#index'
+  root :to => redirect('/users/sign_in')
 end

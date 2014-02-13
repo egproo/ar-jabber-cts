@@ -1,4 +1,11 @@
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :rememberable, :trackable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :password, :password_confirmation, :remember_me
+  
   audited
 
   STUB_NAME = 'sa'
@@ -80,13 +87,4 @@ class User < ActiveRecord::Base
       group: 'users.name')
   end
 
-  def self.dump_htpasswd
-    File.open(File.join(Rails.root, '.htpasswd'), 'w') do |htaccess|
-      User.all(conditions: 'password IS NOT NULL').each do |user|
-        htaccess.puts "#{user.name}:{PLAIN}#{user.password}"
-      end
-    end
-  end
-
-  after_save { User.dump_htpasswd }
 end
