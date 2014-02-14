@@ -24,3 +24,4 @@
 /vendor/bundle
 /public/assets
 .ruby-version
+config/application.yml

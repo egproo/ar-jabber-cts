@@ -14,6 +14,7 @@ u_sa = User.create!(
   name: 'sa',
   role: User::ROLE_ADMIN,
   jid: 'sa@localhost',
+  password: 'secret',
 )
 u_client1 = User.create!(
   name: 'client1',
