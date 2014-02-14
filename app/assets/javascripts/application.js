@@ -11,6 +11,8 @@
 //= require jquery_ujs
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
+//= require twitter/bootstrap/bootstrap-transition
+//= require twitter/bootstrap/bootstrap-alert
 //= require twitter/typeahead
 //= require bootstrap
 //= require renderers

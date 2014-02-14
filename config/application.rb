@@ -76,9 +76,13 @@ module JabberCTS
     # Speed up precompiling a little
     config.assets.initialize_on_precompile = false
 
-    Dir[Rails.root.join('app', 'assets', 'javascripts', '*.js')].each do |p|
-      if File.exists? Rails.root.join('app', 'controllers', File.basename(p, '.js') + '_controller.rb')
-        config.assets.precompile << File.basename(p)
+    js_assets_dir = Rails.root.join('app/assets/javascripts')
+    views_dir = Rails.root.join('app/views')
+    Dir[Rails.root.join(js_assets_dir, '**/*.js')].each do |p|
+      p = Pathname.new(p)
+      relative_path = p.relative_path_from(js_assets_dir).dirname
+      if File.exists? Rails.root.join(views_dir, relative_path, p.basename('.js'))
+        config.assets.precompile << relative_path.join(p.basename)
       end
     end
   end
