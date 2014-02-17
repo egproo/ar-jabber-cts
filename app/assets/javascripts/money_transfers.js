@@ -1,6 +1,6 @@
 $(document).ready(function() {
     setupDataTable({
-        sAjaxSource: '/money_transfers.datatable',
+        aaData: moneyTransfersData,
         aaSorting: [[3, 'desc']],
         aoColumns: [
             {

@@ -1,6 +1,6 @@
 $(document).ready(function() {
     setupDataTable({
-        sAjaxSource: '/users.datatable',
+        aaData: usersData,
         aoColumns: [
             {
                 mData: null,

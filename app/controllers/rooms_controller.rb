@@ -1,9 +1,6 @@
 class RoomsController < ApplicationController
   def index
-    respond_to do |format|
-      format.js { @rooms = Room.active.preload(:last_payment).sold_by(current_user).includes(:buyer, :seller).to_a }
-      format.html
-    end
+    @rooms = Room.active.preload(:last_payment).sold_by(current_user).includes(:buyer, :seller)
   end
 
   def show

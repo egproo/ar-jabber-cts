@@ -34,11 +34,9 @@ class UsersController < ApplicationController
   end
 
   def index
-    @user = User.new
     @users = current_user.role >= User::ROLE_SUPER_MANAGER ? User.all : current_user.clients
 
     respond_to do |format|
-      format.datatable { render json: { aaData: @users }, except: [:password] }
       format.json { render json: @users.map(&:name) }
       format.html
     end

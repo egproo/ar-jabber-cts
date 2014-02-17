@@ -19,7 +19,7 @@
 //= require bootstrap-datepicker
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
-//= require jquery.bootstrap-input-addon.js
+//= require jquery.bootstrap-input-addon
 
 $(document).on('decorate', function(e, updated) {
     $('.typeahead-user').typeahead({
@@ -86,6 +86,7 @@ function setupDataTable(options, selector) {
             sDom: "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             sPaginationType: 'full_numbers',
             bProcessing: true,
+            bDestroy: true,
             oLanguage: {
                 sUrl: '/i18n/datatable.json'
             },

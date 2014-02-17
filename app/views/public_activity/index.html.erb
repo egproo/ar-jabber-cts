@@ -1,4 +1,6 @@
-<%= javascript_include_tag public_activity_path %>
+<%= javascript_tag do %>
+	var activityData = <%= @public_activity.to_json.html_safe %>;
+<% end %>
 <table id="public_activities" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
   <thead>
     <tr>

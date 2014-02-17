@@ -1,5 +1,6 @@
 <%= javascript_tag do -%>
   var user_role_names = <%= raw User::ROLE_NAMES.to_json %>;
+  var usersData = <%= @users.to_json.html_safe %>;
 <% end -%>
 <table id="users" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
   <thead>
