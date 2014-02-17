@@ -8,6 +8,20 @@ class User < ActiveRecord::Base
   
   audited
 
+  def serializable_hash(options = nil)
+    # Devise gives us a very unpleasant performance drop here (about 7 times).
+    # lib/devise/models/authenticatable.rb:104
+    # We work around this by reimplementing this method.
+    {
+      id: self.id,
+      name: self.name,
+      role: self.role,
+      phone: self.phone,
+      jid: self.jid,
+      created_at: self.created_at,
+    }
+  end
+
   STUB_NAME = 'sa'
 
   ROLE_STUB = -1
