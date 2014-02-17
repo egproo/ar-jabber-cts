@@ -16,6 +16,7 @@ JabberCTS::Application.routes.draw do
   # root :to => redirect('/users/sign_in')
 
   root :to => 'rooms#index'
+  get "ejabberd/commit"
   get "ejabberd/sync", as: 'ejabberd_sync'
   get "statistics/income", as: 'statistics_income'
   get 'i18n/datatable'

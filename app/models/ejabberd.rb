@@ -53,4 +53,45 @@ class Ejabberd
       end
     }
   end
+
+  OWL = 10
+
+  def build_transactions
+    (server_rooms = room_names.split).map do |room_name|
+      real_room_name = room_name
+      node, host = room_name.split('@', 2)
+      room_name = "#{node.nodeprep}@#{host.nameprep}"
+
+      tracked_rooms = ::Room.preload(:last_payment).where(name: room_name).all
+      if tracked_rooms.present?
+        if tracked_room = tracked_rooms.find(&:active)
+          effective_to = tracked_room.last_payment.effective_to
+          if effective_to < OWL.days.ago
+            [:destroy, room_name, "paid until #{effective_to.to_date}", tracked_room]
+          end
+        else
+          [:destroy, room_name, "contract deleted", tracked_room]
+        end
+      else
+        [:destroy, real_room_name, "not tracked"]
+      end
+    end.compact +
+      ::Room.active.preload(:last_payment).where(['name not in (?)', server_rooms]).to_a.select do |r|
+        r.last_payment.effective_to >= Time.now
+      end.map { |r| [:create, r.name, 'new room', r] }
+  end
+
+  def apply_transactions(ts)
+    ts.each do |action, name, reason, object|
+      if action == :destroy
+        if object
+          object.deactivate.save!
+        else
+          room(name).destroy
+        end
+      elsif action == :create
+        room(name).create(object.buyer.jid)
+      end
+    end
+  end
 end

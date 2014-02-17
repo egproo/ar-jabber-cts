@@ -1,3 +1,5 @@
 <% @transactions.each do |t| %>
 	<%= Array === t ? link_to(t[0], t[1]) : t %><br/>
 <% end %>
+
+<%= link_to 'Commit', '/ejabberd/commit', class: 'btn btn-large btn-default' %>
