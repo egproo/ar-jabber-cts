@@ -7,7 +7,9 @@ class EjabberdController < ApplicationController
 
   def commit
     ej = Ejabberd.new
-    ej.apply_transactions ej.build_transactions
+    ts = ej.build_transactions
+    logger.info "COMMITTING TRANSACTION: #{ts}"
+    ej.apply_transactions ts
     redirect_to :ejabberd_sync
   end
 end
