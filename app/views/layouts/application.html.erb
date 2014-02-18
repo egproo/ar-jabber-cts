@@ -17,15 +17,17 @@
     <%= javascript_include_tag params[:controller] %>
   </head>
   <body>
-    <div class="navbar navbar-fluid-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <div class="container-fluid nav-collapse">
-            <%= render 'layouts/navigation' %>
+    <% if user_signed_in? %>
+      <div class="navbar navbar-fluid-top">
+        <div class="navbar-inner">
+          <div class="container-fluid">
+            <div class="container-fluid nav-collapse">
+              <%= render 'layouts/navigation' %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    <% end %>
     <div class="container-fluid">
       <%= bootstrap_flash %>
       <%= yield %>

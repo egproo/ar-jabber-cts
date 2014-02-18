@@ -9,7 +9,9 @@ module ApplicationHelper
 
   def resources_page_title
     subject_name = params[:controller].titleize
-    if singleton_title_template = RESOURCE_ACTIONS_TITLE_MAP[params[:action]]
+    if params[:controller] == 'devise/sessions'
+      'Sign in'
+    elsif singleton_title_template = RESOURCE_ACTIONS_TITLE_MAP[params[:action]]
       singleton_title_template % subject_name.singularize
     else
       subject_name
