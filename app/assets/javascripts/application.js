@@ -47,7 +47,7 @@ $(document).on('decorate', function(e, updated) {
         $input.trigger('typeahead:uservalue', search_value);
     });
 
-    $('input[name*=amount]').input_field_addons({ prefix: '$' });
+    $('input[name*=amount]').input_field_addons({ before: '$', width: 180 });
 
     $('input.date').datepicker({ 
         autoclose: true,

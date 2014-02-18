@@ -1,24 +1,25 @@
 (function($){
     $.fn.input_field_addons = function(options) {
-        var defaults = {
-            width: null,
-            prefix: null,
-            postfix: null,
-        };
-        var options = $.extend(defaults, options);
-
         return this.each(function() {
             obj = $(this);
             if (options.width) {
                 obj.css('width', options.width + 'px');
             }
-            if (options.prefix) {
-                obj.wrap("<div class='input-prepend'>");
-                obj.before("<span class='add-on'>" + options.prefix + "</span>");
-            }
-            if (options.postfix) {
-                obj.wrap("<div class='input-append'>");
-                obj.after("<span class='add-on'>" + options.postfix + "</span>");
+            if (options.before || options.after) {
+                var div_classes = [];
+                var obj_decorators = [];
+                if (options.before) {
+                    div_classes.push('input-prepend');
+                    obj_decorators.push('before');
+                }
+                if (options.after) {
+                    div_classes.push('input-append');
+                    obj_decorators.push('after');
+                }
+                obj.wrap("<div class='" + div_classes.join(' ') + "'>");
+                $.each(obj_decorators, function(index, decorator) {
+                    obj[decorator]("<span class='add-on'>" + options[decorator] + "</span>");
+                });
             }
         });
     };
