@@ -25,3 +25,10 @@ Money transfer:
 <% else %>
 	No payments in this money transfer
 <% end %>
+
+<br/>Changes:
+<ul>
+	<% @money_transfer.audits.each do |a| %>
+		<li>(<%= a.user.try(:name) %>) <%= a.action %> <%= a.audited_changes.inspect %></li>
+	<% end %>
+</ul>
