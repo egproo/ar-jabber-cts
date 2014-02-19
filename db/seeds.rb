@@ -16,7 +16,7 @@ u_sa = User.create!(
   jid: 'sa@localhost',
   password: 'secret',
 )
-User.where(id: u_sa.id).update_all(name: 'SA')
+
 u_client1 = User.create!(
   name: 'client1',
   role: User::ROLE_CLIENT,
