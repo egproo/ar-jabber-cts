@@ -89,6 +89,7 @@ class RoomsController < ApplicationController
           })
       logger.info("Existing room #{existing_room.id} found for this seller/buyer")
       room = existing_room
+      room.seller = current_user
       room.active = true
       room.comment = attrs[:comment] || room.comment
     end

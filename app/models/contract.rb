@@ -23,7 +23,7 @@ class Contract < ActiveRecord::Base
     },
     presence: true,
     format: { with: /.@conference\.syriatalk\.biz\z/ }
-  validates :name, uniqueness: { scope: [:buyer_id, :seller_id] }
+  validates :name, uniqueness: { scope: [:buyer_id] }
   validates :type, presence: true
   validates :buyer, presence: true
   validates :seller, presence: true

@@ -118,7 +118,6 @@ class MoneyTransfersController < ApplicationController
   end
 
   def payment_preference_values_array(p)
-    p p.errors
     [
       p.contract.id == @highlight_contract_id,
       p.errors.any?,
