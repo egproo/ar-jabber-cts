@@ -83,11 +83,10 @@ class RoomsController < ApplicationController
     if existing_room = Room.first(
           conditions: {
             name: room.name,
-            seller_id: room.seller,
             buyer_id: room.buyer,
             active: false,
           })
-      logger.info("Existing room #{existing_room.id} found for this seller/buyer")
+      logger.info("Existing room #{existing_room.id} found for this buyer")
       room = existing_room
       room.seller = current_user
       room.active = true
