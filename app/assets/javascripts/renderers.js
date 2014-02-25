@@ -17,12 +17,18 @@ var renderers = {
 
     nextPaymentDate: function(data, type, row) {
         if (type === 'display' && data) {
-            var nextDate = new Date(Date.parse(data));
-            var tomorrow = new Date();
+            var nextDate = new Date(Date.parse(data)),
+                tomorrow = new Date(),
+                expiration_date = new Date(),
+                nextDateString = nextDate.toISOString().replace(/T.*/, '');
+
             tomorrow.setDate(tomorrow.getDate() + 1);
-            var nextDateString = nextDate.toISOString().replace(/T.*/, '');
+            expiration_date.setDate(expiration_date.getDate() + 3);
+
             if (nextDate <= tomorrow) {
-                return '<span class="highlight_date">' + nextDateString + '</span>';
+                return '<span class="expired_date">' + nextDateString + '</span>';
+            } else if (nextDate <= expiration_date) {
+                return '<span class="to_be_expired_date">' + nextDateString + '</span>';
             }
             return nextDateString;
         } else if (!data) {
