@@ -40,6 +40,10 @@ table th {
 	color: #af7809;
 }
 
+.deactivated_at_date {
+	color: #009999;
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables features
  */

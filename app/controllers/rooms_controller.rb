@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
   def index
-    @rooms = Room.active.preload(:last_payment).sold_by(current_user).includes(:buyer, :seller)
+    @rooms = Room.preload(:last_payment).sold_by(current_user).includes(:buyer, :seller)
   end
 
   def show
