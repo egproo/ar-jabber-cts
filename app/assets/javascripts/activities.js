@@ -11,7 +11,7 @@ $(document).ready(function(){
                     mData: 'auditable_type',
                     sWidth: "10%"
                 }, {
-                    mData: 'auditable_path',
+                    mData: 'audited_changes',
                     mRender: renderers.modelText,
                     //mRender: function() { console.log(arguments) },
                     sWidth: "60%"
