@@ -27,13 +27,17 @@
  */
 
 table th {
-  font-size: 85%;
-  text-align: left;
-  vertical-align: center;
+	font-size: 85%;
+	text-align: left;
+	vertical-align: center;
 }
 
-.highlight_date {
+.expired_date {
 	color: #ff1919;
+}
+
+.to_be_expired_date {
+	color: #af7809;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
