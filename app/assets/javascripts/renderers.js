@@ -20,19 +20,16 @@ var renderers = {
             var nextDate = new Date(Date.parse(data)),
                 today = new Date(),
                 expirationDate = new Date(),
-                deactivatedDaysAmount = new Date(),
-                //isDeactivatedDate = row.deactivated_at,
                 deactivatedAtDate = row.deactivated_at ? new Date(Date.parse(row.deactivated_at)) : false,
                 nextDateString = nextDate.toISOString().replace(/T.*/, '');
 
             expirationDate.setDate(expirationDate.getDate() + 3);
-            deactivatedDaysAmount.setDate(deactivatedDaysAmount.getDate() + 2);
 
             if (nextDate <= today) {
                 return '<span class="expired_date">' + nextDateString + '</span>';
             } else if (nextDate <= expirationDate) {
                 return '<span class="to_be_expired_date">' + nextDateString + '</span>';
-            } else if (deactivatedAtDate && deactivatedAtDate <= deactivatedDaysAmount) {
+            } else if (deactivatedAtDate) {
                 return '<span class="deactivated_at_date">' + nextDateString + '</span>';
             }
             return nextDateString;

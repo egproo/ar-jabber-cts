@@ -1,6 +1,7 @@
 class RoomsController < ApplicationController
   def index
-    @rooms = Room.preload(:last_payment).sold_by(current_user).includes(:buyer, :seller)
+    @rooms = Room.where("(active = ?) OR (active = ? AND deactivated_at > ?)", true, false, 3.days.ago).
+             preload(:last_payment).sold_by(current_user).includes(:buyer, :seller)
   end
 
   def show
