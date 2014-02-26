@@ -23,7 +23,7 @@ var renderers = {
                 deactivatedAtDate = row.deactivated_at ? new Date(Date.parse(row.deactivated_at)) : false,
                 nextDateString = nextDate.toISOString().replace(/T.*/, '');
 
-            expirationDate.setDate(expirationDate.getDate() + 3);
+            expirationDate.setDate(expirationDate.getDate() + DEACTIVATED_EXPIRATION_DAYS);
 
             if (nextDate <= today) {
                 return '<span class="expired_date">' + nextDateString + '</span>';

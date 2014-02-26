@@ -1,4 +1,5 @@
 <%= javascript_tag do %>
+  var DEACTIVATED_EXPIRATION_DAYS = <%= RoomsController::DEACTIVATED_EXPIRATION_DAYS %>;
 	var roomsData = <%=
 		@rooms.to_json(
 			include: [
