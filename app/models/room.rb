@@ -20,6 +20,7 @@ class Room < Contract
   def deactivate(server_destroy = true)
     backup!
     self.active = false
+    self.deactivated_at = Time.now
     Ejabberd.new.room(name).destroy if server_destroy
     self
   end
