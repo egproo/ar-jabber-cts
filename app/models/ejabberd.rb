@@ -67,15 +67,17 @@ class Ejabberd
         if tracked_room = tracked_rooms.find(&:active)
           effective_to = tracked_room.last_payment.effective_to
           if effective_to < OWL.days.ago
-            [:destroy, room_name, "paid until #{effective_to.to_date}", tracked_room]
+            [[:destroy, room_name, "paid until #{effective_to.to_date}", tracked_room]]
           end
         else
-          [:destroy, room_name, "contract deleted", tracked_room]
+          tracked_rooms.map do |tr|
+            [:destroy, room_name, "contract with #{tr.buyer.name} deleted", tr]
+          end
         end
       else
-        [:destroy, real_room_name, "not tracked"]
+        [[:destroy, real_room_name, "not tracked"]]
       end
-    end.compact +
+    end.compact.flatten(1) +
       ::Room.active.preload(:last_payment).where(['name not in (?)', server_rooms]).to_a.select do |r|
         r.last_payment.effective_to >= Time.now
       end.map { |r| [:create, r.name, 'new room', r] }
