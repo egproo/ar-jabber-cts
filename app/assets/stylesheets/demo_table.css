@@ -32,18 +32,6 @@ table th {
 	vertical-align: center;
 }
 
-.expired_date {
-	color: #ff1919;
-}
-
-.to_be_expired_date {
-	color: #af7809;
-}
-
-.deactivated_at_date {
-	color: #009999;
-}
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables features
  */

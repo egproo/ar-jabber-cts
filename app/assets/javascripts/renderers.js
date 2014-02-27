@@ -15,23 +15,31 @@ var renderers = {
         return data;
     },
 
+    roomClass: function(next_payment_at, deactivated_at) {
+        var nextDate = new Date(Date.parse(next_payment_at)),
+            today = new Date(),
+            expirationDate = new Date(),
+            deactivatedAtDate = deactivated_at ? new Date(Date.parse(deactivated_at)) : false;
+
+        expirationDate.setDate(expirationDate.getDate() + DEACTIVATED_EXPIRATION_DAYS);
+
+        if (nextDate <= today) {
+            return 'expired';
+        } else if (nextDate <= expirationDate) {
+            return 'to_be_expired';
+        } else if (deactivatedAtDate) {
+            return 'deactivated';
+        }
+    },
+
     nextPaymentDate: function(data, type, row) {
         if (type === 'display' && data) {
-            var nextDate = new Date(Date.parse(data)),
-                today = new Date(),
-                expirationDate = new Date(),
-                deactivatedAtDate = row.deactivated_at ? new Date(Date.parse(row.deactivated_at)) : false,
-                nextDateString = nextDate.toISOString().replace(/T.*/, '');
+            //var cls = renderers.roomClass(data, row.deactivated_at);
+            var nextDateString = new Date(Date.parse(data)).toISOString().replace(/T.*/, '');
 
-            expirationDate.setDate(expirationDate.getDate() + DEACTIVATED_EXPIRATION_DAYS);
-
-            if (nextDate <= today) {
-                return '<span class="expired_date">' + nextDateString + '</span>';
-            } else if (nextDate <= expirationDate) {
-                return '<span class="to_be_expired_date">' + nextDateString + '</span>';
-            } else if (deactivatedAtDate) {
-                return '<span class="deactivated_at_date">' + nextDateString + '</span>';
-            }
+            /*if (cls) {
+                return '<span class="expired_' + cls + '">' + nextDateString + '</span>';
+            }*/
             return nextDateString;
         } else if (!data) {
             return '';

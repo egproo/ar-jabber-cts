@@ -42,6 +42,13 @@ $(document).ready(function() {
     setupDataTable({
             aaData: roomsData,
             aaSorting: [[7, 'asc']],
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                var cls = renderers.roomClass(aData.next_payment_date, aData.deactivated_at);
+
+                if (cls) {
+                    $(nRow).addClass(cls + '_row');
+                }
+            },
             aoColumns: [{
                     mData: null,
                     mRender: function(data, type, row) { return renderers.contract(row, type, row); },

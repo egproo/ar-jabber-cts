@@ -23,3 +23,27 @@
 .hidden {
 	display: none;
 }
+
+.expired_date {
+	color: #ff1919;
+}
+
+.to_be_expired_date {
+	color: #af7809;
+}
+
+.deactivated_date {
+	color: #009999;
+}
+
+.expired_row {
+	background-color: #ff1919 ! important;
+}
+
+.to_be_expired_row {
+	background-color: #ef9829 ! important;
+}
+
+.deactivated_row {
+	background-color: #9999ff ! important;
+}
