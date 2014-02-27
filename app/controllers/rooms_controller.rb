@@ -1,8 +1,6 @@
 class RoomsController < ApplicationController
-  DEACTIVATED_EXPIRATION_DAYS = 3
-
   def index
-    @rooms = Room.where("(active = ?) OR (active = ? AND deactivated_at > ?)", true, false, DEACTIVATED_EXPIRATION_DAYS.days.ago).
+    @rooms = Room.where("(active = ?) OR (active = ? AND deactivated_at > ?)", true, false, 3.days.ago).
              preload(:last_payment).sold_by(current_user).includes(:buyer, :seller)
   end
 

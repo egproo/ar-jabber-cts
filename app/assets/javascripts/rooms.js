@@ -43,7 +43,7 @@ $(document).ready(function() {
             aaData: roomsData,
             aaSorting: [[7, 'asc']],
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                var cls = renderers.roomClass(aData.next_payment_date, aData.deactivated_at);
+                var cls = renderers.roomClass(aData.next_payment_date, aData.active);
 
                 if (cls) {
                     $(nRow).addClass(cls + '_row');

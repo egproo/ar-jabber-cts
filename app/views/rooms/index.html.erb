@@ -1,5 +1,4 @@
 <%= javascript_tag do %>
-  var DEACTIVATED_EXPIRATION_DAYS = <%= RoomsController::DEACTIVATED_EXPIRATION_DAYS %>;
 	var roomsData = <%=
 		@rooms.to_json(
 			include: [
@@ -7,7 +6,7 @@
 				{ seller: { only: [:name, :role, :jid, :id] } },
 				{ last_payment: { only: [:amount, :effective_from, :effective_months, :money_transfer_id] } },
 			],
-			except: [:active, :updated_at, :comment, :seller_id, :buyer_id, :adhoc_data],
+			except: [:updated_at, :comment, :seller_id, :buyer_id, :adhoc_data, :deactivated_at],
 			methods: [:next_payment_date]).html_safe %>;
 <% end %>
 

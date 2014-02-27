@@ -15,26 +15,27 @@ var renderers = {
         return data;
     },
 
-    roomClass: function(next_payment_at, deactivated_at) {
-        var nextDate = new Date(Date.parse(next_payment_at)),
-            today = new Date(),
-            expirationDate = new Date(),
-            deactivatedAtDate = deactivated_at ? new Date(Date.parse(deactivated_at)) : false;
+    roomClass: function(next_payment_at, active) {
+        if (active) {
+            var nextDate = new Date(Date.parse(next_payment_at)),
+                today = new Date(),
+                expirationDate = new Date();
 
-        expirationDate.setDate(expirationDate.getDate() + DEACTIVATED_EXPIRATION_DAYS);
+            expirationDate.setDate(expirationDate.getDate() + 3);
 
-        if (nextDate <= today) {
-            return 'expired';
-        } else if (nextDate <= expirationDate) {
-            return 'to_be_expired';
-        } else if (deactivatedAtDate) {
+            if (nextDate <= today) {
+                return 'expired';
+            } else if (nextDate <= expirationDate) {
+                return 'to_be_expired';
+            }
+        } else {
             return 'deactivated';
         }
     },
 
     nextPaymentDate: function(data, type, row) {
         if (type === 'display' && data) {
-            //var cls = renderers.roomClass(data, row.deactivated_at);
+            //var cls = renderers.roomClass(data, row.active);
             var nextDateString = new Date(Date.parse(data)).toISOString().replace(/T.*/, '');
 
             /*if (cls) {
