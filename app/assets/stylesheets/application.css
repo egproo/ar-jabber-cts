@@ -37,13 +37,13 @@
 }
 
 .expired_row {
-	background-color: #ff1919 ! important;
+	background-color: #FF8B73 ! important;
 }
 
 .to_be_expired_row {
-	background-color: #ef9829 ! important;
+	background-color: #FFDB73 ! important;
 }
 
 .deactivated_row {
-	background-color: #9999ff ! important;
+	background-color: #64AAD0 ! important;
 }
