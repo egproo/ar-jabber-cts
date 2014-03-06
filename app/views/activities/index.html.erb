@@ -4,6 +4,7 @@
     user: a.user.try(:name) || 'Rails Console',
     created_at: a.created_at,
     model_link: link_to(a.auditable_type, a.auditable),
+    comment: a.comment,
     model_text: a.audited_changes.reject { |k| k == "adhoc_data" || k == "encrypted_password" }.map do |key, value|
       if value.is_a?(Array)
         "#{key}: #{decorate(a[:auditable_type], key, value[0])} => #{decorate(a[:auditable_type], key, value[1])}"
