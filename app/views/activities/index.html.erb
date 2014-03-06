@@ -1,12 +1,17 @@
-<% @activities.map do |a|
-  a[:model_text] = a[:audited_changes].map do |key, value|
-    if value.is_a?(Array)
-      "#{key}: #{decorate(a[:auditable_type], key, value[0])} => #{decorate(a[:auditable_type], key, value[1])}"
-    else
-      "#{key}: #{decorate(a[:auditable_type], key, value)}"
-    end
-  end.join('<br/>')
-  a[:model_link] = link_to a[:auditable_type], a[:auditable] 
+<% @activities.map! do |a|
+  {
+    action: a.action,
+    user: a.user.try(:name) || 'Rails Console',
+    created_at: a.created_at,
+    model_link: link_to(a.auditable_type, a.auditable),
+    model_text: a.audited_changes.reject { |k| k == "adhoc_data" || k == "encrypted_password" }.map do |key, value|
+      if value.is_a?(Array)
+        "#{key}: #{decorate(a[:auditable_type], key, value[0])} => #{decorate(a[:auditable_type], key, value[1])}"
+      else
+        "#{key}: #{decorate(a[:auditable_type], key, value)}"
+      end
+    end.join('<br/>')
+  }
 end %>
 
 <%= javascript_tag do %>
@@ -25,5 +30,3 @@ end %>
   <tbody>
   </tbody>
 </table>
-
-<%= @activities[4] %>
