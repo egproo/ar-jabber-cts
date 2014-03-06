@@ -18,7 +18,7 @@
   <% end %>
   <% if current_user.role >= User::ROLE_SUPER_MANAGER %>
   <li>
-    <%= link_to 'Activity', activity_path %>
+    <%= link_to 'Activity', activities_path %>
   </li>
   <li>
     <%= link_to 'Statistics', statistics_income_path %>
