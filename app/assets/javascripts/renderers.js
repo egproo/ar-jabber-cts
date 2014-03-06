@@ -91,14 +91,7 @@ var renderers = {
 
     modelText: function(data, type, row) {
         if (type === 'display') {
-            if (row.auditable_type === 'MoneyTransfer') {
-                return data.sender_receiver_link;
-            }
-
-            if (row.auditable_type === 'Contract') {
-                return data.seller_buyer_link;
-            }
-            //return data;
+            return data;
         }
         return data;
     },

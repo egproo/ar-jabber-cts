@@ -1,22 +1,18 @@
 <% @activities.map do |a|
-  if a[:audited_changes][:sender_id]
-    sender = User.find(a[:audited_changes][:sender_id])
-    receiver = User.find(a[:audited_changes][:receiver_id])
-    a[:audited_changes][:sender_receiver_link] = 'Sender: ' + link_to(sender.is_a?(Array) ? sender.last : sender, sender) +
-                               ' > ' + 'Receiver: ' + link_to(receiver.is_a?(Array) ? receiver.last : receiver, receiver)
-  end
-
-  if a[:auditable_type] == 'Contract'
-    seller = User.find(a[:audited_changes][:seller_id])
-    buyer = User.find(a[:audited_changes][:buyer_id])
-    a[:audited_changes][:seller_buyer_link] = 'Seller: ' + link_to(seller, seller) + ' > ' + 'Buyer: ' + link_to(buyer, buyer)
-  end
+  a[:model_text] = a[:audited_changes].map do |key, value|
+    if value.is_a?(Array)
+      "#{key}: #{decorate(a[:auditable_type], key, value[0])} => #{decorate(a[:auditable_type], key, value[1])}"
+    else
+      "#{key}: #{decorate(a[:auditable_type], key, value)}"
+    end
+  end.join('<br/>')
+  a[:model_link] = link_to a[:auditable_type], a[:auditable] 
 end %>
 
 <%= javascript_tag do %>
   var activityData = <%= @activities.to_json.html_safe %>;
 <% end %>
-<table id="public_activities" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+<table id="activities" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
   <thead>
     <tr>
       <th><%=t 'Operation type' %></th>
@@ -29,3 +25,5 @@ end %>
   <tbody>
   </tbody>
 </table>
+
+<%= @activities[4] %>

@@ -8,10 +8,10 @@ $(document).ready(function(){
                     mData: 'action',
                     sWidth: "5%"
                 }, {
-                    mData: 'auditable_type',
+                    mData: 'model_link',
                     sWidth: "10%"
                 }, {
-                    mData: 'audited_changes',
+                    mData: 'model_text',
                     mRender: renderers.modelText,
                     //mRender: function() { console.log(arguments) },
                     sWidth: "60%"
