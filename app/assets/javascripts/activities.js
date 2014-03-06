@@ -12,8 +12,6 @@ $(document).ready(function(){
                     sWidth: "10%"
                 }, {
                     mData: 'model_text',
-                    //mRender: renderers.modelText,
-                    //mRender: function() { console.log(arguments) },
                     sWidth: "60%"
                 }, {
                     mData: 'user',
