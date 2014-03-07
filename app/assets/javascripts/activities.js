@@ -8,12 +8,10 @@ $(document).ready(function(){
                     mData: 'action',
                     sWidth: "5%"
                 }, {
-                    mData: 'auditable_type',
+                    mData: 'model_link',
                     sWidth: "10%"
                 }, {
-                    mData: 'auditable_path',
-                    mRender: renderers.modelText,
-                    //mRender: function() { console.log(arguments) },
+                    mData: 'model_text',
                     sWidth: "60%"
                 }, {
                     mData: 'user',

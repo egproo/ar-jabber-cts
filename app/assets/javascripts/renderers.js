@@ -89,13 +89,6 @@ var renderers = {
         return renderers.amount(data, type, row);
     },
 
-    modelText: function(data, type, row) {
-        if (type === 'display') {
-            return "<a href='" + data + "'>" + row.changes.replace(/\n/g, "<br/>") + "</a>";
-        }
-        return data;
-    },
-
     owner: function(data, type, row) {
         if (type === 'display' && row.owner) {
             return "<a href='/users/" + row.owner.id + "'>" + row.owner.name + "</a>";

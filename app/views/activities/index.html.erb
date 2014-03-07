@@ -1,0 +1,29 @@
+<% @activities.map! do |a|
+  {
+    action: a.action,
+    user: a.user.try(:name) || 'Rails Console',
+    created_at: a.created_at,
+    model_link: link_to(a.auditable_type, a.auditable),
+    comment: a.comment,
+    model_text: a.audited_changes.map do |key, value|
+      adhoc_data(a.auditable_type, key, value)
+    end.join('<br/>')
+  }
+end %>
+
+<%= javascript_tag do %>
+  var activityData = <%= @activities.to_json.html_safe %>;
+<% end %>
+<table id="activities" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th><%=t 'Operation type' %></th>
+      <th><%=t 'Model type' %></th>
+      <th><%=t 'Model text' %></th>
+      <th><%=t 'Owner' %></th>
+      <th><%=t 'Date' %></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
