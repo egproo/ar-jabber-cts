@@ -1,55 +1,27 @@
-<div id="orders_chart"></div>
+<div id="orders_chart" style="width: 100%;"></div>
 
+<%= javascript_include_tag "http://www.google.com/jsapi" %>
 <%= javascript_tag defer: 'defer' do -%>
-  $(function() {
-    new Highcharts.StockChart({
-      chart: { 
-        renderTo: 'orders_chart',
-      },
-      
-      title: { text: 'Income' },
 
-      xAxis: { 
-        dateTimeLabelFormats: {
-          month: '%b \'%Y'
-        },
-        ordinal: false
-      },
-          
-      yAxis: {
-        title: { text: 'Amount' },
-        labels: {
-          format: '{value} $'
-        }
-      },
+  google.load('visualization', '1.1', {'packages': ['annotationchart']});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Date');
+    data.addColumn('number', 'Amount');
+    data.addRows([
+      <% @income.to_a.map do |date, amount| %>
+          [new Date('<%= date %>'), <%= amount %>],
+      <% end %>
+    ]);
 
-      navigator: {
-        xAxis: {
-          dateTimeLabelFormats: {
-              month: '%b \'%Y'
-            }
-        }
-      },
-      
-      series: [{
-        name: 'Income',
-        data: <%=raw @income.to_a.to_json %>
-      }, 
+    var chart = new google.visualization.AnnotationChart(document.getElementById('orders_chart'));
+    chart.draw(data);
+  }
+<% end -%>
 
-      {
-        name: 'Sum',
-        data: <%=raw @income.to_a.to_json %>,
-        stickyTracking: false,
-        dataGrouping: {
-          approximation: "sum",
-          enabled: true,
-          forced: true,
-          units: [
-            [
-              'month', [1]]
-            ]
-        }
-      }]
-    });
-  });
+<%= javascript_tag do -%>
+  <% @income.to_a.each do |a| %>
+    console.log(new Date('<%= a[0] %>'));
+  <% end %>
 <% end -%>
