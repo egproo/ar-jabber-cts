@@ -6,22 +6,17 @@
   google.load('visualization', '1.1', {'packages': ['annotationchart']});
   google.setOnLoadCallback(drawChart);
   function drawChart() {
-    var data = new google.visualization.DataTable();
-    data.addColumn('date', 'Date');
-    data.addColumn('number', 'Amount');
-    data.addRows([
+    var table = new google.visualization.DataTable();
+    table.addColumn('date', 'Date');
+    table.addColumn('number', 'Amount');
+    table.addColumn('number', 'Sum');
+    table.addRows([
       <% @income.to_a.map do |date, amount| %>
-          [new Date('<%= date %>'), <%= amount %>],
+          [new Date('<%= date %>'), <%= amount %>, null],
       <% end %>
     ]);
 
     var chart = new google.visualization.AnnotationChart(document.getElementById('orders_chart'));
-    chart.draw(data);
+    chart.draw(table);
   }
-<% end -%>
-
-<%= javascript_tag do -%>
-  <% @income.to_a.each do |a| %>
-    console.log(new Date('<%= a[0] %>'));
-  <% end %>
 <% end -%>
