@@ -1,4 +1,22 @@
-<div id="orders_chart" style="width: 100%;"></div>
+<div id="orders_chart" style="width: 80%; float: left"></div>
+<div id="orders_chart2" style="width: 240px; float: right"></div>
+
+<% table_data = @income.to_a
+   grouped_data = table_data.group_by { |arr| [arr[0].year, arr[0].month] }
+   table2_data = []
+   grouped_data.map do |key, value|
+    if value.size > 1
+      amount_sum = 0
+      value.each { |v| amount_sum += v[1] }
+      table2_data.push([Date.new(key[0], key[1]), amount_sum])
+    #else
+      #table_data.push([Date.new(key[0], key[1]), value[0][1]])
+      #puts "THIS IS VALUE BITCHES #{[Date.new(key[0], key[1]), value[0][1]]}"
+    end
+   end
+
+   all_data = table2_data + table_data
+%>
 
 <%= javascript_include_tag "http://www.google.com/jsapi" %>
 <%= javascript_tag defer: 'defer' do -%>
@@ -9,14 +27,28 @@
     var table = new google.visualization.DataTable();
     table.addColumn('date', 'Date');
     table.addColumn('number', 'Amount');
-    table.addColumn('number', 'Sum');
     table.addRows([
-      <% @income.to_a.map do |date, amount| %>
-          [new Date('<%= date %>'), <%= amount %>, null],
+      <% table_data.map do |date, amount| %>
+          [new Date('<%= date %>'), <%= amount %>],
       <% end %>
     ]);
 
     var chart = new google.visualization.AnnotationChart(document.getElementById('orders_chart'));
     chart.draw(table);
+
+    var table2 = new google.visualization.DataTable();
+    table2.addColumn('date', 'Date');
+    table2.addColumn('number', 'Sum');
+    table2.addRows([
+      <% table2_data.map do |date, amount| %>
+        [new Date('<%= date %>'), <%= amount %>],
+      <% end %>
+    ]);
+
+    var formatter = new google.visualization.DateFormat({pattern: "yyyy/MMM"});
+    formatter.format(table2, 0);
+
+    var chart2 = new google.visualization.Table(document.getElementById('orders_chart2'));
+    chart2.draw(table2);
   }
 <% end -%>
