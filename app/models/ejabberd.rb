@@ -24,13 +24,19 @@ class Ejabberd
       text.include?('"The room does not exist."') ? nil : text
     end
 
-    def destroy
-      @ej.ctl('destroy_room', @name, @host, DEFAULT_VHOST)
+    def destroy(reason = nil)
+      @ej.rpc_server.call(:muc_destroy,
+                          room: @name,
+                          host: @host,
+                          reason: reason || '')
     end
 
     def create(owner = nil)
-      @ej.ctl('create_room', @name, @host, DEFAULT_VHOST) if @host.include?(DEFAULT_VHOST)
-      @ej.ctl('set_room_affiliation', @name, @host, owner, 'owner') if owner
+      @ej.rpc_server.call(:muc_create,
+                          room: @name,
+                          host: @host,
+                          vhost: DEFAULT_VHOST,
+                          creator: owner || 'admin@syriatalk.biz')
     end
   end
 
