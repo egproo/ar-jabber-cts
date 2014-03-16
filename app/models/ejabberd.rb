@@ -1,4 +1,6 @@
+require 'xmlrpc/client'
 require 'shellwords'
+
 class Ejabberd
   DEFAULT_VHOST = 'syriatalk.biz'
   DEFAULT_ROOMS_VHOST = "conference.#{DEFAULT_VHOST}"
@@ -40,8 +42,9 @@ class Ejabberd
     Room.new(name, host, self)
   end
 
-  def room_names(host = DEFAULT_VHOST)
-    ctl('muc_online_rooms', host)
+  def room_names(host = DEFAULT_ROOMS_VHOST)
+    rpc_server.call(:muc_list,
+                    host: host)
   end
 
   def ctl(command, *args)
@@ -54,10 +57,21 @@ class Ejabberd
     }
   end
 
+  def rpc_server
+    @rpc_server ||= XMLRPC::Client.new_from_hash(
+      host: 'de2.dget.cc',
+      port: 4560,
+      timeout: 30,
+      path: '/',
+    ).tap do |rpc_server|
+      rpc_server.http_header_extra = { 'Content-Type' => 'text/xml' }
+    end
+  end
+
   OWL = 10
 
   def build_transactions
-    (server_rooms = room_names.split).map do |room_name|
+    (server_rooms = room_names).map do |room_name|
       real_room_name = room_name
       node, host = room_name.split('@', 2)
       room_name = "#{node.nodeprep}@#{host.nameprep}"

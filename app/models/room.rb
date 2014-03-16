@@ -13,6 +13,13 @@ class Room < Contract
     self.adhoc_data = { affiliations: affiliations }
   end
 
+  def short_name
+    name.sub(/@#{Ejabberd::DEFAULT_ROOMS_VHOST}\z/, '')
+  end
+
+  def short_name=
+  end
+
   def occupants_number
     Ejabberd.new.room(name).occupants_number
   end
