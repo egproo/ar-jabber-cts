@@ -19,9 +19,10 @@ class Ejabberd
       text.include?('room_not_found') ? nil : text
     end
 
-    def affiliations
-      text = @ej.ctl('get_room_affiliations', @name, @host)
-      text.include?('"The room does not exist."') ? nil : text
+    def info
+      @ej.rpc(:muc_info,
+              room: @name,
+              host: @host)
     end
 
     def destroy(reason = nil)
