@@ -25,18 +25,18 @@ class Ejabberd
     end
 
     def destroy(reason = nil)
-      @ej.rpc_server.call(:muc_destroy,
-                          room: @name,
-                          host: @host,
-                          reason: reason || '')
+      @ej.rpc(:muc_destroy,
+              room: @name,
+              host: @host,
+              reason: reason || '')
     end
 
     def create(owner = nil)
-      @ej.rpc_server.call(:muc_create,
-                          room: @name,
-                          host: @host,
-                          vhost: DEFAULT_VHOST,
-                          creator: owner || 'admin@syriatalk.biz')
+      @ej.rpc(:muc_create,
+              room: @name,
+              host: @host,
+              vhost: DEFAULT_VHOST,
+              creator: owner || 'admin@syriatalk.biz')
     end
   end
 
@@ -49,8 +49,8 @@ class Ejabberd
   end
 
   def room_names(host = DEFAULT_ROOMS_VHOST)
-    rpc_server.call(:muc_list,
-                    host: host).map { |room| "#{room['room']}@#{room['host']}" }
+    rpc(:muc_list,
+        host: host).map { |room| "#{room['room']}@#{room['host']}" }
   end
 
   def ctl(command, *args)
@@ -72,6 +72,11 @@ class Ejabberd
     ).tap do |rpc_server|
       rpc_server.http_header_extra = { 'Content-Type' => 'text/xml' }
     end
+  end
+
+  def rpc(name, arg)
+    Rails.logger.debug("RPC OUT: #{name}(#{arg.inspect})")
+    rpc_server.call(name, arg).tap { |v| Rails.logger.debug("RPC IN: #{name}: #{v.inspect}") }
   end
 
   OWL = 10
