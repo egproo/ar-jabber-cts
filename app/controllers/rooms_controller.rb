@@ -4,6 +4,7 @@ class RoomsController < ApplicationController
       {
         name: "#{r['room']}@#{r['host']}",
         num_participants: r['num_participants'],
+        last_message_at: r['last_message_at'],
       }
     end
     @rooms = Room.where("(active = ?) OR (active = ? AND deactivated_at > ?)", true, false, 3.days.ago).
@@ -11,8 +12,10 @@ class RoomsController < ApplicationController
     @rooms.each do |r|
       if sr = @server_rooms.find { |sr| sr[:name] == r.name }
         r.instance_variable_set(:@occupants_number, sr[:num_participants])
+        r.instance_variable_set(:@last_message_at, sr[:last_message_at])
       else
         r.instance_variable_set(:@occupants_number, -1)
+        r.instance_variable_set(:@last_message_at, 'RNE')
       end
     end
   end

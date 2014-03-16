@@ -14,6 +14,8 @@ class Room < Contract
     @occupants_number ||= Ejabberd.new.room(name).occupants_number
   end
 
+  attr_reader :last_message_at
+
   def deactivate(server_destroy = true)
     backup!
     self.active = false
