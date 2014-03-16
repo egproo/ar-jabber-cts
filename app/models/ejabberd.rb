@@ -53,6 +53,11 @@ class Ejabberd
         host: host).map { |room| "#{room['room']}@#{room['host']}" }
   end
 
+  def rooms(host = DEFAULT_ROOMS_VHOST)
+    rpc(:muc_list,
+        host: host)
+  end
+
   def ctl(command, *args)
     cmdline = "#{command.shellescape} #{args.shelljoin}"
     Rails.logger.debug("CTL IN : #{cmdline}")

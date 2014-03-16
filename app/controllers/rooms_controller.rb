@@ -1,7 +1,20 @@
 class RoomsController < ApplicationController
   def index
+    @server_rooms = Ejabberd.new.rooms.map do |r|
+      {
+        name: "#{r['room']}@#{r['host']}",
+        num_participants: r['num_participants'],
+      }
+    end
     @rooms = Room.where("(active = ?) OR (active = ? AND deactivated_at > ?)", true, false, 3.days.ago).
              preload(:last_payment).sold_by(current_user).includes(:buyer, :seller)
+    @rooms.each do |r|
+      if sr = @server_rooms.find { |sr| sr[:name] == r.name }
+        r.instance_variable_set(:@occupants_number, sr[:num_participants])
+      else
+        r.instance_variable_set(:@occupants_number, -1)
+      end
+    end
   end
 
   def show

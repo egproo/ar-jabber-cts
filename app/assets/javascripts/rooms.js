@@ -82,8 +82,7 @@ $(document).ready(function() {
                     mRender: renderers.nextPaymentDate,
                     sWidth: "10%"
                 }, {
-                    mData: 'next_amount_estimate',
-                    mRender: renderers.amount,
+                    mData: 'occupants_number',
                     sWidth: "10%"
             }]
     });

@@ -21,7 +21,7 @@ class Room < Contract
   end
 
   def occupants_number
-    Ejabberd.new.room(name).occupants_number
+    @occupants_number ||= Ejabberd.new.room(name).occupants_number
   end
 
   def deactivate(server_destroy = true)

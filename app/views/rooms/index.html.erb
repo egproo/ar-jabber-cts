@@ -7,7 +7,7 @@
 				{ last_payment: { only: [:amount, :effective_from, :effective_months, :money_transfer_id] } },
 			],
 			except: [:updated_at, :comment, :seller_id, :buyer_id, :adhoc_data, :deactivated_at],
-			methods: [:next_payment_date]).html_safe %>;
+			methods: [:next_payment_date, :occupants_number]).html_safe %>;
 <% end %>
 
 <table id="rooms" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
@@ -21,7 +21,7 @@
       <th><%=t 'Payment Amount' %></th>
       <th><%=t 'Payment Date' %></th>
       <th><%=t 'Next Date' %></th>
-      <th><%=t 'Next Amount' %></th>
+      <th><%=t 'Occupants' %></th>
     </tr>
   </thead>
   <tbody>
