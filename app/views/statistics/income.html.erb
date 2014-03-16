@@ -1,55 +1,51 @@
-<div id="orders_chart"></div>
+<div id="orders_chart" style="width: 80%; float: left"></div>
+<div id="orders_chart2" style="width: 240px; float: right"></div>
 
+<% table_data = @income.to_a
+   grouped_data = table_data.group_by { |arr| [arr[0].year, arr[0].month] }
+   table2_data = []
+   grouped_data.map do |key, value|
+    if value.size > 1
+      amount_sum = 0
+      value.each { |v| amount_sum += v[1] }
+      table2_data.push([Date.new(key[0], key[1]), amount_sum])
+    end
+   end
+
+   all_data = table2_data + table_data
+%>
+
+<%= javascript_include_tag "http://www.google.com/jsapi" %>
 <%= javascript_tag defer: 'defer' do -%>
-  $(function() {
-    new Highcharts.StockChart({
-      chart: { 
-        renderTo: 'orders_chart',
-      },
-      
-      title: { text: 'Income' },
 
-      xAxis: { 
-        dateTimeLabelFormats: {
-          month: '%b \'%Y'
-        },
-        ordinal: false
-      },
-          
-      yAxis: {
-        title: { text: 'Amount' },
-        labels: {
-          format: '{value} $'
-        }
-      },
+  google.load('visualization', '1.1', {'packages': ['annotationchart']});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+    var table = new google.visualization.DataTable();
+    table.addColumn('date', 'Date');
+    table.addColumn('number', 'Amount');
+    table.addRows([
+      <% table_data.map do |date, amount| %>
+          [new Date('<%= date %>'), <%= amount %>],
+      <% end %>
+    ]);
 
-      navigator: {
-        xAxis: {
-          dateTimeLabelFormats: {
-              month: '%b \'%Y'
-            }
-        }
-      },
-      
-      series: [{
-        name: 'Income',
-        data: <%=raw @income.to_a.to_json %>
-      }, 
+    var chart = new google.visualization.AnnotationChart(document.getElementById('orders_chart'));
+    chart.draw(table);
 
-      {
-        name: 'Sum',
-        data: <%=raw @income.to_a.to_json %>,
-        stickyTracking: false,
-        dataGrouping: {
-          approximation: "sum",
-          enabled: true,
-          forced: true,
-          units: [
-            [
-              'month', [1]]
-            ]
-        }
-      }]
-    });
-  });
+    var table2 = new google.visualization.DataTable();
+    table2.addColumn('date', 'Date');
+    table2.addColumn('number', 'Sum');
+    table2.addRows([
+      <% table2_data.map do |date, amount| %>
+        [new Date('<%= date %>'), <%= amount %>],
+      <% end %>
+    ]);
+
+    var formatter = new google.visualization.DateFormat({pattern: "yyyy/MMM"});
+    formatter.format(table2, 0);
+
+    var chart2 = new google.visualization.Table(document.getElementById('orders_chart2'));
+    chart2.draw(table2);
+  }
 <% end -%>
