@@ -44,7 +44,7 @@ class Ejabberd
 
   def room_names(host = DEFAULT_ROOMS_VHOST)
     rpc_server.call(:muc_list,
-                    host: host)
+                    host: host).map { |room| "#{room['room']}@#{room['host']}" }
   end
 
   def ctl(command, *args)
