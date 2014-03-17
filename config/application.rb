@@ -17,7 +17,11 @@ end
 
 module JabberCTS
   unless File.exist?(file_path = File.expand_path('../application.yml', __FILE__))
-    File.write(file_path, { secret_token: SecureRandom.hex(64), devise_secret_key: SecureRandom.hex(64) }.to_yaml)
+    File.write(file_path, {
+      secret_token: SecureRandom.hex(64),
+      devise_secret_key: SecureRandom.hex(64),
+      rpc_auth_code: 'unknown',
+    }.to_yaml)
   end
 
   CONFIG = YAML.load(File.read(file_path)).tap { |cfg| cfg.symbolize_keys! }.freeze
