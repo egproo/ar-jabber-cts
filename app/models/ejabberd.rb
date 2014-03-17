@@ -81,6 +81,7 @@ class Ejabberd
   end
 
   def rpc(name, arg)
+    arg = { auth_code: JabberCTS::CONFIG[:rpc_auth_code] }.merge(arg) if Hash === arg
     Rails.logger.debug("RPC OUT: #{name}(#{arg.inspect})")
     rpc_server.call(name, arg).tap { |v| Rails.logger.debug("RPC IN: #{name}: #{v.inspect}") }
   end

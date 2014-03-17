@@ -15,15 +15,13 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-unless File.exist?(file_path = File.expand_path('../application.yml', __FILE__))
-  File.write(file_path, { secret_token: SecureRandom.hex(64), devise_secret_key: SecureRandom.hex(64) }.to_yaml)
-end
-
-CONFIG = YAML.load(File.read(file_path))
-CONFIG.symbolize_keys!
-CONFIG.freeze
-
 module JabberCTS
+  unless File.exist?(file_path = File.expand_path('../application.yml', __FILE__))
+    File.write(file_path, { secret_token: SecureRandom.hex(64), devise_secret_key: SecureRandom.hex(64) }.to_yaml)
+  end
+
+  CONFIG = YAML.load(File.read(file_path)).tap { |cfg| cfg.symbolize_keys! }.freeze
+
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
