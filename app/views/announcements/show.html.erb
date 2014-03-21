@@ -1,0 +1,14 @@
+<pre>
+Announcement:
+	Subject: <%= @announcement.name %>
+	Text:
+	<%= @announcement.adhoc_data %>
+	Initiator: <%= link_to @announcement.buyer.name, @announcement.buyer %>
+	Contract Creator: <%= link_to @announcement.seller.name, @announcement.seller %>
+	Comment: <%= @announcement.comment || '(no comment)' %>
+	Created: <%= @announcement.created_at %> 
+	Updated: <%= @announcement.updated_at %>
+<% if @announcement.last_payment %>
+	Payment: <%= link_to @announcement.last_payment, @announcement.last_payment.money_transfer %>
+<% end %>
+</pre>

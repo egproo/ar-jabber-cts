@@ -88,6 +88,13 @@ class Ejabberd
 
   OWL = 10
 
+  def announce(subject, body)
+    rpc(:announce_send,
+        vhost: DEFAULT_VHOST,
+        subject: subject,
+        body: body)
+  end
+
   def build_transactions
     (server_rooms = room_names).map do |room_name|
       real_room_name = room_name

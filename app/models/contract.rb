@@ -14,30 +14,11 @@ class Contract < ActiveRecord::Base
   attr_accessible :name, :next_amount_estimate, :type, :active, :comment
   accepts_nested_attributes_for :buyer, :seller, :payments
 
-  before_save :normalize_name
-
-  validates :name,
-    uniqueness: {
-      scope: :active,
-      if: :active
-    },
-    presence: true,
-    format: { with: /.@conference\.syriatalk\.biz\z/ }
-  validates :name, uniqueness: { scope: [:buyer_id] }
   validates :type, presence: true
   validates :buyer, presence: true
   validates :seller, presence: true
 
   def next_payment_date
     last_payment.try(:next_expected_date)
-  end
-
-  def to_s
-    name.sub("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')
-  end
-
-  def normalize_name
-    name, host = self.name.split('@', 2)
-    self.name = "#{name.nodeprep}@#{host.nameprep}"
   end
 end

@@ -1,4 +1,7 @@
 JabberCTS::Application.routes.draw do
+  resources :announcements
+
+
   devise_for :users
 
   root :to => 'rooms#index'
