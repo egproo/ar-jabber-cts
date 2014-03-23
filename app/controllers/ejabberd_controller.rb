@@ -8,8 +8,11 @@ class EjabberdController < ApplicationController
   def commit
     ej = Ejabberd.new
     ts = ej.build_transactions
-    logger.info "COMMITTING TRANSACTION: #{ts}"
-    ej.apply_transactions ts
+    Thread.new do
+      logger.info "COMMITTING TRANSACTION: #{ts}"
+      ej.apply_transactions ts
+    end
+    flash[:notice] = 'Commit is in progress. Please refresh this page in a few minutes'
     redirect_to :ejabberd_sync
   end
 end
