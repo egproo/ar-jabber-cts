@@ -23,6 +23,7 @@ class RoomsController < ApplicationController
   def show
     @room = Room.find(params[:id])
     @room_info = Ejabberd.new.room(@room.name).info
+    @room.update_attribute(:adhoc_data, @room_info) if Hash === @room_info
   end
 
   def edit
