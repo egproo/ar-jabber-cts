@@ -1,5 +1,5 @@
 <% @transactions.each do |t| %>
-	<%= t[1] ? link_to(t[0], t[1]) : t[0] %><br/>
+	<%= t[1] ? link_to(t[0], t[1]) : link_to(t[0], show_untracked_room_path(name: t[2])) %><br/>
 <% end %>
 
 <%= link_to 'Commit', '/ejabberd/commit', class: 'btn btn-large btn-default' %>

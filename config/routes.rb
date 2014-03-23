@@ -11,6 +11,7 @@ JabberCTS::Application.routes.draw do
   get 'i18n/datatable'
   get 'activities/index', as: 'activities'
   get 'rooms/transfer', as: 'transfer_room'
+  get 'rooms/untracked', as: 'show_untracked_room'
   resources :users
   resources :rooms
   resources :money_transfers

@@ -26,6 +26,11 @@ class RoomsController < ApplicationController
     @room.update_attribute(:adhoc_data, @room_info) if Hash === @room_info
   end
 
+  def untracked
+    @room_name = params[:name]
+    @room_info = Ejabberd.new.room(@room_name).info
+  end
+
   def edit
     @room = Room.find(params[:id])
     @room.name.sub!("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')

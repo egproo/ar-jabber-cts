@@ -1,7 +1,7 @@
 class EjabberdController < ApplicationController
   def sync
     @transactions = Ejabberd.new.build_transactions.map { |action, name, reason, object|
-      ["#{name} #{action} (#{reason})", object]
+      ["#{name} #{action} (#{reason})", object, name]
     }
   end
 
