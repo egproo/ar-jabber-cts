@@ -2,7 +2,7 @@
 Announcement:
 	Subject: <%= @announcement.name %>
 	Text:
-	<%= @announcement.adhoc_data %>
+<%= @announcement.adhoc_data %>
 	Initiator: <%= link_to @announcement.buyer.name, @announcement.buyer %>
 	Contract Creator: <%= link_to @announcement.seller.name, @announcement.seller %>
 	Comment: <%= @announcement.comment || '(no comment)' %>

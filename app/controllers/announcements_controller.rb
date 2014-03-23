@@ -35,7 +35,8 @@ class AnnouncementsController < ApplicationController
     @announcement.payments << payment
 
     if success = @announcement.save
-      Ejabberd.new.announce(@announcement.name, @announcement.adhoc_data)
+      receivers = Ejabberd.new.announce(@announcement.name, @announcement.adhoc_data)
+      flash[:notice] = "The announcement has been sent to #{receivers} users."
     else
       logger.error @announcement.errors.full_messages
     end
