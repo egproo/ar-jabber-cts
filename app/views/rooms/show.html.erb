@@ -15,7 +15,6 @@ Room:
 Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer %>
 Next payment: <%= @room.next_payment_date.to_date %>
 <% end %>
-Occupants: <%= @room.occupants_number || 'room does not exist' %>
 </pre>
 
 <% if @room.active %>
@@ -31,7 +30,15 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 <% end %>
 <br/><br/>
 
-<% if @room_info && !@room_info.is_a?(Integer) %>
+<% if Integer === @room_info %>
+Room does not exist (code <%= @room_info %>)
+<% elsif @room_info %>
+<pre>
+Participants: <%= @room_info['num_participants'] %>
+Last Message: <%= Time.parse("#{@room_info['last_message_at']} +0000").utc %>
+</pre>
+
+<p>Configuration:
 <table id="config" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 	<thead>
 		<tr>
@@ -40,7 +47,7 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 		</tr>
 	</thead>
 	<tbody>
-		<% @room_info['config'].each do |key, value | %>
+		<% @room_info['config'].each do |key, value| %>
 		<tr>
 			<td><%= key %></td>
 			<td><%= value %></td>
@@ -48,7 +55,8 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 		<% end %>
 	</tbody>
 </table>
-<br/>
+</p>
+<p>Affiliations:
 <table id="affiliations" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 	<thead>
 		<tr>
@@ -61,13 +69,13 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 	<tbody>
 		<% @room_info['affiliations'].each do |hash| %>
 			<tr>
-			<% hash.each do |values| %>
-			<td><%= values.last %></td>
+			<% hash.each do |key, value| %>
+			<td><%= value %></td>
 			<% end %>
 			</tr> 
 		<% end %>
 	</tbody>
-</table>
+</table></p>
 <% end %>
 
 <% end %>

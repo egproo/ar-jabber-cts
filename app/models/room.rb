@@ -25,10 +25,6 @@ class Room < Contract
   def short_name=
   end
 
-  def occupants_number
-    @occupants_number ||= Ejabberd.new.room(name).occupants_number
-  end
-
   attr_reader :last_message_at
 
   def deactivate(server_destroy = true)
