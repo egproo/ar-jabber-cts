@@ -4,7 +4,7 @@ namespace :unicorn do
   task :stop do
     print 'Stopping unicorn server...'
     if File.exists?(PIDFILE)
-      Process.kill('TERM', File.read(PIDFILE).to_i)
+      Process.kill('QUIT', File.read(PIDFILE).to_i)
       catch(:done) do
         10.times do
           if File.exists?(PIDFILE)
@@ -31,5 +31,21 @@ namespace :unicorn do
     end
   end
 
-  task :restart => [:stop, :start]
+  task :restart do
+    print 'Restarting unicorn server... '
+    pid = File.read(PIDFILE).to_i
+    Process.kill(:USR2, pid)
+    catch(:done) do
+      10.times do
+        begin
+          Process.kill(0, pid)
+          sleep 1
+        rescue Errno::ESRCH
+          puts 'OK'
+          throw :done
+        end
+      end
+      puts 'Failed'
+    end
+  end
 end
