@@ -18,6 +18,18 @@ Next payment: <%= @room.next_payment_date.to_date %>
 Occupants: <%= @room.occupants_number || 'room does not exist' %>
 </pre>
 
+<% if @room.active %>
+<%= link_to 'Receive money transfer for this contract', new_money_transfer_path(sender_id: @room.buyer, receiver_id: current_user, contract_id: @room.id), class: 'btn' %>
+<%= link_to 'Edit room', edit_room_path(@room), class: 'btn' %>
+<%= link_to 'Delete this contract', @room, class: 'btn btn-danger', confirm: 'Are you sure?', method: :delete %>
+<% end %>
+
+<% if @room.payments.any? %>
+	<br/>Money transfer history:
+<% @room.payments.sort_by(&:effective_from).reverse_each do |p| %>
+	<br/><%= link_to p, p.money_transfer %>
+<% end %>
+<br/><br/>
 <% if @room_info %>
 <table id="config" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 	<thead>
@@ -35,7 +47,7 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 		<% end %>
 	</tbody>
 </table>
-<br />
+<br/>
 <table id="affiliations" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 	<thead>
 		<tr>
@@ -48,8 +60,8 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 	<tbody>
 		<% @room_info['affiliations'].each do |hash| %>
 			<tr>
-			<% hash.map do |key, value| %>
-			<td><%= value %></td>
+			<% hash.each do |values| %>
+			<td><%= values.last %></td>
 			<% end %>
 			</tr> 
 		<% end %>
@@ -57,15 +69,4 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 </table>
 <% end %>
 
-<% if @room.active %>
-<%= link_to 'Receive money transfer for this contract', new_money_transfer_path(sender_id: @room.buyer, receiver_id: current_user, contract_id: @room.id), class: 'btn' %>
-<%= link_to 'Edit room', edit_room_path(@room), class: 'btn' %>
-<%= link_to 'Delete this contract', @room, class: 'btn btn-danger', confirm: 'Are you sure?', method: :delete %>
-<% end %>
-
-<% if @room.payments.any? %>
-	<br/>Money transfer history:
-<% @room.payments.sort_by(&:effective_from).reverse_each do |p| %>
-	<br/><%= link_to p, p.money_transfer %>
-<% end %>
 <% end %>
