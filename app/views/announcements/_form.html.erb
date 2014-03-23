@@ -3,7 +3,7 @@
 		<%= s.input :name, label: 'Contract owner', readonly: true, input_html: { class: 'typeahead-user' } %>
 	<% end %>
 	<%= f.input :name, label: 'Subject' %>
-	<%= f.input :adhoc_data, label: 'Text', input_html: { rows: 7 } %>
+	<%= f.input :adhoc_data, label: 'Text', input_html: { rows: 12, style: 'width: 60%' } %>
 	<%= f.input :comment, input_html: { rows: 4 } %>
 	<%= f.simple_fields_for :buyer do |b| %>
 		<%= b.input :name, label: 'Initiator', input_html: { class: 'typeahead-user', autocomplete: 'off' } %>
