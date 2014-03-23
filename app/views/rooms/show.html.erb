@@ -39,11 +39,11 @@ Room does not exist (code <%= @room_info %>)
 <pre>
 Participants: <%= @room_info['num_participants'] %>
 Last Message: <%= Time.parse("#{@room_info['last_message_at']} +0000").utc %>
-Subject text: <%= @room_info['subject'] %>
-      author: <%= @room_info['subject_author'] %>
+Subject (author: <%= @room_info['subject_author'] %>):
+<%= @room_info['subject'] %>
 </pre>
 
-<p>Configuration (<%= @room_info['config'].size %>):
+<p><h3>Configuration (<%= @room_info['config'].size %>):</h3>
 <table id="config" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 	<thead>
 		<tr>
@@ -61,7 +61,7 @@ Subject text: <%= @room_info['subject'] %>
 	</tbody>
 </table>
 </p>
-<p>Affiliations (<%= @room_info['affiliations'].size %>):
+<p><h3>Affiliations (<%= @room_info['affiliations'].size %>):</h3>
 <table id="affiliations" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 	<thead>
 		<tr>
@@ -80,7 +80,28 @@ Subject text: <%= @room_info['subject'] %>
 			</tr> 
 		<% end %>
 	</tbody>
-</table></p>
+</table>
+</p>
+<p><h3>Occupants (<%= @room_info['users'].size %>):</h3>
+<table id="occupants" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+	<thead>
+		<tr>
+			<th><%=t 'JID' %></th>
+			<th><%=t 'Nick' %></th>
+			<th><%=t 'Role' %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @room_info['users'].each do |hash| %>
+			<tr>
+			<% hash.each do |key, value| %>
+			<td><%= value %></td>
+			<% end %>
+			</tr> 
+		<% end %>
+	</tbody>
+</table>
+</p>
 <% end %>
 
 <% end %>
