@@ -38,7 +38,9 @@ Room does not exist (code <%= @room_info %>)
 <% elsif @room_info %>
 <pre>
 Participants: <%= @room_info['num_participants'] %>
-Last Message: <%= Time.parse("#{@room_info['last_message_at']} +0000").utc %>
+Last Message: <%
+time = Time.parse("#{@room_info['last_message_at']} +0000") rescue Time.at(0)
+%><%= time.utc %> (<%= time_ago_in_words(time) %> ago)
 Subject (author: <%= @room_info['subject_author'] %>):
 <%= @room_info['subject'] %>
 </pre>
