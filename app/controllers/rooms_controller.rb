@@ -22,6 +22,7 @@ class RoomsController < ApplicationController
 
   def show
     @room = Room.find(params[:id])
+    @room_info = Ejabberd.new.room(@room.name).info
   end
 
   def edit

@@ -29,4 +29,45 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 <% @room.payments.sort_by(&:effective_from).reverse_each do |p| %>
 	<br/><%= link_to p, p.money_transfer %>
 <% end %>
+<br/><br/>
+
+<% if @room_info && !@room_info.is_a?(Integer) %>
+<table id="config" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+	<thead>
+		<tr>
+			<th><%=t 'Key' %></th>
+			<th><%=t 'Value' %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @room_info['config'].each do |key, value | %>
+		<tr>
+			<td><%= key %></td>
+			<td><%= value %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+<br/>
+<table id="affiliations" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+	<thead>
+		<tr>
+			<th><%=t 'User' %></th>
+			<th><%=t 'Domain' %></th>
+			<th><%=t 'Affiliation' %></th>
+			<th><%=t 'Reason' %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @room_info['affiliations'].each do |hash| %>
+			<tr>
+			<% hash.each do |values| %>
+			<td><%= values.last %></td>
+			<% end %>
+			</tr> 
+		<% end %>
+	</tbody>
+</table>
+<% end %>
+
 <% end %>
