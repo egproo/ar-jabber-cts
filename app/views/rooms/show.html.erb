@@ -30,7 +30,8 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 	<br/><%= link_to p, p.money_transfer %>
 <% end %>
 <br/><br/>
-<% if @room_info %>
+
+<% if @room_info && !@room_info.is_a?(Integer) %>
 <table id="config" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 	<thead>
 		<tr>
