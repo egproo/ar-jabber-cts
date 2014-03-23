@@ -25,7 +25,13 @@ class Room < Contract
   def short_name=
   end
 
-  attr_reader :last_message_at
+  attr_reader :occupants_number
+
+  def last_message_at
+    Integer === @last_message_at ?
+      @last_message_at :
+      @last_message_at = (Time.parse("#@last_message_at +0000").to_i rescue 0)
+  end
 
   def deactivate(server_destroy = true)
     backup!

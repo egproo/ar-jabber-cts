@@ -62,10 +62,6 @@ $(document).ready(function() {
                     mRender: renderers.user,
                     sWidth: "10%"
                 }, {
-                    mData: 'created_at',
-                    mRender: renderers.date,
-                    sWidth: "10%"
-                }, {
                     mData: 'last_payment.effective_months',
                     sWidth: "5%",
                 }, {
@@ -83,7 +79,11 @@ $(document).ready(function() {
                     sWidth: "10%"
                 }, {
                     mData: 'occupants_number',
-                    sWidth: "10%"
+                    sWidth: "5%"
+                }, {
+                    mData: 'last_message_at',
+                    mRender: renderers.dateTimeFromUNIX,
+                    sWidth: "15%"
             }]
     });
 });

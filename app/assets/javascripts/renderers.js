@@ -102,7 +102,7 @@ var renderers = {
         function addLeadingZero(num) {
             return num < 10 ? '0' + num : num;
         }
-        var currDate = new Date(Date.parse(date)),
+        var currDate = new Date(date),
             currYear = currDate.getFullYear(),
             currMonth = addLeadingZero(currDate.getMonth() + 1),
             currDay = addLeadingZero(currDate.getDate()),
@@ -114,8 +114,21 @@ var renderers = {
 
     dateTime: function(data, type, row) {
         if (type === 'display') {
-            return renderers.showDateTime(data);
+            return renderers.showDateTime(Date.parse(data));
         }
         return renderers.date(data, type, row);
+    },
+
+    dateTimeFromUNIX: function(data, type, row) {
+        if (type === 'display') {
+            if (data) {
+                var d = new Date(0);
+                d.setUTCSeconds(data);
+                return renderers.showDateTime(d);
+            } else {
+                return 'Never';
+            }
+        }
+        return data;
     }
 }
