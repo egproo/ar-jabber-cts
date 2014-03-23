@@ -1,4 +1,0 @@
-# use 'rake secret' to get a new token
-secret_token: 'long secret token here'
-# Devise::KeyGenerator.new(SecureRandom.hex(64)) generates a valid secret key
-devise_secret_key: 'long secret key for devise'

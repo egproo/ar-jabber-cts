@@ -50,7 +50,8 @@ var renderers = {
 
     contract: function(data, type, row) {
         if (type === 'display') {
-            return "<a href='/rooms/" + data.id + "'>" + data.name.replace(/@conference.syriatalk.biz$/, '') + "</a>";
+            // TODO(artem): replace only default vhost name
+            return "<a href='/rooms/" + data.id + "'>" + data.name.replace(/@.*$/, '') + "</a>";
         }
         return data.name;
     },

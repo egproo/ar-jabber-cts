@@ -36,9 +36,11 @@ Room does not exist (code <%= @room_info %>)
 <pre>
 Participants: <%= @room_info['num_participants'] %>
 Last Message: <%= Time.parse("#{@room_info['last_message_at']} +0000").utc %>
+Subject text: <%= @room_info['subject'] %>
+      author: <%= @room_info['subject_author'] %>
 </pre>
 
-<p>Configuration:
+<p>Configuration (<%= @room_info['config'].size %>):
 <table id="config" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 	<thead>
 		<tr>
@@ -56,7 +58,7 @@ Last Message: <%= Time.parse("#{@room_info['last_message_at']} +0000").utc %>
 	</tbody>
 </table>
 </p>
-<p>Affiliations:
+<p>Affiliations (<%= @room_info['affiliations'].size %>):
 <table id="affiliations" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 	<thead>
 		<tr>

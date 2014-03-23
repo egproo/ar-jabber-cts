@@ -1,22 +1,21 @@
 require 'xmlrpc/client'
-require 'shellwords'
 
 class Ejabberd
-  DEFAULT_VHOST = 'syriatalk.biz'
-  DEFAULT_ROOMS_VHOST = "conference.#{DEFAULT_VHOST}"
+  config_file_path = Rails.root.join('config/rpc.yml')
+  CONFIG = { 
+      auth_code: 't9n28439843tm83u9pxu321',
+      port: 4560,
+      host: 'localhost',
+    }.merge((YAML.load_file(config_file_path) rescue {})).freeze
+  # Ensure the configuration file is written completely
+  File.write(config_file_path, CONFIG.to_yaml)
 
-  def initialize(server = 'de2')
-    @server = server
-  end
+  DEFAULT_VHOST = JabberCTS::CONFIG[:default_vhost]
+  DEFAULT_ROOMS_VHOST = JabberCTS::CONFIG[:default_rooms_vhost]
 
   class Room
     def initialize(name, host, ej)
       @name, @host, @ej = name, host, ej
-    end
-
-    def occupants_number
-      text = @ej.ctl('get_room_occupants_number', @name, @host)
-      text.include?('room_not_found') ? nil : text
     end
 
     def info
@@ -37,7 +36,7 @@ class Ejabberd
               room: @name,
               host: @host,
               vhost: DEFAULT_VHOST,
-              creator: owner || 'admin@syriatalk.biz')
+              creator: owner || JabberCTS::CONFIG[:default_room_admin])
     end
   end
 
@@ -59,22 +58,12 @@ class Ejabberd
         host: host)
   end
 
-  def ctl(command, *args)
-    cmdline = "#{command.shellescape} #{args.shelljoin}"
-    Rails.logger.debug("CTL IN : #{cmdline}")
-    `ssh #@server sudo /opt/ejabberd/sbin/ejabberdctl #{cmdline}`.tap { |output|
-      output.each_line do |line|
-        Rails.logger.debug("CTL OUT: #{line.chomp}")
-      end
-    }
-  end
-
   def rpc_server
     @rpc_server ||= XMLRPC::Client.new_from_hash(
-      host: 'de2.dget.cc',
-      port: 4560,
-      timeout: 30,
-      path: '/',
+      self.class::CONFIG.merge(
+        timeout: 30,
+        path: '/',
+      )
     ).tap do |rpc_server|
       rpc_server.http_header_extra = { 'Content-Type' => 'text/xml' }
     end
@@ -82,7 +71,7 @@ class Ejabberd
 
   def rpc(name, arg)
     Rails.logger.debug("RPC OUT: #{name}(#{arg.inspect})")
-    arg = { auth_code: JabberCTS::CONFIG[:rpc_auth_code] }.merge(arg) if Hash === arg
+    arg = { auth_code: self.class::CONFIG[:auth_code] }.merge(arg) if Hash === arg
     rpc_server.call(name, arg).tap { |v| Rails.logger.debug("RPC IN: #{name}: #{v.inspect}") }
   end
 

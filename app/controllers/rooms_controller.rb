@@ -56,9 +56,6 @@ class RoomsController < ApplicationController
       end
     rescue
       render text: 'ERROR' # FIXME: render form with errors
-      #@room.id = old_room.id if old_room
-      #@room.name.sub!('@conference.syriatalk.biz', '')
-      #render :new, status: 400, layout: !request.xhr?
     end
   end
 

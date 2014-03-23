@@ -16,15 +16,16 @@ if defined?(Bundler)
 end
 
 module JabberCTS
-  unless File.exist?(file_path = File.expand_path('../application.yml', __FILE__))
-    File.write(file_path, {
+  config_file_path = File.expand_path('../application.yml', __FILE__)
+  CONFIG = {
       secret_token: SecureRandom.hex(64),
       devise_secret_key: SecureRandom.hex(64),
-      rpc_auth_code: 'unknown',
-    }.to_yaml)
-  end
-
-  CONFIG = YAML.load(File.read(file_path)).tap { |cfg| cfg.symbolize_keys! }.freeze
+      default_vhost: 'localhost',
+      default_rooms_vhost: 'conference.localhost',
+      default_room_owner: 'admin@localhost',
+    }.merge((YAML.load_file(config_file_path) rescue {})).freeze
+  # Ensure the configuration file is written completely
+  File.write(config_file_path, CONFIG.to_yaml)
 
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

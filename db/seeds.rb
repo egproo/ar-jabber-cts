@@ -30,7 +30,7 @@ u_client2 = User.create!(
 
 Room.delete_all
 r1 = Room.new(
-  name: 'test1@conference.syriatalk.biz',
+  name: 'test1@' + Ejabberd::DEFAULT_ROOMS_VHOST,
 )
 r1.seller = u_sa
 r1.buyer = u_client1

@@ -7,7 +7,7 @@ class Room < Contract
       if: :active
     },
     presence: true,
-    format: { with: /.@conference\.syriatalk\.biz\z/ }
+    format: { with: /.@#{Regexp.escape(Ejabberd::DEFAULT_ROOMS_VHOST)}\z/ }
   validates :name, uniqueness: { scope: [:buyer_id] }
 
   def to_s

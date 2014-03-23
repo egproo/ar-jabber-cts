@@ -1,5 +1,5 @@
 $(document).on('decorate', function(e, updated) {
-    $('.room-name').input_field_addons({ after: '@conference.syriatalk.biz' });
+    $('.room-name').input_field_addons({ after: '@...' });
 
     var seller_typeahead = $('.typeahead-user[name="room[buyer_attributes][name]"]');
     var seller_info_div = function(seller_input) {
