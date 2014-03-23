@@ -1,22 +1,61 @@
 <% unless @room.active %>
-	<h4>This room is disabled</h4>
+  <h4>This room is disabled</h4>
 <% end %>
 
 <pre>
 Room:
-	Name: <%= @room.name %>
-	Room Owner: <%= link_to @room.buyer.name, @room.buyer %>
-	Contract Creator: <%= link_to @room.seller.name, @room.seller %>
-	Duration (months): <%= @room.last_payment.try(:effective_months) %>
-	Comment: <%= @room.comment || '(no comment)' %>
-	Created: <%= @room.created_at %> 
-	Updated: <%= @room.updated_at %>
+  Name: <%= @room.name %>
+  Room Owner: <%= link_to @room.buyer.name, @room.buyer %>
+  Contract Creator: <%= link_to @room.seller.name, @room.seller %>
+  Duration (months): <%= @room.last_payment.try(:effective_months) %>
+  Comment: <%= @room.comment || '(no comment)' %>
+  Created: <%= @room.created_at %> 
+  Updated: <%= @room.updated_at %>
 <% if @room.last_payment %>
 Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer %>
 Next payment: <%= @room.next_payment_date.to_date %>
 <% end %>
 Occupants: <%= @room.occupants_number || 'room does not exist' %>
 </pre>
+
+<% if @room_info %>
+<table id="config" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th><%=t 'Key' %></th>
+      <th><%=t 'Value' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @room_info['config'].each do |key, value | %>
+    <tr>
+      <td><%= key %></td>
+      <td><%= value %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<br />
+<table id="affiliations" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th><%=t 'User' %></th>
+      <th><%=t 'Domain' %></th>
+      <th><%=t 'Affiliation' %></th>
+      <th><%=t 'Reason' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @room_info['affiliations'].each do |hash| %>
+      <tr>
+      <% hash.map do |key, value| %>
+      <td><%= value %></td>
+      <% end %>
+      </tr> 
+    <% end %>
+  </tbody>
+</table>
+<% end %>
 
 <% if @room.active %>
 <%= link_to 'Receive money transfer for this contract', new_money_transfer_path(sender_id: @room.buyer, receiver_id: current_user, contract_id: @room.id), class: 'btn' %>
@@ -25,8 +64,8 @@ Occupants: <%= @room.occupants_number || 'room does not exist' %>
 <% end %>
 
 <% if @room.payments.any? %>
-	<br/>Money transfer history:
+  <br/>Money transfer history:
 <% @room.payments.sort_by(&:effective_from).reverse_each do |p| %>
-	<br/><%= link_to p, p.money_transfer %>
+  <br/><%= link_to p, p.money_transfer %>
 <% end %>
 <% end %>
