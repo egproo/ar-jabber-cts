@@ -6,6 +6,7 @@
  * Forked from http://www.eyecon.ro/bootstrap-datepicker
  * =========================================================
  * Started by Stefan Petre; improvements by Andrew Rowls + contributors
+ * Modified by Alexey Ershov (March 23, 2014); improvements by https://github.com/eternicode/bootstrap-datepicker/issues/816#issuecomment-35391446
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -16,7 +16,7 @@
 //= require twitter/typeahead
 //= require bootstrap
 //= require renderers
-//= require bootstrap-datepicker.js
+//= require bootstrap-datepicker
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
 //= require jquery.bootstrap-input-addon
