@@ -41,7 +41,7 @@ $(document).ready(function() {
 
     setupDataTable({
             aaData: roomsData,
-            aaSorting: [[7, 'asc']],
+            aaSorting: [[6, 'asc']],
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 var cls = renderers.roomClass(aData.next_payment_date, aData.active);
 
