@@ -106,3 +106,10 @@ $(function() {
     $(document).trigger('decorate');
     $(window).resize(updateDataTableRowsPerPage);
 });
+
+$(document).ready(function() {
+    $('.collapsible').nextUntil('tr.collapsible').hide();
+    $('.collapsible').click(function(){
+        $(this).nextUntil('tr.collapsible').slideToggle(100);
+    });
+});
