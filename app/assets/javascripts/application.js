@@ -17,6 +17,7 @@
 //= require bootstrap
 //= require renderers
 //= require bootstrap-datepicker
+//= require twitter/bootstrap/bootstrap-collapse
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
 //= require jquery.bootstrap-input-addon
@@ -105,11 +106,4 @@ function setupDataTable(options, selector) {
 $(function() {
     $(document).trigger('decorate');
     $(window).resize(updateDataTableRowsPerPage);
-});
-
-$(document).ready(function() {
-    $('.collapsible').nextUntil('tr.collapsible').hide();
-    $('.collapsible').click(function(){
-        $(this).nextUntil('tr.collapsible').slideToggle(100);
-    });
 });

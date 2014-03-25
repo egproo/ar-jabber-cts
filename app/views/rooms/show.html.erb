@@ -45,51 +45,77 @@ Subject (author: <%= @room_info['subject_author'] %>):
 <%= @room_info['subject'] %>
 </pre>
 
-<p><h3>Configuration (<%= @room_info['config'].size %>):</h3>
-<table id="config" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
-	<tr class="collapsible">
-		<th><%=t 'Key' %></th>
-		<th><%=t 'Value' %></th>
-	</tr>
-	<% @room_info['config'].each do |key, value| %>
-	<tr>
-		<td><%= key %></td>
-		<td><%= value %></td>
-	</tr>
-	<% end %>
-</table>
+<p>
+<button type="button" class="btn" data-toggle="collapse" data-target="#config">
+	[+] Configuration (<%= @room_info['config'].size %>):
+</button>
+<div id="config" class="collapse">
+	<table class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+		<thead>
+			<tr>
+				<th><%=t 'Key' %></th>
+				<th><%=t 'Value' %></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @room_info['config'].each do |key, value| %>
+			<tr>
+				<td><%= key %></td>
+				<td><%= value %></td>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>
 </p>
-<p><h3>Affiliations (<%= @room_info['affiliations'].size %>):</h3>
-<table id="affiliations" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
-	<tr class="collapsible">
-		<th><%=t 'User' %></th>
-		<th><%=t 'Domain' %></th>
-		<th><%=t 'Affiliation' %></th>
-		<th><%=t 'Reason' %></th>
-	</tr>
-	<% @room_info['affiliations'].each do |hash| %>
-		<tr>
-		<% hash.each do |key, value| %>
-		<td><%= value %></td>
-		<% end %>
-		</tr> 
-	<% end %>
-</table>
+<p>
+<button type="button" class="btn" data-toggle="collapse" data-target="#affiliations">
+	[+] Affiliations (<%= @room_info['affiliations'].size %>):
+</button>
+<div id="affiliations" class="collapse">
+	<table class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+		<thead>
+			<tr>
+				<th><%=t 'User' %></th>
+				<th><%=t 'Domain' %></th>
+				<th><%=t 'Affiliation' %></th>
+				<th><%=t 'Reason' %></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @room_info['affiliations'].each do |hash| %>
+				<tr>
+				<% hash.each do |key, value| %>
+				<td><%= value %></td>
+				<% end %>
+				</tr> 
+			<% end %>
+		</tbody>
+	</table>
+</div>
 </p>
-<p><h3>Occupants (<%= @room_info['users'].size %>):</h3>
-<table id="occupants" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
-	<tr class="collapsible">
-		<th><%=t 'JID' %></th>
-		<th><%=t 'Nick' %></th>
-		<th><%=t 'Role' %></th>
-	</tr>
-	<% @room_info['users'].each do |hash| %>
-		<tr>
-		<% hash.each do |key, value| %>
-		<td><%= value %></td>
+<p>
+<button type="button" class="btn" data-toggle="collapse" data-target="#occupants">
+	[+] Occupants (<%= @room_info['users'].size %>):
+</button>
+<div id="occupants" class="collapse">
+<table class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+	<thead>
+		<tr class="collapsible">
+			<th><%=t 'JID' %></th>
+			<th><%=t 'Nick' %></th>
+			<th><%=t 'Role' %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @room_info['users'].each do |hash| %>
+			<tr>
+			<% hash.each do |key, value| %>
+			<td><%= value %></td>
+			<% end %>
+			</tr> 
 		<% end %>
-		</tr> 
-	<% end %>
+	</tbody>
 </table>
 </p>
 <% end %>
