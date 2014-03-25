@@ -8,6 +8,58 @@
 			],
 			except: [:created_at, :updated_at, :comment, :seller_id, :buyer_id, :adhoc_data, :deactivated_at],
 			methods: [:next_payment_date, :occupants_number, :last_message_at]).html_safe %>;
+
+	$(document).ready(function() {
+	    setupDataTable({
+            aaData: roomsData,
+            aaSorting: [[6, 'asc']],
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                var cls = renderers.roomClass(aData.next_payment_date, aData.active);
+
+                if (cls) {
+                    $(nRow).addClass(cls + '_row');
+                }
+            },
+            aoColumns: [{
+                    mData: null,
+                    mRender: function(data, type, row) { return renderers.contract(row, type, row); },
+                    sWidth: "15%"
+                }, {
+                    mData: 'buyer',
+                    mRender: renderers.user,
+                    sWidth: "25%"
+                }, {
+<% if current_user.role >= User::ROLE_SUPER_MANAGER %>
+                    mData: 'seller',
+                    mRender: renderers.user,
+                    sWidth: "10%"
+                }, {
+<% end %>
+                    mData: 'last_payment.effective_months',
+                    sWidth: "5%",
+                }, {
+                    mData: null,
+                    mRender: renderers.lastPaymentAmount,
+                    sWidth: "5%"
+                }, {
+                    mData: null,
+                    mRender: renderers.lastPaymentDate,
+                    sType: "date",
+                    sWidth: "10%"
+                }, {
+                    mData: 'next_payment_date',
+                    mRender: renderers.nextPaymentDate,
+                    sWidth: "10%"
+                }, {
+                    mData: 'occupants_number',
+                    sWidth: "5%"
+                }, {
+                    mData: 'last_message_at',
+                    mRender: renderers.dateTimeFromUNIX,
+                    sWidth: "15%"
+            }]
+    	});
+    });
 <% end %>
 
 <table id="rooms" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
@@ -15,7 +67,9 @@
     <tr>
       <th><%=t 'Room Name' %></th>
       <th><%=t 'Room Owner' %></th>
+<% if current_user.role >= User::ROLE_SUPER_MANAGER %>
       <th><%=t 'Contract Creator' %></th>
+<% end %>
       <th><%=t 'Contract Period' %></th>
       <th><%=t 'Payment Amount' %></th>
       <th><%=t 'Payment Date' %></th>
