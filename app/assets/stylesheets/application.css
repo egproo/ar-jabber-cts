@@ -49,5 +49,9 @@
 }
 
 a.accordion-toggle {
-  font-size: 18px;
+	font-size: 18px;
+}
+
+table.dataTable thead th {
+	border-bottom: none;
 }

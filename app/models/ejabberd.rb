@@ -70,9 +70,13 @@ class Ejabberd
   end
 
   def rpc(name, arg)
-    Rails.logger.debug("RPC OUT: #{name}(#{arg.inspect})")
-    arg = { auth_code: self.class::CONFIG[:auth_code] }.merge(arg) if Hash === arg
-    rpc_server.call(name, arg).tap { |v| Rails.logger.debug("RPC IN: #{name}: #{v.inspect}") }
+    if CONFIG[:auth_code].blank?
+      {}
+    else
+      Rails.logger.debug("RPC OUT: #{name}(#{arg.inspect})")
+      arg = { auth_code: self.class::CONFIG[:auth_code] }.merge(arg) if Hash === arg
+      rpc_server.call(name, arg).tap { |v| Rails.logger.debug("RPC IN: #{name}: #{v.inspect}") }
+    end
   end
 
   OWL = 10
