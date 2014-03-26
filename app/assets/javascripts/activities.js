@@ -21,7 +21,7 @@ $(document).ready(function(){
                     mRender: renderers.dateTime,
                     sWidth: "15%"
                 }],
-            iDisplayLength: 5,
+            iDisplayLength: 4,
             aLengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]]
     });
 });

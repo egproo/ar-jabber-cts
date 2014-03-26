@@ -59,7 +59,7 @@ $(document).on('decorate', function(e, updated) {
 
 function updateDataTableRowsPerPage() {
     var $table = $('table.dataTable');
-    if (!$table.length) {
+    if (!$table.length || $table.data('fixed-rows-per-page')) {
         return;
     }
 
@@ -83,24 +83,33 @@ function updateDataTableRowsPerPage() {
 function setupDataTable(options, selector) {
     var container = $(selector || 'table');
 
-    container.dataTable($.extend({
-            sDom: "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-            sPaginationType: 'full_numbers',
-            bProcessing: true,
-            bDestroy: true,
-            oLanguage: {
-                sUrl: '/i18n/datatable.json'
-            },
-            bAutoWidth: false,
-            bDeferRender: true,
-            fnDrawCallback: function() {
-                var $this = $(this);
-                if (!$this.data('first-draw-done')) {
-                    $this.data('first-draw-done', true);
-                    updateDataTableRowsPerPage();
-                }
+    var baseConfig = {
+        sDom: "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+        sPaginationType: 'full_numbers',
+        bProcessing: true,
+        bDestroy: true,
+        oLanguage: {
+            sUrl: '/i18n/datatable.json'
+        },
+        bAutoWidth: false,
+        bDeferRender: true
+    };
+
+    if (options.iDisplayLength) {
+        baseConfig.fnDrawCallback = function() {
+            $(this).data('fixed-rows-per-page', true);
+        }
+    } else {
+        baseConfig.fnDrawCallback = function() {
+            var $this = $(this);
+            if (!$this.data('first-draw-done')) {
+                $this.data('first-draw-done', true);
+                updateDataTableRowsPerPage();
             }
-    }, options));
+        }
+    }
+
+    container.dataTable($.extend(baseConfig, options));
 }
 
 $(function() {
