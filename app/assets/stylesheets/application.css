@@ -47,3 +47,7 @@
 .deactivated_row {
 	background-color: #64AAD0 ! important;
 }
+
+a.accordion-toggle {
+  font-size: 18px;
+}

@@ -13,6 +13,7 @@
 //= require twitter/bootstrap/bootstrap-popover
 //= require twitter/bootstrap/bootstrap-transition
 //= require twitter/bootstrap/bootstrap-alert
+//= require twitter/bootstrap/bootstrap-collapse
 //= require twitter/typeahead
 //= require bootstrap
 //= require renderers
