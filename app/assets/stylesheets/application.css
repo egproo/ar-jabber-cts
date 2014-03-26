@@ -53,5 +53,6 @@ a.accordion-toggle {
 }
 
 table.dataTable thead th {
+	font-size: 85%;
 	border-bottom: none;
 }
