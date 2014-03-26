@@ -13,11 +13,11 @@
 //= require twitter/bootstrap/bootstrap-popover
 //= require twitter/bootstrap/bootstrap-transition
 //= require twitter/bootstrap/bootstrap-alert
+//= require twitter/bootstrap/bootstrap-collapse
 //= require twitter/typeahead
 //= require bootstrap
 //= require renderers
 //= require bootstrap-datepicker
-//= require twitter/bootstrap/bootstrap-collapse
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
 //= require jquery.bootstrap-input-addon
