@@ -3,7 +3,7 @@ require 'xmlrpc/client'
 class Ejabberd
   config_file_path = Rails.root.join('config/rpc.yml')
   CONFIG = { 
-      auth_code: 't9n28439843tm83u9pxu321',
+      auth_code: nil,
       port: 4560,
       host: 'localhost',
     }.merge((YAML.load_file(config_file_path) rescue {})).freeze
