@@ -6,8 +6,6 @@ class MoneyTransfersController < ApplicationController
     @money_transfer.sender = User.find(params[:sender_id]) if params[:sender_id]
     @money_transfer.receiver = User.find(params[:receiver_id]) if params[:receiver_id]
 
-    @contract_id = params[:contract_id].to_i
-
     @highlight_contract_id = params[:contract_id].try(:to_i)
     fill_payments(@money_transfer)
     sort_payments(@money_transfer)
