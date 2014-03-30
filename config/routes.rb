@@ -12,6 +12,7 @@ JabberCTS::Application.routes.draw do
   get 'activities/index', as: 'activities'
   get 'rooms/transfer', as: 'transfer_room'
   get 'rooms/untracked', as: 'show_untracked_room'
+  post 'ejabberd/report'
   resources :users
   resources :rooms
   resources :money_transfers
