@@ -8,17 +8,17 @@
 	<%= field_set_tag 'Payments' do %>
 		<%= f.simple_fields_for :payments do |p| %>
 			<%= content_tag :div, :class => (if p.object.contract.id == @highlight_contract_id
-																					"highlight_selected"
-																			 elsif p.object.errors.any?
-																			 		"highlight_problematic" 
-																			 end) do %>
+					                              "highlight_selected"
+				                              elsif p.object.errors.any?
+					                              "highlight_problematic" 
+				                              end) do %>
 				<p><%= link_to "#{p.object.contract.name} (paid until #{p.object.contract.next_payment_date.try(:to_date) || 'never'})", p.object.contract %></p>
 				<%= p.input :amount %>
 				<%= p.input :effective_months, label: 'Months' %>
 				<%= p.simple_fields_for :contract do |c| %>
 					<%# we keep it here for id, is there a better way? %>
 				<% end %>
-			<% end %> <!-- end of div content tag -->
+			<% end %>
 		<% end %>
 	<% end %>
 
