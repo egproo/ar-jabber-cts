@@ -1,11 +1,13 @@
 class EjabberdController < ApplicationController
   def sync
+    return render text: 'Not allowed' unless current_user.role >= User::ROLE_SUPER_MANAGER
     @transactions = Ejabberd.new.build_transactions.map { |action, name, reason, object|
       ["#{name} #{action} (#{reason})", object, name]
     }
   end
 
   def commit
+    return render text: 'Not allowed' unless current_user.role >= User::ROLE_SUPER_MANAGER
     ej = Ejabberd.new
     ts = ej.build_transactions
     Thread.new do
