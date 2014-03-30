@@ -1,0 +1,12 @@
+.highlight_selected, .highlight_problematic {
+  padding: 3px;
+  margin-bottom: 5px;
+}
+
+.highlight_selected {
+  background-color: #eaebff;
+}
+
+.highlight_problematic {
+  background-color: #ffd2c9;
+}
