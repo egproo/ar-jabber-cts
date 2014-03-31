@@ -36,6 +36,7 @@ class EjabberdController < ApplicationController
     end
 
     report = convert_strings.call(BERT.decode(request.raw_post))
+    logger.info("Original report: #{report}")
 
     if report.assoc(:auth).try(:last) != 'gn9378rymx48uh2894'
       return render text: 'Unauthorized'
@@ -43,11 +44,13 @@ class EjabberdController < ApplicationController
 
     sender = report.assoc(:from).last
     packet = report.assoc(:packet).last
-    elements = Hash[packet[3].map do |_xmlelement, name, _empty_string, (_xmlcdata, value)|
+    elements = Hash[packet[3].map do |_xmlelement, name, _attrs, (_xmlcdata, value)|
+      logger.info("XE: #{_xmlelement.inspect} NAME: #{name.inspect} ATTRS: #{_attrs.inspect} XCD: #{_xmlcdata.inspect} VAL: #{value.inspect}")
       [name, value]
     end]
 
     logger.info("
+      ELEMENTS: #{elements}
       SENDER: #{sender}
       SUBJECT: #{elements['subject']}
       BODY: #{elements['body']}

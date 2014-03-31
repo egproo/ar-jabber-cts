@@ -9,6 +9,7 @@ Room:
 	Contract Creator: <%= link_to @room.seller.name, @room.seller %>
 	Duration (months): <%= @room.last_payment.try(:effective_months) %>
 	Comment: <%= @room.comment || '(no comment)' %>
+	Ad-hoc data: <%= @room.adhoc_data ? @room.adhoc_data.class : 'not present' %>
 	Created: <%= @room.created_at %> 
 	Updated: <%= @room.updated_at %>
 <% if @room.last_payment %>

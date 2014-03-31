@@ -1,11 +1,13 @@
 class User < ActiveRecord::Base
+  before_save :normalize_jid
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :rememberable, :trackable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :password, :password_confirmation, :remember_me
-  
+
   audited
 
   def serializable_hash(options = nil)
@@ -101,4 +103,8 @@ class User < ActiveRecord::Base
       group: 'users.name')
   end
 
+  def normalize_jid
+    name, host = self.jid.split('@', 2)
+    self.jid = "#{name.nodeprep}@#{host.nameprep}"
+  end
 end

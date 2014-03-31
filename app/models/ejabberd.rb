@@ -1,4 +1,5 @@
 require 'xmlrpc/client'
+require 'logger'
 
 class Ejabberd
   config_file_path = Rails.root.join('config/rpc.yml')
@@ -73,10 +74,14 @@ class Ejabberd
     if CONFIG[:auth_code].blank?
       {}
     else
-      Rails.logger.debug("RPC OUT: #{name}(#{arg.inspect})")
+      self.class.logger.debug("RPC OUT: #{name}(#{arg.inspect})")
       arg = { auth_code: self.class::CONFIG[:auth_code] }.merge(arg) if Hash === arg
-      rpc_server.call(name, arg).tap { |v| Rails.logger.debug("RPC IN: #{name}: #{v.inspect}") }
+      rpc_server.call(name, arg).tap { |v| self.class.logger.debug("RPC IN: #{name}: #{v.inspect}") }
     end
+  end
+
+  def self.logger
+    @logger ||= Logger.new(Rails.root.join('log/rpc.log')).tap { |logger| logger.level = Logger::DEBUG }
   end
 
   OWL = 10
