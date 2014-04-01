@@ -26,17 +26,12 @@ class EjabberdController < ApplicationController
       begin
         x.pack('U*')
       rescue
-        mapped = x.map { |e| convert_strings.call(e) }
-        if mapped.size == 1 && Array === mapped[0]
-          mapped[0]
-        else
-          mapped
-        end
+        x.map { |e| convert_strings.call(e) }
       end
     end
 
     report = convert_strings.call(BERT.decode(request.raw_post))
-    logger.info("Original report: #{report}")
+    logger.debug("Report received: #{report}")
 
     if report.assoc(:auth).try(:last) != 'gn9378rymx48uh2894'
       return render text: 'Unauthorized'
@@ -44,18 +39,37 @@ class EjabberdController < ApplicationController
 
     sender = report.assoc(:from).last
     packet = report.assoc(:packet).last
-    elements = Hash[packet[3].map do |_xmlelement, name, _attrs, (_xmlcdata, value)|
-      logger.info("XE: #{_xmlelement.inspect} NAME: #{name.inspect} ATTRS: #{_attrs.inspect} XCD: #{_xmlcdata.inspect} VAL: #{value.inspect}")
+    type = report.assoc(:type).last
+    elements = Hash[packet[3].map do |_xmlelement, name, _attrs, ((_xmlcdata, value))|
       [name, value]
     end]
 
     logger.info("
-      ELEMENTS: #{elements}
+      TYPE: #{type}
       SENDER: #{sender}
       SUBJECT: #{elements['subject']}
       BODY: #{elements['body']}
     ")
 
-    render text: 'Accepted'
+    if sender = User.find_by_jid(sender.split('/', 2)[0])
+      if sender.role >= User::ROLE_MINI_MANAGER
+        a = Announcement.new(
+          adhoc_data: elements['body'],
+          name: elements['subject'] || 'no subject',
+        )
+        a.seller = sender
+        a.buyer = sender
+        a.active = false
+        if a.save
+          render text: "queued (id #{a.id})"
+        else
+          render text: a.errors.full_messages.join($/), status: 400
+        end
+      else
+        render text: 'not enough privileges', status: 403
+      end
+    else
+      render text: 'user not found', status: 403
+    end
   end
 end
