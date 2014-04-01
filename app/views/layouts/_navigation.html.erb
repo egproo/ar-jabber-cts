@@ -31,7 +31,7 @@
 <ul class="nav pull-right">
   <li>
     <p class="navbar-text">
-      <%=t 'Welcome' %>, <%= link_to current_user, '/users/home' %> [<%= I18n.locale %>]
+      <%=t 'Welcome' %>, <%= link_to current_user, current_user %> [<%= I18n.locale %>]
       (A: <%= Announcement.untracked(current_user).count %>)
       <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
     </p>
