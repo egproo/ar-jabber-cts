@@ -92,7 +92,8 @@ function setupDataTable(options, selector) {
             sUrl: '/i18n/datatable.json'
         },
         bAutoWidth: false,
-        bDeferRender: true
+        bDeferRender: true,
+        bStateSave: true
     };
 
     if (options.iDisplayLength) {
