@@ -33,11 +33,12 @@ class Room < Contract
       @last_message_at = (Time.parse("#@last_message_at +0000").to_i rescue 0)
   end
 
-  def deactivate(server_destroy = true)
+  def deactivate(options = {})
     backup!
     self.active = false
     self.deactivated_at = Time.now
-    Ejabberd.new.room(name).destroy if server_destroy
+    self.deactivated_by = options[:deactivated_by]
+    Ejabberd.new.room(name).destroy unless options[:server_destroy] == false
     self
   end
 

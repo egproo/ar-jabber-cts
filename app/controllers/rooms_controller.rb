@@ -7,7 +7,8 @@ class RoomsController < ApplicationController
         last_message_at: r['last_message_at'],
       }
     end
-    @rooms = Room.where("(active = ?) OR (active = ? AND deactivated_at > ?)", true, false, 3.days.ago).
+    @rooms = Room.where("(active = ?) OR (active = ? AND deactivated_at > ? AND deactivated_by != ?)",
+                                   true,           false,               3.days.ago,              'user').
              preload(:last_payment).sold_by(current_user).includes(:buyer, :seller)
     @rooms.each do |r|
       if sr = @server_rooms.find { |sr| sr[:name] == r.name }
@@ -46,7 +47,7 @@ class RoomsController < ApplicationController
     if params[:room][:buyer_attributes][:name] != @room.buyer.name
       logger.info('Room is changing buyer')
       old_room = @room
-      old_room.deactivate(false)
+      old_room.deactivate(server_destroy: false, deactivated_by: 'user')
       @room = new_or_existing_room(params[:room])
     else
       @room.comment = params[:room][:comment]
@@ -87,7 +88,7 @@ class RoomsController < ApplicationController
   end
 
   def destroy
-    Room.active.find(params[:id]).deactivate.save!
+    Room.active.find(params[:id]).deactivate(deactivated_by: 'user').save!
     render :index
   end
 

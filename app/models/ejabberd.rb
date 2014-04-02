@@ -124,7 +124,7 @@ class Ejabberd
     ts.each do |action, name, reason, object|
       if action == :destroy
         if object
-          object.deactivate.save!
+          object.deactivate(deactivated_by: 'sync').save!
         else
           room(name).destroy
         end
