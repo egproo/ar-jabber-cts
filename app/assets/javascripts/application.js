@@ -93,21 +93,30 @@ function setupDataTable(options, selector) {
         },
         bAutoWidth: false,
         bDeferRender: true,
-        bStateSave: true
+        bStateSave: true,
+        iDisplayLength: 1,
+        aLengthMenu: [[1, 10, 25, 50, 100, -1], ["Auto", 10, 25, 50, 100, "All"]]
     };
 
     if (options.iDisplayLength) {
         baseConfig.fnDrawCallback = function() {
             $(this).data('fixed-rows-per-page', true);
-        }
+        };
     } else {
         baseConfig.fnDrawCallback = function() {
             var $this = $(this);
             if (!$this.data('first-draw-done')) {
                 $this.data('first-draw-done', true);
+                // Add event listener if 'Auto' options is clicked
+                var $select = $('.dataTables_length select');
+                $select.change(function() {
+                    if ($select.children('option').filter(':selected').text() === 'Auto') {
+                        updateDataTableRowsPerPage();
+                    }
+                });
                 updateDataTableRowsPerPage();
             }
-        }
+        };
     }
 
     container.dataTable($.extend(baseConfig, options));
