@@ -21,7 +21,6 @@ $(document).ready(function(){
                     mRender: renderers.dateTime,
                     sWidth: "15%"
                 }],
-            iDisplayLength: 4,
-            aLengthMenu: [[4, 10, 25, 50, 100, -1], [4, 10, 25, 50, 100, "All"]]
+            iDisplayLength: 3
     });
 });

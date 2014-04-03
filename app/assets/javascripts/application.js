@@ -94,8 +94,7 @@ function setupDataTable(options, selector) {
         bAutoWidth: false,
         bDeferRender: true,
         bStateSave: true,
-        iDisplayLength: 1,
-        aLengthMenu: [[1, 10, 25, 50, 100, -1], ["Auto", 10, 25, 50, 100, "All"]]
+        bLengthChange: false
     };
 
     if (options.iDisplayLength) {
@@ -104,7 +103,9 @@ function setupDataTable(options, selector) {
         };
     } else {
         baseConfig.fnDrawCallback = function() {
-            if ($('.dataTables_length select').children('option').filter(':selected').text() === 'Auto') {
+            var $this = $(this);
+            if (!$this.data('first-draw-done')) {
+                $this.data('first-draw-done', true);
                 updateDataTableRowsPerPage();
             }
         };
