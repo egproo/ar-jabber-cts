@@ -104,16 +104,7 @@ function setupDataTable(options, selector) {
         };
     } else {
         baseConfig.fnDrawCallback = function() {
-            var $this = $(this);
-            if (!$this.data('first-draw-done')) {
-                $this.data('first-draw-done', true);
-                // Add event listener if 'Auto' options is clicked
-                var $select = $('.dataTables_length select');
-                $select.change(function() {
-                    if ($select.children('option').filter(':selected').text() === 'Auto') {
-                        updateDataTableRowsPerPage();
-                    }
-                });
+            if ($('.dataTables_length select').children('option').filter(':selected').text() === 'Auto') {
                 updateDataTableRowsPerPage();
             }
         };
