@@ -30,7 +30,7 @@ class EjabberdController < ApplicationController
     report = convert_strings.call(BERT.decode(request.raw_post))
     logger.debug("Report received: #{report}")
 
-    if report.assoc(:auth).try(:last) != 'gn9378rymx48uh2894'
+    if report.assoc(:auth).try(:last) != Ejabberd::CONFIG[:auth_code]
       return render text: 'Unauthorized'
     end
 
