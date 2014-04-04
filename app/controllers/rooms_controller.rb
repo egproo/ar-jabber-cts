@@ -58,6 +58,10 @@ class RoomsController < ApplicationController
         old_room.save! if old_room
         @room.save!
       end
+      # if the room has been transfered after being destroyed, we need to re-create it
+      # NOTE: should not happen, because only destroyed rooms are disabled,
+      #       and disabled room does not have 'edit' button for transfer.
+      Ejabberd.new.room(@room.name).create(@room.buyer.jid)
       if request.xhr?
         render status: 200, json: { location: Rails.application.routes.url_helpers.room_path(@room) }
       else
