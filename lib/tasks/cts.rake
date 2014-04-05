@@ -6,7 +6,7 @@ namespace :cts do
       ts = ej.build_transactions
       puts ts.size if $stdout.tty?
       puts ts.map { |t| t.join(' ') } if ts.any? || $stdout.tty?
-      print "Applying transactions... "
+      print "Applying transactions... " if $stdout.tty?
       ej.apply_transactions ts
       puts 'OK' if $stdout.tty?
     end

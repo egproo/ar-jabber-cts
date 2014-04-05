@@ -108,7 +108,7 @@ class Ejabberd
           end
         else
           tracked_rooms.map do |tr|
-            [:destroy, room_name, "contract with #{tr.buyer.name} deleted", tr]
+            [:destroy, room_name, "contract with #{tr.buyer.name} disabled", tr]
           end
         end
       else
