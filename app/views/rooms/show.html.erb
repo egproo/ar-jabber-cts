@@ -1,5 +1,5 @@
 <% unless @room.active %>
-	<h4>This room is disabled</h4>
+	<h4>This room is disabled (at <%= @room.deactivated_at %> by <%= @room.deactivated_by %>)</h4>
 <% end %>
 
 <pre>
