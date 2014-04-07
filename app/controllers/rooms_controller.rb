@@ -107,11 +107,6 @@ class RoomsController < ApplicationController
     redirect_to @room
   end
 
-  def remove_adhoc_data
-    @room.update_attribute(:adhoc_data, nil)
-    redirect_to @room
-  end
-
   private
   def new_or_existing_room(attrs)
     room = Room.new

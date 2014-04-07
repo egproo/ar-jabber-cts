@@ -6,11 +6,10 @@
 	<tr>
 		<td>Name: <%= @room.name %></td>
 		<td>Backup: <%= Hash === @room.adhoc_data ? (@room.adhoc_data['dumped_at'] or 'saved') : 'not saved' %>
-   <%= Hash === @room.adhoc_data ?
-   	     link_to('Remove', remove_room_adhoc_data_path(@room), class: 'btn') :
-   	     Hash === @room_info && @room_info.present? ?
-   	       link_to('Save', store_room_adhoc_data_path(@room), class: 'btn') :
-   	       nil %></td>
+<% if Hash === @room_info && @room_info.any? %>
+		   <%= link_to Hash === @room.adhoc_data ? 'Update' : 'Save', store_room_adhoc_data_path(@room), class: 'btn' %>
+<% end %>
+   	    </td>
 	</tr>
 	<tr>
 		<td>Room Owner: <%= link_to @room.buyer.name, @room.buyer %></td>
