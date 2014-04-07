@@ -5,6 +5,9 @@
         setupDataTable({
             aaData: moneyTransfersData,
             aaSorting: [[3, 'desc']],
+<% if can? :create, Room %>
+            buttonHtml: '<%=j link_to "Add money transfer", new_money_transfer_path, class: "btn" %>',
+<% end %>
             aoColumns: [
                 {
                     mData: "sender",
@@ -23,8 +26,7 @@
                     mRender: renderers.date,
                     sWidth: "30%"
                 },
-            ],
-            buttonHtml: '<%=j link_to "Add money transfer", new_money_transfer_path, class: "btn" %>'
+            ]
         });
     });
 <% end %>

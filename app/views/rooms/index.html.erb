@@ -20,6 +20,9 @@
                     $(nRow).addClass(cls + '_row');
                 }
             },
+<% if can? :create, Room %>
+            buttonHtml: '<%=j link_to "Add room", new_room_path, class: "btn" %>',
+<% end %>
             aoColumns: [{
                     mData: null,
                     mRender: function(data, type, row) { return renderers.contract(row, type, row); },
@@ -57,10 +60,7 @@
                     mData: 'last_message_at',
                     mRender: renderers.dateTimeFromUNIX,
                     sWidth: "15%"
-            }],
-<% if current_user.role >= User::ROLE_MANAGER %>
-            buttonHtml: '<%=j link_to "Add room", new_room_path, class: "btn" %>'
-<% end %>
+            }]
     	});
     });
 <% end %>
