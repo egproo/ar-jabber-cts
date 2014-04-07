@@ -56,7 +56,7 @@ Room does not exist (code <%= @room_info %>)
 <p>Last Message: <%= time.utc %> (<%= time_ago_in_words(time) %> ago)</p>
 <% end %>
 
-<% if @room_info['subject'] %>
+<% if @room_info['subject'].present? %>
 <p>Subject (author: <%= @room_info['subject_author'] || 'n/a' %>):</p>
 <pre><%= @room_info['subject'] %></pre>
 <% end %>
