@@ -2,21 +2,35 @@
 	<h4>This room is disabled (at <%= @room.deactivated_at %> by <%= @room.deactivated_by %>)</h4>
 <% end %>
 
-<pre>
-Room:
-	Name: <%= @room.name %>
-	Room Owner: <%= link_to @room.buyer.name, @room.buyer %>
-	Contract Creator: <%= link_to @room.seller.name, @room.seller %>
-	Duration (months): <%= @room.last_payment.try(:effective_months) %>
-	Comment: <%= @room.comment || '(no comment)' %>
-	Backup: <%= Hash === @room.adhoc_data ? (@room.adhoc_data['dumped_at'] or 'saved') : 'not saved' %> <%= Hash === @room.adhoc_data ? link_to('Remove', remove_room_adhoc_data_path(@room), class: 'btn') : link_to('Save', store_room_adhoc_data_path(@room), class: 'btn') %>
-	Created: <%= @room.created_at %> 
-	Updated: <%= @room.updated_at %>
+<table cellpadding="5px">
+	<tr>
+		<td>Name: <%= @room.name %></td>
+		<td>Backup: <%= Hash === @room.adhoc_data ? (@room.adhoc_data['dumped_at'] or 'saved') : 'not saved' %>
+   <%= Hash === @room.adhoc_data ?
+   	     link_to('Remove', remove_room_adhoc_data_path(@room), class: 'btn') :
+   	     Hash === @room_info && @room_info.present? ?
+   	       link_to('Save', store_room_adhoc_data_path(@room), class: 'btn') :
+   	       nil %></td>
+	</tr>
+	<tr>
+		<td>Room Owner: <%= link_to @room.buyer.name, @room.buyer %></td>
+		<td>Contract Creator: <%= link_to @room.seller.name, @room.seller %></td>
+	</tr>
+	<tr>
+		<td>Created: <%= @room.created_at %></td>
+		<td>Updated: <%= @room.updated_at %></td>
+	</tr>
 <% if @room.last_payment %>
-Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer %>
-Next payment: <%= @room.next_payment_date.to_date %>
+	<tr>
+		<td>Last payment: <%= link_to @room.last_payment, @room.last_payment.money_transfer %></td>
+		<td>Next payment: <%= @room.next_payment_date.to_date %></td>
+	</tr>
 <% end %>
-</pre>
+</table>
+
+<% if @room.comment.present? %>
+	<p>Comment: <%= @room.comment %>
+<% end %>
 
 <% if @room.active %>
 <%= link_to 'Receive money transfer for this contract', new_money_transfer_path(sender_id: @room.buyer, receiver_id: current_user, contract_id: @room.id), class: 'btn' %>
@@ -28,114 +42,68 @@ Next payment: <%= @room.next_payment_date.to_date %>
 <% end %>
 
 <% if @room.payments.any? %>
-	<br/>Money transfer history:
-<% @room.payments.sort_by(&:effective_from).reverse_each do |p| %>
-	<br/><%= link_to p, p.money_transfer %>
+	<p>Money transfer history:</p>
+<%   @room.payments.sort_by(&:effective_from).reverse_each do |p| %>
+	<p>&nbsp;&nbsp;<%= link_to p, p.money_transfer %></p>
+<%   end %>
 <% end %>
-<br/><br/>
 
 <% if Integer === @room_info %>
 Room does not exist (code <%= @room_info %>)
 <% elsif @room_info %>
-<pre>
-Participants: <%= @room_info['num_participants'] %>
-Last Message: <%
-time = Time.parse("#{@room_info['last_message_at']} +0000") rescue Time.at(0)
-%><%= time.utc %> (<%= time_ago_in_words(time) %> ago)
-Subject (author: <%= @room_info['subject_author'] %>):
-<%= @room_info['subject'] %>
-</pre>
 
+<% if time = (Time.parse("#{@room_info['last_message_at']} +0000") rescue nil) %>
+<p>Last Message: <%= time.utc %> (<%= time_ago_in_words(time) %> ago)</p>
+<% end %>
 
-<div class="accordion" id="accordion2">
+<% if @room_info['subject'] %>
+<p>Subject (author: <%= @room_info['subject_author'] || 'n/a' %>):</p>
+<pre><%= @room_info['subject'] %></pre>
+<% end %>
+
+<div class="accordion" id="room_info_accordion">
+<%
+  %w(config affiliations users).each do |table_name|
+  	data = @room_info[table_name]
+    next if data.blank?
+    first_item = data.first
+    if Hash === first_item
+    	columns = first_item.keys
+    else
+    	columns = %w(Key Value)
+    end
+%>
   <div class="accordion-group">
     <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-        Configuration (<%= @room_info['config'].try(:size) %>)
-      </a>
+    	<a class="accordion-toggle" data-toggle="collapse" data-parent="#room_info_accordion" href="#<%= table_name %>_collapse">
+        	<%= table_name.capitalize %> (<%= @room_info[table_name].size %>)
+      	</a>
     </div>
-    <div id="collapseOne" class="accordion-body collapse">
-      <div class="accordion-inner">
+    <div id="<%= table_name %>_collapse" class="accordion-body collapse">
         <table class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
 					<thead>
 						<tr>
-							<th><%=t 'Key' %></th>
-							<th><%=t 'Value' %></th>
-						</tr>
-					</thead>
-					<tbody>
-						<% @room_info['config'].try(:each) do |key, value| %>
-						<tr>
-							<td><%= key %></td>
-							<td><%= value %></td>
-						</tr>
-						<% end %>
-					</tbody>
-				</table>
-      </div>
-    </div>
-  </div>
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-        Affiliations (<%= @room_info['affiliations'].try(:size) %>)
-      </a>
-    </div>
-    <div id="collapseTwo" class="accordion-body collapse">
-      <div class="accordion-inner">
-				<table class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
-					<thead>
-						<tr>
-							<th><%=t 'User' %></th>
-							<th><%=t 'Domain' %></th>
-							<th><%=t 'Affiliation' %></th>
-							<th><%=t 'Reason' %></th>
-						</tr>
-					</thead>
-					<tbody>
-						<% @room_info['affiliations'].try(:each) do |hash| %>
-							<tr>
-							<% hash.each do |key, value| %>
-							<td><%= value %></td>
-							<% end %>
-							</tr> 
-						<% end %>
-					</tbody>
-				</table>
-      </div>
-    </div>
-  </div>
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-        Occupants (<%= @room_info['users'].try(:size) %>)
-      </a>
-    </div>
-    <div id="collapseThree" class="accordion-body collapse">
-      <div class="accordion-inner">
-				<table class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
-					<thead>
-						<tr>
-							<th><%=t 'JID' %></th>
-							<th><%=t 'Nick' %></th>
-							<th><%=t 'Role' %></th>
-						</tr>
-					</thead>
-					<tbody>
-						<% @room_info['users'].try(:each) do |hash| %>
-							<tr>
-							<% hash.each do |key, value| %>
-							<td><%= value %></td>
-							<% end %>
-							</tr> 
-						<% end %>
-					</tbody>
-				</table>
-      </div>
-    </div>
-  </div>
-</div>
-
+<% columns.each do |column_name| %>
+							<th><%=t column_name.capitalize %></th>
 <% end %>
-
+						</tr>
+					</thead>
+					<tbody>
+<% data.each do |values| %>
+						<tr>
+<% if Hash === values
+     columns.each do |column_name| %>
+							<td><%= values[column_name] %></td>
+<%   end
+   else %>
+							<td><%= values[0] %></td>
+							<td><%= values[1] %></td>
+<% end %>
+						</tr>
+<% end %>
+					</tbody>
+				</table>
+    </div>
+  </div>
+<% end %>
 <% end %>
