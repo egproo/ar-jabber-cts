@@ -108,7 +108,7 @@ function setupDataTable(options, selector) {
                 $this.data('first-draw-done', true);
                 updateDataTableRowsPerPage();
                 // Add button
-                $(options.idEl + ' .row-fluid:first-child .span6:first-child').
+                $('#' + container.parent().attr('id') + ' .row-fluid:first-child .span6:first-child').
                     append(options.buttonHtml);
             }
         };

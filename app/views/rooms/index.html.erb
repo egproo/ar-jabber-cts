@@ -58,8 +58,7 @@
                     mRender: renderers.dateTimeFromUNIX,
                     sWidth: "15%"
             }],
-            buttonHtml: '<%= link_to "Add room", new_room_path, class: "btn" %>',
-            idEl: '#rooms_wrapper'
+            buttonHtml: '<%=j link_to "Add room", new_room_path, class: "btn" %>'
     	});
     });
 <% end %>
