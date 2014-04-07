@@ -58,7 +58,9 @@
                     mRender: renderers.dateTimeFromUNIX,
                     sWidth: "15%"
             }],
+<% if current_user.role >= User::ROLE_MANAGER %>
             buttonHtml: '<%=j link_to "Add room", new_room_path, class: "btn" %>'
+<% end %>
     	});
     });
 <% end %>
