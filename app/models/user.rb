@@ -62,11 +62,9 @@ class User < ActiveRecord::Base
 
   attr_accessible :jid, :name, :password, :phone, :role, :locale
 
-  validates :jid, format: { with: /\A.+@.+\z/ }
+  validates :jid, format: { with: /\A.+@.+\z/ }, presence: true
   validates :phone, format: { with: /\A\+?\d{8,15}\z/, if: 'phone.present?', message: "from 8 to 15" }
-  validates :name, presence: true
-  validates :name, uniqueness: true
-  validates :jid, presence: true
+  validates :name, presence: true, uniqueness: true
 
   def debt
     return 0 if role <= ROLE_CLIENT

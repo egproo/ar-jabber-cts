@@ -4,9 +4,11 @@
 <% end %>
 <%= simple_form_for @room, html: { class: 'form-horizontal' }, remote: true do |f| %>
 	<%= f.simple_fields_for :seller do |s| %>
-		<%= s.input :name, label: 'Contract owner', readonly: true, input_html: { class: 'typeahead-user' } %>
+		<%= s.input :name, label: 'Contract owner',
+		                   readonly: (current_user.role < User::ROLE_SUPER_MANAGER),
+		                   input_html: { class: 'typeahead-user' } %>
 	<% end %>
-	<%= f.input :name, label: 'Room name', readonly: !f.object.new_record?, input_html: { class: 'room-name' } %>
+	<%= f.input :short_name, label: 'Room name', readonly: !f.object.new_record?, input_html: { class: 'room-name' } %>
 	<%= f.input :comment, input_html: { rows: 4 } %>
 	<%= f.simple_fields_for :buyer do |b| %>
 		<%= b.input :name, label: 'Room owner', input_html: { class: 'typeahead-user', autocomplete: 'off' } %>

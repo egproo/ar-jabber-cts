@@ -38,7 +38,6 @@ class RoomsController < ApplicationController
   end
 
   def edit
-    @room.name.sub!("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')
     @room.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date))
   end
 
@@ -51,6 +50,12 @@ class RoomsController < ApplicationController
       @room = new_or_existing_room(params[:room])
     else
       @room.comment = params[:room][:comment]
+
+      # FIXME(artem): 2014-04-07: duplicated code
+      if (new_seller_name = params[:room][:seller_attributes][:name]) != @room.seller.name
+        raise CanCan::AccessDenied.new('Not allowed to change seller', :update, Room) unless current_user.role >= User::ROLE_SUPER_MANAGER
+        @room.seller = User.find_by_name(new_seller_name)
+      end
     end
 
     begin
@@ -111,14 +116,9 @@ class RoomsController < ApplicationController
 
   private
   def new_or_existing_room(attrs)
-    room = Room.new(
-      name: attrs[:name],
-      active: true,
-      comment: attrs[:comment],
-    )
+    room = Room.new
+    room.short_name = attrs[:short_name]
 
-    room.name += "@#{Ejabberd::DEFAULT_ROOMS_VHOST}" unless room.name.include?('@')
-    room.seller = current_user
     # FIXME(artem): 2014-04-07: can? :create, user
     room.buyer = User.find_by_name(attrs[:buyer_attributes][:name]) ||
                  User.new(attrs[:buyer_attributes].merge(role: User::ROLE_CLIENT))
@@ -131,9 +131,14 @@ class RoomsController < ApplicationController
           })
       logger.info("Existing room #{existing_room.id} found for this buyer")
       room = existing_room
-      room.seller = current_user
-      room.active = true
-      room.comment = attrs[:comment] || room.comment
+    end
+
+    room.active = true
+    room.comment = attrs[:comment] if attrs[:comment].present?
+    room.seller = current_user
+    if (new_seller_name = attrs[:seller_attributes][:name]) != room.seller.name
+      raise CanCan::AccessDenied.new('Not allowed to change seller', :update, Room) unless current_user.role >= User::ROLE_SUPER_MANAGER
+      room.seller = User.find_by_name(new_seller_name)
     end
 
     payment_hash = attrs[:payment_attributes]

@@ -23,14 +23,18 @@ class Room < Contract
   end
 
   def short_name
-    name.sub(/@#{Ejabberd::DEFAULT_ROOMS_VHOST}\z/, '')
+    name && name.sub(/@#{Ejabberd::DEFAULT_ROOMS_VHOST}\z/, '')
   end
 
   def short_name=(value)
-    if value.include?('@')
-      self.name = value
+    if value
+      if value.include?('@')
+        self.name = value
+      else
+        self.name = "#{value}@#{Ejabberd::DEFAULT_ROOMS_VHOST}"
+      end
     else
-      self.name = "#{value}@#{Ejabberd::DEFAULT_ROOMS_VHOST}"
+      self.name = value
     end
   end
 
