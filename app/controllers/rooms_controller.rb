@@ -89,8 +89,6 @@ class RoomsController < ApplicationController
 
     if success = @room.save
       Ejabberd.new.room(@room.name).create(@room.buyer.jid)
-    else
-      @room.name.sub!("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')
     end
 
     render_ajax_form(@room, success)
