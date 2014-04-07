@@ -57,7 +57,9 @@
                     mData: 'last_message_at',
                     mRender: renderers.dateTimeFromUNIX,
                     sWidth: "15%"
-            }]
+            }],
+            buttonHtml: '<%= link_to "Add room", new_room_path, class: "btn" %>',
+            idEl: '#rooms_wrapper'
     	});
     });
 <% end %>

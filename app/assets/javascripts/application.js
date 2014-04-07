@@ -107,25 +107,12 @@ function setupDataTable(options, selector) {
             if (!$this.data('first-draw-done')) {
                 $this.data('first-draw-done', true);
                 updateDataTableRowsPerPage();
+                // Add button
+                $(options.idEl + ' .row-fluid:first-child .span6:first-child').
+                    append(options.buttonHtml);
             }
         };
     }
-
-    baseConfig.fnDrawCallback = function() {
-        var $this = $(this);
-        if (!$this.data('add-button')) {
-            $this.data('add-button', true);
-
-            var $wrapperDiv = $('.dataTables_wrapper'),
-                ids = ['rooms_wrapper', 'money_transfers_wrapper', 'users_wrapper'];
-            for (var idNum in ids) {
-                if ($wrapperDiv.attr('id') === ids[idNum]) {
-                    $('#' + ids[idNum] + ' .row-fluid:first-child .span6:first-child').
-                    append("<button class='btn'>Button</button>");
-                }
-            }
-        }
-    };
 
     container.dataTable($.extend(baseConfig, options));
 }
