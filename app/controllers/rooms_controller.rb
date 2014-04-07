@@ -22,7 +22,12 @@ class RoomsController < ApplicationController
   end
 
   def show
+    unless Room.where(id: params[:id]).sold_by(current_user).exists?
+      return render text: 'Not allowed'
+    end
+
     @room = Room.find(params[:id])
+
     @room_info = Ejabberd.new.room(@room.name).info
 
     if Integer === @room_info && @room.adhoc_data
@@ -36,12 +41,20 @@ class RoomsController < ApplicationController
   end
 
   def edit
+    unless Room.where(id: params[:id]).sold_by(current_user).exists?
+      return render text: 'Not allowed'
+    end
+
     @room = Room.find(params[:id])
     @room.name.sub!("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')
     @room.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date))
   end
 
   def update
+    unless Room.where(id: params[:id]).sold_by(current_user).exists?
+      return render text: 'Not allowed'
+    end
+
     @room = Room.find(params[:id])
 
     if params[:room][:buyer_attributes][:name] != @room.buyer.name
@@ -93,6 +106,10 @@ class RoomsController < ApplicationController
   end
 
   def destroy
+    unless Room.where(id: params[:id]).sold_by(current_user).exists?
+      return render text: 'Not allowed'
+    end
+
     room = Room.active.find(params[:id])
     room.deactivate(deactivated_by: (room.seller == current_user ? 'seller' : 'manager')).save!
     redirect_to :index
