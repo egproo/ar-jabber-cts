@@ -4,7 +4,6 @@ class Contract < ActiveRecord::Base
   serialize :adhoc_data
 
   scope :active, -> { where(active: true) }
-  scope :sold_by, proc { |seller| seller.role >= User::ROLE_SUPER_MANAGER ? {} : where(seller_id: seller) }
 
   belongs_to :buyer, class_name: 'User', inverse_of: :bought_contracts, touch: true
   belongs_to :seller, class_name: 'User', inverse_of: :sold_contracts, touch: true

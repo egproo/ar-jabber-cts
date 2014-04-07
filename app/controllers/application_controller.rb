@@ -1,7 +1,12 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  check_authorization unless: :devise_controller?
 
   before_filter :set_locale, :authenticate_user!
+
+  rescue_from CanCan::AccessDenied do |exception|
+    render text: exception.message
+  end
 
   def set_locale
     I18n.locale = current_user.locale if current_user

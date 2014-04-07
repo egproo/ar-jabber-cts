@@ -11,7 +11,7 @@ class Room < Contract
   validates :name, uniqueness: { scope: [:buyer_id] }
 
   def to_s
-    name.sub("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')
+    short_name
   end
 
   def backup!
@@ -26,7 +26,12 @@ class Room < Contract
     name.sub(/@#{Ejabberd::DEFAULT_ROOMS_VHOST}\z/, '')
   end
 
-  def short_name=
+  def short_name=(value)
+    if value.include?('@')
+      self.name = value
+    else
+      self.name = "#{value}@#{Ejabberd::DEFAULT_ROOMS_VHOST}"
+    end
   end
 
   attr_reader :occupants_number

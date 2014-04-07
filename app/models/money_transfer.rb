@@ -17,12 +17,14 @@ class MoneyTransfer < ActiveRecord::Base
   validate :validate_payment_amounts
   validate :validate_received_at
 
+  after_find :readonly_if_superseded!
+
   def to_s
     "#{sender.try(:name)} -> #{receiver.try(:name)} $#{amount} at #{received_at.try(:to_date)}"
   end
 
-  def editable?
-    payments.all? { |p| !p.has_successor? }
+  def readonly_if_superseded!
+    readonly! if payments.any?(&:has_successor?)
   end
 
   def validate_payment_amounts

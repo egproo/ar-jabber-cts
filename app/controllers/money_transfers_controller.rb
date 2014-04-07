@@ -1,6 +1,7 @@
 class MoneyTransfersController < ApplicationController
+  load_and_authorize_resource except: [:create, :update]
+
   def new
-    @money_transfer = MoneyTransfer.new
     @money_transfer.received_at = Time.now.to_date
     # FIXME: security issue (minor: r/o access)
     @money_transfer.sender = User.find(params[:sender_id]) if params[:sender_id]
@@ -37,6 +38,8 @@ class MoneyTransfersController < ApplicationController
       end
     end
 
+    authorize! :create, @money_transfer
+
     if @money_transfer.save
       redirect_to @money_transfer
     else
@@ -48,12 +51,9 @@ class MoneyTransfersController < ApplicationController
   end
 
   def show
-    @money_transfer = MoneyTransfer.find(params[:id], include: { payments: { contract: :last_payment } })
   end
 
   def edit
-    @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
-    return render text: 'Not allowed', status: 404 unless @money_transfer.editable?
     @money_transfer.received_at = @money_transfer.received_at.to_date
     sort_payments(@money_transfer)
   end
@@ -77,6 +77,8 @@ class MoneyTransfersController < ApplicationController
       p.amount = payment_hash[:amount]
     end
 
+    authorize! :edit, @money_transfer
+
     if @money_transfer.save
       redirect_to @money_transfer
     else
@@ -87,7 +89,7 @@ class MoneyTransfersController < ApplicationController
 
   def index
     # FIXME: security issue (full read: major)
-    @money_transfers = MoneyTransfer.received_by(current_user).all(include: [:sender, :receiver])
+    @money_transfers = @money_transfers.includes(:sender, :receiver)
   end
 
   private

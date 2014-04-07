@@ -9,10 +9,10 @@ Money transfer:
 	Updated: <%= @money_transfer.updated_at %>
 </pre>
 
-<% if @money_transfer.editable? %>
-	<%= link_to 'Edit this money transfer', edit_money_transfer_path(@money_transfer), class: 'btn' %>
-<% else %>
+<% if @money_transfer.readonly? %>
 	<p>You cannot edit this money transfer because one or more of it's payments have a successor (marked with *)</p>
+<% else %>
+	<%= link_to 'Edit this money transfer', edit_money_transfer_path(@money_transfer), class: 'btn' %>
 <% end %>
 
 <% if @money_transfer.payments.any? %>

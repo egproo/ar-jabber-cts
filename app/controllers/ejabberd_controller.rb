@@ -1,5 +1,6 @@
 class EjabberdController < ApplicationController
   skip_before_filter :authenticate_user!, only: :report
+  skip_authorization_check
 
   def sync
     return render text: 'Not allowed' unless current_user.role >= User::ROLE_SUPER_MANAGER

@@ -1,6 +1,7 @@
 class AnnouncementsController < ApplicationController
+  load_and_authorize_resource except: :create
+
   def new
-    @announcement = Announcement.new
     @announcement.buyer = User.new
     @announcement.seller = current_user
     @announcement.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date))
@@ -34,6 +35,8 @@ class AnnouncementsController < ApplicationController
 
     @announcement.payments << payment
 
+    authorize! :create, @announcement
+
     if success = @announcement.save
       receivers = Ejabberd.new.announce(@announcement.name, @announcement.adhoc_data)
       flash[:notice] = "The announcement has been sent to #{receivers} users."
@@ -45,6 +48,5 @@ class AnnouncementsController < ApplicationController
   end
 
   def show
-    @announcement = Announcement.find(params[:id])
   end
 end

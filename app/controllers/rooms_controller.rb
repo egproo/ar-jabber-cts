@@ -1,4 +1,6 @@
 class RoomsController < ApplicationController
+  load_and_authorize_resource except: :create
+
   def index
     @server_rooms = Ejabberd.new.rooms.map do |r|
       {
@@ -7,9 +9,10 @@ class RoomsController < ApplicationController
         last_message_at: r['last_message_at'],
       }
     end
-    @rooms = Room.where("(active = ?) OR (active = ? AND deactivated_at > ? AND deactivated_by != ?)",
-                                   true,           false,                 3.days.ago,             'seller').
-             preload(:last_payment).sold_by(current_user).includes(:buyer, :seller)
+
+    @rooms = @rooms.where("(active = ?) OR (active = ? AND deactivated_at > ? AND deactivated_by != ?)",
+                                     true,           false,                 3.days.ago,             'seller').
+             preload(:last_payment).includes(:buyer, :seller)
     @rooms.each do |r|
       if sr = @server_rooms.find { |sr| sr[:name] == r.name }
         r.instance_variable_set(:@occupants_number, sr[:num_participants])
@@ -22,12 +25,6 @@ class RoomsController < ApplicationController
   end
 
   def show
-    unless Room.where(id: params[:id]).sold_by(current_user).exists?
-      return render text: 'Not allowed'
-    end
-
-    @room = Room.find(params[:id])
-
     @room_info = Ejabberd.new.room(@room.name).info
 
     if Integer === @room_info && @room.adhoc_data
@@ -41,22 +38,11 @@ class RoomsController < ApplicationController
   end
 
   def edit
-    unless Room.where(id: params[:id]).sold_by(current_user).exists?
-      return render text: 'Not allowed'
-    end
-
-    @room = Room.find(params[:id])
     @room.name.sub!("@#{Ejabberd::DEFAULT_ROOMS_VHOST}", '')
     @room.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date))
   end
 
   def update
-    unless Room.where(id: params[:id]).sold_by(current_user).exists?
-      return render text: 'Not allowed'
-    end
-
-    @room = Room.find(params[:id])
-
     if params[:room][:buyer_attributes][:name] != @room.buyer.name
       logger.info('Room is changing buyer')
       old_room = @room
@@ -87,7 +73,6 @@ class RoomsController < ApplicationController
   end
 
   def new
-    @room = Room.new
     @room.buyer = User.new
     @room.seller = current_user
     @room.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date))
@@ -95,6 +80,7 @@ class RoomsController < ApplicationController
 
   def create
     @room = new_or_existing_room(params[:room])
+    authorize! :create, @room
 
     if success = @room.save
       Ejabberd.new.room(@room.name).create(@room.buyer.jid)
@@ -106,24 +92,19 @@ class RoomsController < ApplicationController
   end
 
   def destroy
-    unless Room.where(id: params[:id]).sold_by(current_user).exists?
-      return render text: 'Not allowed'
+    if @room.active
+      @room.deactivate(deactivated_by: (@room.seller == current_user ? 'seller' : 'manager')).save!
     end
-
-    room = Room.active.find(params[:id])
-    room.deactivate(deactivated_by: (room.seller == current_user ? 'seller' : 'manager')).save!
     redirect_to :index
   end
 
   def store_adhoc_data
-    @room = Room.find(params[:id])
     @room.backup!
     @room.save!
     redirect_to @room
   end
 
   def remove_adhoc_data
-    @room = Room.find(params[:id])
     @room.update_attribute(:adhoc_data, nil)
     redirect_to @room
   end
@@ -138,6 +119,7 @@ class RoomsController < ApplicationController
 
     room.name += "@#{Ejabberd::DEFAULT_ROOMS_VHOST}" unless room.name.include?('@')
     room.seller = current_user
+    # FIXME(artem): 2014-04-07: can? :create, user
     room.buyer = User.find_by_name(attrs[:buyer_attributes][:name]) ||
                  User.new(attrs[:buyer_attributes].merge(role: User::ROLE_CLIENT))
 
