@@ -15,7 +15,11 @@ class Room < Contract
   end
 
   def backup!
-    self.adhoc_data = Ejabberd.new.room(name).info
+    data = Ejabberd.new.room(name).info
+    if Hash === data
+      data['dumped_at'] = Time.now.utc
+      self.adhoc_data = data
+    end
   end
 
   def short_name

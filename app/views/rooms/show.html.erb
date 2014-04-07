@@ -9,7 +9,7 @@ Room:
 	Contract Creator: <%= link_to @room.seller.name, @room.seller %>
 	Duration (months): <%= @room.last_payment.try(:effective_months) %>
 	Comment: <%= @room.comment || '(no comment)' %>
-	Ad-hoc data: <%= @room.adhoc_data ? @room.adhoc_data.class : 'not present' %>
+	Backup: <%= Hash === @room.adhoc_data ? (@room.adhoc_data['dumped_at'] or 'saved') : 'not saved' %> <%= Hash === @room.adhoc_data ? link_to('Remove', remove_room_adhoc_data_path(@room), class: 'btn') : link_to('Save', store_room_adhoc_data_path(@room), class: 'btn') %>
 	Created: <%= @room.created_at %> 
 	Updated: <%= @room.updated_at %>
 <% if @room.last_payment %>
@@ -51,7 +51,7 @@ Subject (author: <%= @room_info['subject_author'] %>):
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-        Configuration (<%= @room_info['config'].size %>)
+        Configuration (<%= @room_info['config'].try(:size) %>)
       </a>
     </div>
     <div id="collapseOne" class="accordion-body collapse">
@@ -64,7 +64,7 @@ Subject (author: <%= @room_info['subject_author'] %>):
 						</tr>
 					</thead>
 					<tbody>
-						<% @room_info['config'].each do |key, value| %>
+						<% @room_info['config'].try(:each) do |key, value| %>
 						<tr>
 							<td><%= key %></td>
 							<td><%= value %></td>
@@ -78,7 +78,7 @@ Subject (author: <%= @room_info['subject_author'] %>):
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-        Affiliations (<%= @room_info['affiliations'].size %>)
+        Affiliations (<%= @room_info['affiliations'].try(:size) %>)
       </a>
     </div>
     <div id="collapseTwo" class="accordion-body collapse">
@@ -93,7 +93,7 @@ Subject (author: <%= @room_info['subject_author'] %>):
 						</tr>
 					</thead>
 					<tbody>
-						<% @room_info['affiliations'].each do |hash| %>
+						<% @room_info['affiliations'].try(:each) do |hash| %>
 							<tr>
 							<% hash.each do |key, value| %>
 							<td><%= value %></td>
@@ -108,7 +108,7 @@ Subject (author: <%= @room_info['subject_author'] %>):
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-        Occupants (<%= @room_info['users'].size %>)
+        Occupants (<%= @room_info['users'].try(:size) %>)
       </a>
     </div>
     <div id="collapseThree" class="accordion-body collapse">
@@ -122,7 +122,7 @@ Subject (author: <%= @room_info['subject_author'] %>):
 						</tr>
 					</thead>
 					<tbody>
-						<% @room_info['users'].each do |hash| %>
+						<% @room_info['users'].try(:each) do |hash| %>
 							<tr>
 							<% hash.each do |key, value| %>
 							<td><%= value %></td>
