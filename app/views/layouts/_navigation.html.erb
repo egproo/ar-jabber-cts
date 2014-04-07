@@ -8,10 +8,12 @@
   <li>
     <%= link_to 'Users', users_path %>
   </li>
-  <% if current_user.role >= User::ROLE_MANAGER %>
+  <% if can? :create, Room %>
   <li>
     <%= link_to 'Add room', new_room_path %>
   </li>
+  <% end %>
+  <% if can? :create, Announcement %>
   <li>
   	<%= link_to 'Announce', new_announcement_path %>
   </li>
