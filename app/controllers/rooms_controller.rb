@@ -2,25 +2,29 @@ class RoomsController < ApplicationController
   load_and_authorize_resource except: :create
 
   def index
-    @server_rooms = Ejabberd.new.rooms.map do |r|
-      {
-        name: "#{r['room']}@#{r['host']}",
-        num_participants: r['num_participants'],
-        last_message_at: r['last_message_at'],
-      }
-    end
-
     @rooms = @rooms.where("(active = ?) OR (active = ? AND deactivated_at > ? AND deactivated_by != ?)",
-                                     true,           false,                 3.days.ago,             'seller').
-             preload(:last_payment).includes(:buyer, :seller)
-    @rooms.each do |r|
-      if sr = @server_rooms.find { |sr| sr[:name] == r.name }
-        r.instance_variable_set(:@occupants_number, sr[:num_participants])
-        r.instance_variable_set(:@last_message_at, sr[:last_message_at])
-      else
-        r.instance_variable_set(:@occupants_number, -1)
-        r.instance_variable_set(:@last_message_at, 'RNE')
-      end
+                                     true,           false,                 3.days.ago,             'seller')
+
+    respond_to do |format|
+      format.html { @rooms = @rooms.preload(:last_payment).includes(:buyer, :seller) }
+      format.json {
+        server_rooms = Ejabberd.new.rooms.map do |r|
+          {
+            name: "#{r['room']}@#{r['host']}",
+            num_participants: r['num_participants'],
+            last_message_at: r['last_message_at'],
+          }
+        end
+
+        render json: (@rooms.each_with_object({}) do |room, rooms|
+          if sr = server_rooms.find { |sr| sr[:name] == room.name }
+            rooms[room.id] = {
+              num_participants: sr[:num_participants],
+              last_message_at: (Time.parse("#{sr[:last_message_at]} +0000").to_i rescue 0),
+            }
+          end
+        end)
+      }
     end
   end
 

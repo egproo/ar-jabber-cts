@@ -1,5 +1,5 @@
 <%= javascript_tag do %>
-	var roomsData = <%=
+    var roomsData = <%=
 	@rooms.map { |room|
 		mapped = {}
 		%w(buyer seller).each do |subject_type|
@@ -16,15 +16,15 @@
 		end]
 		mapped[:last_payment] = last_payment
 
-		%w(id occupants_number last_message_at next_payment_date short_name active).each do |attr|
+		%w(id next_payment_date short_name active).each do |attr|
 			mapped[attr] = room.public_send(attr)
 		end
 
 		mapped
 	}.to_json.html_safe %>;
 
-	$(document).ready(function() {
-	    setupDataTable({
+    $(document).ready(function() {
+        var dataTable = setupDataTable({
             aaData: roomsData,
             aaSorting: [[6, 'asc']],
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
@@ -68,14 +68,41 @@
                     mRender: renderers.nextPaymentDate,
                     sWidth: "10%"
                 }, {
-                    mData: 'occupants_number',
+                    mData: null,
+                    sType: "numeric",
+                    mRender: function(data, type, row) {
+                        if (row.num_participants || row.num_participants === 0) {
+                            return row.num_participants;
+                        } else {
+                            return "N/A";
+                        }
+                    },
                     sWidth: "5%"
                 }, {
-                    mData: 'last_message_at',
-                    mRender: renderers.dateTimeFromUNIX,
+                    mData: null,
+                    sType: "numeric",
+                    mRender: function(data, type, row) {
+                        if (row.last_message_at) {
+                            return renderers.dateTimeFromUNIX(row.last_message_at, type, row);
+                        } else {
+                            return "N/A";
+                        }
+                    },
                     sWidth: "15%"
             }]
-    	});
+        });
+
+        $.getJSON("/rooms.json", function(data, textStatus, xhr) {
+            var tableData = dataTable.fnGetData();
+            $.each(tableData, function(index, value) {
+                var server_data = data[value.id];
+                if (server_data) {
+                    $.extend(value, server_data);
+                    dataTable.fnUpdate(value, index, undefined, false, false);
+                }
+            });
+            dataTable.fnDraw();
+        });
     });
 <% end %>
 

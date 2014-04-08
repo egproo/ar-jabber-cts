@@ -116,7 +116,7 @@ function setupDataTable(options, selector) {
         };
     }
 
-    container.dataTable($.extend(baseConfig, options));
+    return container.dataTable($.extend(baseConfig, options));
 }
 
 $(function() {
