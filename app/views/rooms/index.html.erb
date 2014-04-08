@@ -74,7 +74,7 @@
                         if (row.num_participants || row.num_participants === 0) {
                             return row.num_participants;
                         } else {
-                            return "N/A";
+                            return type == "display" ? "N/A" : 0;
                         }
                     },
                     sWidth: "5%"
@@ -85,7 +85,7 @@
                         if (row.last_message_at) {
                             return renderers.dateTimeFromUNIX(row.last_message_at, type, row);
                         } else {
-                            return "N/A";
+                            return type == "display" ? "N/A" : 0;
                         }
                     },
                     sWidth: "15%"
