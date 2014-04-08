@@ -1,13 +1,21 @@
-<pre>
-Money transfer:
-	From:    <%= link_to *([@money_transfer.sender]*2) %>
-	To:      <%= link_to *([@money_transfer.receiver]*2) %>
-	Date:    <%= @money_transfer.received_at.to_date %>
-	Amount:  $<%= @money_transfer.amount %>
-	Comment: <%= @money_transfer.comment || '(no comment)' %>
-	Created: <%= @money_transfer.created_at %>
-	Updated: <%= @money_transfer.updated_at %>
-</pre>
+<table cellpadding="5px">
+	<tr>
+		<td>From: <%= link_to *[@money_transfer.sender]*2 %></td>
+		<td>To: <%= link_to *[@money_transfer.receiver]*2 %></td>
+	<tr>
+	<tr>
+		<td>Received at: <%= @money_transfer.received_at.to_date %></td>
+		<td>Amount: $<%= @money_transfer.amount %></td>
+	</tr>
+	<tr>
+		<td>Created: <%= @money_transfer.created_at %></td>
+		<td>Updated: <%= @money_transfer.updated_at %></td>
+	</tr>
+</table>
+
+<% if @money_transfer.comment.present? %>
+   Comment: <pre><%= @money_transfer.comment %></pre>
+<% end %>
 
 <% if @money_transfer.readonly? %>
 	<p>You cannot edit this money transfer because one or more of it's payments have a successor (marked with *)</p>
@@ -16,17 +24,17 @@ Money transfer:
 <% end %>
 
 <% if @money_transfer.payments.any? %>
-	<br/>Payments:
+	<p>Payments:</p>
 	<ul>
 	<% @money_transfer.payments.each do |p| %>
 		<li><%= link_to p, p.contract %> <%= '*' if p.has_successor? %></li>
 	<% end %>
 	</ul>
 <% else %>
-	No payments in this money transfer
+	<p>No payments in this money transfer</p>
 <% end %>
 
-<br/>Changes:
+<p>Changes:</p>
 <ul>
 	<% @money_transfer.audits.each do |a| %>
 		<li>(<%= a.user.try(:name) %>) <%= a.action %> <%= a.audited_changes.inspect %></li>

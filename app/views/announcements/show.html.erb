@@ -1,14 +1,27 @@
-<pre>
-Announcement:
-	Subject: <%= @announcement.name %>
-	Text:
-<%= @announcement.adhoc_data %>
-	Initiator: <%= link_to @announcement.buyer.name, @announcement.buyer %>
-	Contract Creator: <%= link_to @announcement.seller.name, @announcement.seller %>
-	Comment: <%= @announcement.comment || '(no comment)' %>
-	Created: <%= @announcement.created_at %> 
-	Updated: <%= @announcement.updated_at %>
-<% if @announcement.last_payment %>
-	Payment: <%= link_to @announcement.last_payment, @announcement.last_payment.money_transfer %>
+<table cellpadding="5px">
+	<tr>
+		<td>Initiator: <%= link_to *[@announcement.buyer]*2 %></td>
+		<td>Contract Creator: <%= link_to *[@announcement.seller]*2 %></td>
+	</tr>
+	<tr>
+		<td>Created: <%= @announcement.created_at %></td>
+		<td>Updated: <%= @announcement.updated_at %></td>
+	</tr>
+</table>
+
+<% if @announcement.comment.present? %>
+	<p>Comment:</p>
+	<pre><%= @announcement.comment %></pre>
 <% end %>
-</pre>
+<% if @announcement.name.present? %>
+	<p>Subject: <%= @announcement.name %></p>
+<% end %>
+<% if @announcement.adhoc_data.present? %>
+   <p>Text:</p>
+   <pre><%= @announcement.adhoc_data %></pre>
+<% end %>
+<% if @announcement.last_payment %>
+	<p>Payment: <%= link_to @announcement.last_payment, @announcement.last_payment.money_transfer %></p>
+<% else %>
+<h3>Unpaid announcement</h3>
+<% end %>

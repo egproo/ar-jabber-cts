@@ -1,5 +1,10 @@
-<% @transactions.each do |t| %>
-	<%= t[1] ? link_to(t[0], t[1]) : link_to(t[0], show_untracked_room_path(name: t[2])) %><br/>
+<% if @transactions.any? %>
+	<ul>
+		<% @transactions.each do |t| %>
+			<li><%= t[1] ? link_to(t[0], t[1]) : link_to(t[0], show_untracked_room_path(name: t[2])) %></li>
+		<% end %>
+	</ul>
+	<%= link_to 'Commit', '/ejabberd/commit', class: 'btn btn-large btn-default' %>
+<% else %>
+	<p>There are no changes to sync.<p>
 <% end %>
-
-<%= link_to 'Commit', '/ejabberd/commit', class: 'btn btn-large btn-default' %>

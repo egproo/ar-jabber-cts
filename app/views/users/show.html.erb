@@ -1,39 +1,55 @@
-<pre>
-Name: <%= @user.name %>
-Role: <%= @user.role_name %>
-jid/mail: <%= @user.jid %>
+<table cellpadding="5px">
+	<tr>
+		<td>Name: <%= @user.name %></td>
+		<td>Role: <%= @user.role_name %></td>
+	</tr>
+	<tr>
+		<td>JID/E-mail: <%= @user.jid %></td>
+		<td>Debt: $<%= @user.debt %></td>
+	</tr>
+	<tr>
+		<td>Contracts sold: <%= @user.sold_contracts.count %></td>
+		<td>Contracts bought: <%= @user.bought_contracts.count %></td>
+	</tr>
+</table>
 
-Contracts:
-	Sold  : <%= @user.sold_contracts.count %>
-	Bought: <%= @user.bought_contracts.count %>
-
-Debt: $<%= @user.debt %>
 <% if @user.salary_contract %>
-Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @user.salary_contract.next_payment_date %>
+	<p>Salary (expected): $<%= @user.salary_contract.next_amount_estimate %> at <%= @user.salary_contract.next_payment_date %></p>
 <% end %>
-</pre>
 
 <% if @user.role == User::ROLE_CLIENT %>
-  <%= link_to 'Receive money transfer from this client', "/money_transfers/new?sender_id=#{@user.id}&receiver_id=#{current_user.id}", class: 'btn' %>
+	<%= link_to 'Receive money transfer from this client', new_money_transfer_path(sender_id: @user, receiver_id: current_user), class: 'btn' %>
 <% elsif @user == current_user %>
   <%#= link_to 'Receive money transfer from client', "/money_transfers/new?receiver_id=#{@user.id}", class: 'btn' %>
   <%#= link_to 'Send money transfer', "/money_transfers/new?sender_id=#{@user.id}", class: 'btn' %>
 
   <%= simple_form_for @user do |f| %>
-	  <%= f.input :password %>
+	  <%= f.input :password, label: 'Change password:' %>
   	  <%= f.submit 'Save Password', class: 'btn' %>
   <% end %>
 <% end %>
 
+<p>Money Transfers:</p>
 <ul>
-<br/>Money Transfers:
   <% (@user.sent_transfers + @user.received_transfers).sort_by(&:received_at).reverse_each do |t| %>
   	<li><%= link_to t, t %></li>
   <% end %>
 </ul>
+
+<% if @user.bought_contracts.active.any? %>
+<p>Bought Contracts:</p>
 <ul>
-<br/>Contracts:
   <% @user.bought_contracts.active.each do |c| %>
     <li><%= link_to c, c %></li>
   <% end %>
 </ul>
+<% end %>
+
+<% if @user.sold_contracts.active.any? %>
+<p>Sold Contracts:</p>
+<ul>
+  <% @user.sold_contracts.active.each do |c| %>
+    <li><%= link_to c, c %></li>
+  <% end %>
+</ul>
+<% end %>

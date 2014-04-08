@@ -42,9 +42,11 @@
 
 <% if @room.payments.any? %>
 	<p>Money transfer history:</p>
+	<ul>
 <%   @room.payments.sort_by(&:effective_from).reverse_each do |p| %>
-	<p>&nbsp;&nbsp;<%= link_to p, p.money_transfer %></p>
+	<li>&nbsp;&nbsp;<%= link_to p, p.money_transfer %></li>
 <%   end %>
+	</ul>
 <% end %>
 
 <% if Integer === @room_info %>
