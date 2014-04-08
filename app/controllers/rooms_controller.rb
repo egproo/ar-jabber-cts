@@ -98,7 +98,7 @@ class RoomsController < ApplicationController
     if @room.active
       @room.deactivate(deactivated_by: (@room.seller == current_user ? 'seller' : 'manager')).save!
     end
-    redirect_to :index
+    redirect_to action: :index
   end
 
   def store_adhoc_data
