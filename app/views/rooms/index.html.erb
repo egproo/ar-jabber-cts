@@ -1,13 +1,31 @@
 <%= javascript_tag do %>
+	<% json_time = Benchmark.measure do %>
 	var roomsData = <%=
-		@rooms.to_json(
-			include: [
-				{ buyer: { only: [:name, :role, :jid, :id] } },
-				{ seller: { only: [:name, :role, :jid, :id] } },
-				{ last_payment: { only: [:amount, :effective_from, :effective_months, :money_transfer_id] } },
-			],
-			except: [:created_at, :updated_at, :comment, :seller_id, :buyer_id, :adhoc_data, :deactivated_at],
-			methods: [:next_payment_date, :occupants_number, :last_message_at]).html_safe %>;
+	@rooms.map { |room|
+		mapped = {}
+		%w(buyer seller).each do |subject_type|
+			subject = room.public_send subject_type
+			mapped[subject_type] = {
+				name: subject.name,
+				role: subject.role,
+				jid: subject.jid,
+				id: subject.id,
+			}
+		end
+		last_payment = Hash[%w(amount effective_from effective_months money_transfer_id).map do |last_payment_attribute|
+			[last_payment_attribute, room.last_payment.public_send(last_payment_attribute)]
+		end]
+		mapped[:last_payment] = last_payment
+
+		%w(occupants_number last_message_at next_payment_date short_name active).each do |attr|
+			mapped[attr] = room.public_send(attr)
+		end
+
+		mapped
+	}.to_json.html_safe %>;
+	<% end
+	   logger.info("Benchmarking to_json: #{json_time}")
+	%>
 
 	$(document).ready(function() {
 	    setupDataTable({
@@ -25,7 +43,7 @@
 <% end %>
             aoColumns: [{
                     mData: null,
-                    mRender: function(data, type, row) { return renderers.contract(row, type, row); },
+                    mRender: renderers.roomShortName,
                     sWidth: "15%"
                 }, {
                     mData: 'buyer',

@@ -56,12 +56,11 @@ var renderers = {
         return data;
     },
 
-    contract: function(data, type, row) {
+    roomShortName: function(data, type, row) {
         if (type === 'display') {
-            // TODO(artem): replace only default vhost name
-            return "<a href='/rooms/" + data.id + "'>" + data.name.replace(/@.*$/, '') + "</a>";
+            return "<a href='/rooms/" + row.id + "'>" + row.short_name + "</a>";
         }
-        return data.name;
+        return row.short_name;
     },
 
     amount: function(data, type, row) {
