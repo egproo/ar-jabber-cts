@@ -39,7 +39,10 @@ class EjabberdController < ApplicationController
     packet = report.assoc(:packet).last
     type = report.assoc(:type).last
     elements = Hash[packet[3].map do |_xmlelement, name, _attrs, ((_xmlcdata, value))|
-      [name, value]
+      [
+        name,
+        (value.encode(Encoding::ISO_8859_1).force_encoding(Encoding::UTF_8) rescue value)
+      ]
     end]
 
     logger.info("

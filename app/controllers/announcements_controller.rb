@@ -49,4 +49,8 @@ class AnnouncementsController < ApplicationController
 
   def show
   end
+
+  def index
+    @announcements = @announcements.includes(:seller, :buyer)
+  end
 end

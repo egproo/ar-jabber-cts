@@ -1,0 +1,47 @@
+<%= javascript_tag do %>
+    var announcementsData = <%= @announcements.to_json(include: [:seller, :buyer], methods: [:room_names], except: [:adhoc_data]).html_safe %>;
+
+    $(document).ready(function() {
+        setupDataTable({
+            aaData: announcementsData,
+            aaSorting: [[5, 'desc']],
+<% if can? :create, Announcement %>
+            buttonHtml: '<%=j link_to "Add announcement", new_announcement_path, class: "btn" %>',
+<% end %>
+            aoColumns: [
+                {
+                    mData: "seller",
+                    mRender: renderers.user,
+                    sWidth: "10%"
+                }, {
+                    mData: "buyer",
+                    mRender: renderers.user,
+                    sWidth: "20%"
+                }, {
+                    mData: "room_names",
+                    mRender: renderers.announcementRooms,
+                    sWidth: "55%"
+                }, {
+                	mData: "active",
+                	sWidth: "5%"
+                }, {
+                    mData: "created_at",
+                    mRender: renderers.date,
+                    sWidth: "10%"
+                },
+            ]
+        });
+    });
+<% end %>
+<table id="announcements" class="table table-bordered table-condensed" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th><%=t 'Owner' %></th>
+      <th><%=t 'Initiator' %></th>
+      <th><%=t 'Rooms' %></th>
+      <th><%=t 'Tracked' %></th>
+      <th><%=t 'Created at' %></th>
+    </tr>
+  </thead>
+  </tbody>
+</table>

@@ -15,6 +15,14 @@ var renderers = {
         return data;
     },
 
+    announcementRooms: function(data, type, row) {
+        var text = data.join(', ');
+        if (type === 'display') {
+            return "<a href='/announcements/" + row.id + "'>" + text + "</a>";
+        }
+        return text;
+    },
+
     roomClass: function(next_payment_at, active) {
         if (active) {
             var nextDate = new Date(Date.parse(next_payment_at)),
