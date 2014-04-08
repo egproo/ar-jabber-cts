@@ -1,5 +1,4 @@
 <%= javascript_tag do %>
-	<% json_time = Benchmark.measure do %>
 	var roomsData = <%=
 	@rooms.map { |room|
 		mapped = {}
@@ -17,15 +16,12 @@
 		end]
 		mapped[:last_payment] = last_payment
 
-		%w(occupants_number last_message_at next_payment_date short_name active).each do |attr|
+		%w(id occupants_number last_message_at next_payment_date short_name active).each do |attr|
 			mapped[attr] = room.public_send(attr)
 		end
 
 		mapped
 	}.to_json.html_safe %>;
-	<% end
-	   logger.info("Benchmarking to_json: #{json_time}")
-	%>
 
 	$(document).ready(function() {
 	    setupDataTable({

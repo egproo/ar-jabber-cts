@@ -4,7 +4,7 @@
     $(document).ready(function() {
         setupDataTable({
             aaData: announcementsData,
-            aaSorting: [[5, 'desc']],
+            aaSorting: [[4, 'desc']],
 <% if can? :create, Announcement %>
             buttonHtml: '<%=j link_to "Add announcement", new_announcement_path, class: "btn" %>',
 <% end %>
