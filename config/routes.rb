@@ -13,6 +13,7 @@ JabberCTS::Application.routes.draw do
   get 'rooms/transfer', as: 'transfer_room'
   get 'rooms/untracked', as: 'show_untracked_room'
   get 'rooms/store_adhoc_data/:id', to: 'rooms#store_adhoc_data', as: 'store_room_adhoc_data'
+  get 'rooms/backup_view/:id', to: 'rooms#backup_view', as: 'room_backup_view'
   post 'ejabberd/report'
   resources :users
   resources :rooms

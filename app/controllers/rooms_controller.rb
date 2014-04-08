@@ -37,6 +37,10 @@ class RoomsController < ApplicationController
     @room_info = Ejabberd.new.room(@room_name).info
   end
 
+  def backup_view
+    @room_info = @room.adhoc_data
+  end
+
   def edit
     @room.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date))
   end
