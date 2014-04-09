@@ -5,12 +5,13 @@
 <table cellpadding="5px">
 	<tr>
 		<td>Name: <%= @room.name %></td>
-		<td>Backup: <%= Hash === @room.adhoc_data ? (@room.adhoc_data['dumped_at'] or 'saved') : 'not saved' %>
+		<td>
+			Backup: <%= Hash === @room.adhoc_data ? (@room.adhoc_data['dumped_at'] or 'saved') : 'not saved' %>
 <% if Hash === @room_info && @room_info.any? %>
 			<%= link_to Hash === @room.adhoc_data ? 'Update' : 'Save', store_room_adhoc_data_path(@room), class: 'btn' %>
-			<% if Hash === @room.adhoc_data %>
-				<%= link_to 'Preview', room_backup_view_path(@room), class: 'btn' %>
-			<% end %>
+<% end %>
+<% if Hash === @room.adhoc_data %>
+			<%= link_to 'Preview', room_backup_view_path(@room), class: 'btn' %>
 <% end %>
 		</td>
 	</tr>

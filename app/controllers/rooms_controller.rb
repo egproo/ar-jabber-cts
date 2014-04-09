@@ -30,10 +30,6 @@ class RoomsController < ApplicationController
 
   def show
     @room_info = Ejabberd.new.room(@room.name).info
-
-    if Integer === @room_info && @room.adhoc_data
-      @room_info = @room.adhoc_data
-    end
   end
 
   def untracked
