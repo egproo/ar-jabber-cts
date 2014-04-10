@@ -5,8 +5,8 @@ class Contract < ActiveRecord::Base
 
   scope :active, -> { where(active: true) }
 
-  belongs_to :buyer, class_name: 'User', inverse_of: :bought_contracts, touch: true
-  belongs_to :seller, class_name: 'User', inverse_of: :sold_contracts, touch: true
+  belongs_to :buyer, class_name: 'User', inverse_of: :bought_contracts
+  belongs_to :seller, class_name: 'User', inverse_of: :sold_contracts
   has_many :payments, dependent: :destroy, inverse_of: :contract
   has_one :last_payment, class_name: 'Payment', order: 'effective_from DESC'
 
