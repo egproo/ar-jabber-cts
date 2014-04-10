@@ -74,7 +74,7 @@
                         if (row.num_participants || row.num_participants === 0) {
                             return row.num_participants;
                         } else {
-                            return type == "display" ? "N/A" : 0;
+                            return type == "display" ? "N/A" : -1;
                         }
                     },
                     sWidth: "5%"
