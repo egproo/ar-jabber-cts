@@ -18,7 +18,7 @@ $(document).ready(function(){
                     sWidth: "10%"
                 }, {
                     mData: 'created_at',
-                    mRender: renderers.dateTime,
+                    mRender: renderers.dateTimeFromUNIX,
                     sWidth: "15%"
                 }],
             iDisplayLength: 3

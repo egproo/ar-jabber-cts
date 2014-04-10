@@ -2,7 +2,7 @@
   {
     action: a.action,
     user: a.user.try(:name) || 'Rails Console',
-    created_at: a.created_at,
+    created_at: a.created_at.utc.to_i,
     model_link: link_to(a.auditable_type, a.auditable),
     comment: a.comment,
     model_text: a.audited_changes.map do |key, value|
