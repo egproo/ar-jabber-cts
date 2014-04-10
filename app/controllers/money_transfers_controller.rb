@@ -26,6 +26,7 @@ class MoneyTransfersController < ApplicationController
       next if payment_hash[:amount].blank?
 
       if contract = Contract.first(conditions: {
+            # TODO(artem): 2014-04-10: might want to be less strict about buyer/seller
             buyer_id: @money_transfer.sender,
             seller_id: @money_transfer.receiver,
             id: payment_hash[:contract_attributes][:id],

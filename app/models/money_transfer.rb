@@ -22,7 +22,7 @@ class MoneyTransfer < ActiveRecord::Base
   end
 
   def readonly?
-    @readonly = !new_record? && !!payments.any?(&:has_successor?)
+    @readonly = !new_record? && payments.any?(&:has_successor?)
   end
 
   def validate_payment_amounts

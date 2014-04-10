@@ -93,6 +93,8 @@ class RoomsController < ApplicationController
 
     if success = @room.save
       Ejabberd.new.room(@room.name).create(@room.buyer.jid)
+    else
+      logger.debug "Validation errors: #{@room.errors.full_messages}"
     end
 
     render_ajax_form(@room, success)

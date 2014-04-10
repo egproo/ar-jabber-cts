@@ -44,7 +44,7 @@ class Payment < ActiveRecord::Base
   end
 
   def has_successor?
-    contract.last_payment != self
+    contract.last_payment && contract.last_payment != self
   end
 
   def overlapper

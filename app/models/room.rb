@@ -10,6 +10,8 @@ class Room < Contract
     format: { with: /.@#{Regexp.escape(Ejabberd::DEFAULT_ROOMS_VHOST)}\z/ }
   validates :name, uniqueness: { scope: [:buyer_id] }
 
+  after_validation :copy_errors_to_short_name
+
   def to_s
     short_name
   end
@@ -38,14 +40,6 @@ class Room < Contract
     end
   end
 
-  attr_reader :occupants_number
-
-  def last_message_at
-    Integer === @last_message_at ?
-      @last_message_at :
-      @last_message_at = (Time.parse("#@last_message_at +0000").to_i rescue 0)
-  end
-
   def deactivate(options = {})
     backup!
     self.active = false
@@ -58,5 +52,12 @@ class Room < Contract
   def normalize_name
     name, host = self.name.split('@', 2)
     self.name = "#{name.nodeprep}@#{host.nameprep}"
+  end
+
+  private
+  def copy_errors_to_short_name
+    errors[:name].each do |error_message|
+      errors.add(:short_name, error_message)
+    end
   end
 end
