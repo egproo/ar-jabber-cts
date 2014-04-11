@@ -1,8 +1,7 @@
 # encoding: utf-8
 
 class Payment < ActiveRecord::Base
-  # Since we never edit Payment alone there's no need to validate it's parent.
-  belongs_to :money_transfer, inverse_of: :payments, validate: false
+  belongs_to :money_transfer, inverse_of: :payments
   belongs_to :contract, inverse_of: :payments
 
   attr_accessible :amount, :contract, :money_transfer, :effective_from, :effective_months
@@ -44,7 +43,13 @@ class Payment < ActiveRecord::Base
   end
 
   def has_successor?
-    contract.last_payment && contract.last_payment != self
+    if last_payment = contract.last_payment
+      if new_record?
+        last_payment.effective_to >= self.effective_from
+      else
+        last_payment != self
+      end
+    end
   end
 
   def overlapper
@@ -73,7 +78,7 @@ class Payment < ActiveRecord::Base
 
   def set_effective_from
     self.effective_from = if new_record?
-                            contract.next_payment_date
+                            contract.try(:next_payment_date)
                           else
                             # We cannot add new Payment between existing ones.
                             self.previous.try(:next_expected_date)

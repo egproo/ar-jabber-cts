@@ -7,7 +7,7 @@ class MoneyTransfer < ActiveRecord::Base
   belongs_to :receiver, class_name: 'User', inverse_of: :received_transfers
   has_many :payments, dependent: :destroy, inverse_of: :money_transfer
 
-  attr_accessible :amount, :comment, :received_at, :sender, :receiver
+  attr_accessible :amount, :comment, :received_at, :sender, :receiver, :payments
   accepts_nested_attributes_for :payments
 
   validates :amount, presence: true, inclusion: { in: (0..5000), message: "from 0 to 5000" }
@@ -42,6 +42,8 @@ class MoneyTransfer < ActiveRecord::Base
 
     if new_record? or received_at_changed?
       payments.each do |p|
+        next unless p.contract
+
         last_mt = p.contract.payments.map(&:money_transfer).sort_by(&:received_at).select { |mt| mt.id != self.id }.last
         if last_mt && last_mt.received_at >= self.received_at
           if new_record?
