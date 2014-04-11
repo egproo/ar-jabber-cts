@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale, :authenticate_user!
 
   rescue_from CanCan::AccessDenied do |exception|
+    logger.error exception.inspect + exception.backtrace * $/
     render text: exception.message
   end
 
@@ -13,6 +14,19 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+  alias_method :real_user, :current_user
+  helper_method :real_user
+  def current_user
+    @effective_user ||=
+      if real_user.try(:role) >= User::ROLE_SUPER_MANAGER &&
+          effective_user_id = session[:effective_user_id]
+        # Allow super-manager to switch effective user
+        User.find(effective_user_id)
+      else
+        real_user
+      end
+  end
+
   def render_ajax_form(object, success)
     if success
       if request.xhr?

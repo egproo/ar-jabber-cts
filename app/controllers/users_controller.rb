@@ -1,5 +1,13 @@
 class UsersController < ApplicationController
-  load_and_authorize_resource
+  skip_authorization_check only: :switch
+  load_and_authorize_resource except: :switch
+
+  def switch
+    if real_user.role >= User::ROLE_SUPER_MANAGER
+      session[:effective_user_id] = params[:id]
+    end
+    redirect_to :root
+  end
 
   def new
   end

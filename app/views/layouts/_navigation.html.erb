@@ -28,7 +28,11 @@
     <p class="navbar-text">
       <%=t 'Welcome' %>, <%= link_to current_user, current_user %> [<%= I18n.locale %>]
       (A: <%= Announcement.untracked(current_user).count %>)
-      <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+      <% if real_user == current_user %>
+        <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+      <% else %>
+        <%= link_to "Back to #{real_user.name}", switch_to_user_path(real_user) %>
+      <% end %>
     </p>
   </li>
 </ul>

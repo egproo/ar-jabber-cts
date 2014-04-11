@@ -18,7 +18,7 @@
 <% end %>
 
 <% if @user.role == User::ROLE_CLIENT %>
-	<%= link_to 'Receive money transfer from this client', new_money_transfer_path(sender_id: @user, receiver_id: current_user), class: 'btn' %>
+  <%= link_to 'Receive money transfer from this client', new_money_transfer_path(sender_id: @user, receiver_id: current_user), class: 'btn' %>
 <% elsif @user == current_user %>
   <%#= link_to 'Receive money transfer from client', "/money_transfers/new?receiver_id=#{@user.id}", class: 'btn' %>
   <%#= link_to 'Send money transfer', "/money_transfers/new?sender_id=#{@user.id}", class: 'btn' %>
@@ -27,6 +27,8 @@
 	  <%= f.input :password, label: 'Change password:' %>
   	  <%= f.submit 'Save Password', class: 'btn' %>
   <% end %>
+<% elsif real_user.role >= User::ROLE_SUPER_MANAGER %>
+  <%= link_to 'Switch to this user', switch_to_user_path(@user), class: 'btn' %>
 <% end %>
 
 <p>Money Transfers:</p>
