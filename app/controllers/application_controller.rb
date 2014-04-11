@@ -18,7 +18,8 @@ class ApplicationController < ActionController::Base
   helper_method :real_user
   def current_user
     @effective_user ||=
-      if real_user.try(:role) >= User::ROLE_SUPER_MANAGER &&
+      real_user &&
+      if real_user.role >= User::ROLE_SUPER_MANAGER &&
           effective_user_id = session[:effective_user_id]
         # Allow super-manager to switch effective user
         User.find(effective_user_id)
