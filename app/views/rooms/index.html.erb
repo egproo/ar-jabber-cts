@@ -43,12 +43,12 @@
                 }, {
                     mData: 'buyer',
                     mRender: renderers.user,
-                    sWidth: "25%"
+                    sWidth: "15%"
                 }, {
 <% if current_user.role >= User::ROLE_SUPER_MANAGER %>
                     mData: 'seller',
                     mRender: renderers.user,
-                    sWidth: "10%"
+                    sWidth: "15%"
                 }, {
 <% end %>
                     mData: 'last_payment.effective_months',
@@ -117,7 +117,7 @@
       <th><%=t 'Payment Amount' %></th>
       <th><%=t 'Payment Date' %></th>
       <th><%=t 'Next Date' %></th>
-      <th><%=t 'Occupants' %></th>
+      <th><%=t 'Users' %></th>
       <th><%=t 'Last Message' %></th>
     </tr>
   </thead>
