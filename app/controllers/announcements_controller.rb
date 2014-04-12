@@ -4,8 +4,8 @@ class AnnouncementsController < ApplicationController
   def new
     @announcement.buyer = User.new
     @announcement.seller = current_user
-    @announcement.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date))
-   end
+    @announcement.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date), amount: 5)
+  end
   
   def create
     attrs = params[:announcement]
