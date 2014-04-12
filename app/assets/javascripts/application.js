@@ -25,7 +25,10 @@
 $(document).on('decorate', function(e, updated) {
     $('.typeahead-user').typeahead({
         name: 'user',
-        prefetch: '/users.json?map=jid'
+        prefetch: {
+            url: '/users.json?map=jid',
+            thumbprint: Math.random().toString()
+        }
     });
 
     $('.typeahead-user').on('typeahead:opened', function() {
