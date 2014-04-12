@@ -7,9 +7,6 @@ $(document).ready(function() {
                 mRender: function(data, type, row) { return renderers.user(row, type, row); },
                 sWidth: "30%"
             }, {
-                mData: "jid",
-                sWidth: "30%"
-            }, {
                 mData: "phone",
                 sWidth: "20%"
             }, {

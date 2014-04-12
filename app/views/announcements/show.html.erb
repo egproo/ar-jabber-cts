@@ -23,5 +23,5 @@
 <% if @announcement.last_payment %>
 	<p>Payment: <%= link_to @announcement.last_payment, @announcement.last_payment.money_transfer %></p>
 <% else %>
-<h3>Unpaid announcement</h3>
+<h4>Unpaid announcement</h4>
 <% end %>

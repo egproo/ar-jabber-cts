@@ -1,20 +1,19 @@
 <%= javascript_tag do %>
 	<%# FIXME: JS code injection %>
-	var original_buyer = '<%=j @room.buyer.name %>';
+	var original_buyer = '<%=j @room.buyer.jid %>';
 <% end %>
 <%= simple_form_for @room, html: { class: 'form-horizontal' }, remote: true do |f| %>
 	<%= f.simple_fields_for :seller do |s| %>
-		<%= s.input :name, label: 'Contract owner',
-		                   readonly: (current_user.role < User::ROLE_SUPER_MANAGER),
-		                   input_html: { class: 'typeahead-user' } %>
+		<%= s.input :jid, label: 'Contract owner',
+		                  readonly: (current_user.role < User::ROLE_SUPER_MANAGER),
+		                  input_html: { class: 'typeahead-user' } %>
 	<% end %>
 	<%= f.input :short_name, label: 'Room name', readonly: !f.object.new_record?, input_html: { class: 'room-name' } %>
 	<%= f.input :comment, input_html: { rows: 4 } %>
 	<%= f.simple_fields_for :buyer do |b| %>
-		<%= b.input :name, label: 'Room owner', input_html: { class: 'typeahead-user', autocomplete: 'off' } %>
-		<%= field_set_tag 'New user', style: ('display: none' if f.object.buyer.name.blank? || !f.object.buyer.new_record?) do %>
+		<%= b.input :jid, label: 'Room owner', input_html: { class: 'typeahead-user', autocomplete: 'off' } %>
+		<%= field_set_tag 'New user', style: ('display: none' if f.object.buyer.jid.blank? || !f.object.buyer.new_record?) do %>
 			<p>This user does not exist. Please provide more information to create a new one:</p>
-			<%= b.input :jid %>
 			<%= b.input :phone %>
 		<% end %>
 	<% end %>

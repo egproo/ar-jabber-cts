@@ -46,7 +46,7 @@ class RoomsController < ApplicationController
   end
 
   def update
-    if params[:room][:buyer_attributes][:name] != @room.buyer.name
+    if params[:room][:buyer_attributes][:jid] != @room.buyer.jid
       logger.info('Room is changing buyer')
       old_room = @room
       old_room.deactivate(server_destroy: false,
@@ -56,9 +56,9 @@ class RoomsController < ApplicationController
       @room.comment = params[:room][:comment]
 
       # FIXME(artem): 2014-04-07: duplicated code
-      if (new_seller_name = params[:room][:seller_attributes][:name]) != @room.seller.name
+      if (new_seller_jid = params[:room][:seller_attributes][:jid]) != @room.seller.jid
         raise CanCan::AccessDenied.new('Not allowed to change seller', :update, Room) unless current_user.role >= User::ROLE_SUPER_MANAGER
-        @room.seller = User.find_by_name(new_seller_name)
+        @room.seller = User.find_by_jid(new_seller_jid)
       end
     end
 
@@ -119,7 +119,7 @@ class RoomsController < ApplicationController
     room.short_name = attrs[:short_name]
 
     # FIXME(artem): 2014-04-07: can? :create, user
-    room.buyer = User.find_by_name(attrs[:buyer_attributes][:name]) ||
+    room.buyer = User.find_by_jid(attrs[:buyer_attributes][:jid]) ||
                  User.new(attrs[:buyer_attributes].merge(role: User::ROLE_CLIENT))
 
     if existing_room = Room.first(
@@ -135,9 +135,9 @@ class RoomsController < ApplicationController
     room.active = true
     room.comment = attrs[:comment] if attrs[:comment].present?
     room.seller = current_user
-    if (new_seller_name = attrs[:seller_attributes][:name]) != room.seller.name
+    if (new_seller_jid = attrs[:seller_attributes][:jid]) != room.seller.jid
       raise CanCan::AccessDenied.new('Not allowed to change seller', :update, Room) unless current_user.role >= User::ROLE_SUPER_MANAGER
-      room.seller = User.find_by_name(new_seller_name)
+      room.seller = User.find_by_jid(new_seller_jid)
     end
 
     payment_hash = attrs[:payment_attributes]

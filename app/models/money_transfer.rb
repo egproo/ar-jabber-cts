@@ -18,7 +18,7 @@ class MoneyTransfer < ActiveRecord::Base
   validate :validate_received_at
 
   def to_s
-    "#{sender.try(:name)} -> #{receiver.try(:name)} $#{amount} at #{received_at.try(:to_date)}"
+    "#{sender.try(:jid)} -> #{receiver.try(:jid)} $#{amount} at #{received_at.try(:to_date)}"
   end
 
   def readonly?

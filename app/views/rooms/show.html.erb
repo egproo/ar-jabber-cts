@@ -16,8 +16,8 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Room Owner: <%= link_to @room.buyer.name, @room.buyer %></td>
-		<td>Contract Creator: <%= link_to @room.seller.name, @room.seller %></td>
+		<td>Room Owner: <%= link_to @room.buyer, @room.buyer %></td>
+		<td>Contract Creator: <%= link_to @room.seller, @room.seller %></td>
 	</tr>
 	<tr>
 		<td>Created: <%= @room.created_at %></td>

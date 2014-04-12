@@ -5,7 +5,6 @@
 		%w(buyer seller).each do |subject_type|
 			subject = room.public_send subject_type
 			mapped[subject_type] = {
-				name: subject.name,
 				role: subject.role,
 				jid: subject.jid,
 				id: subject.id,

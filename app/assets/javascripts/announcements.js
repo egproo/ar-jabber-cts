@@ -1,5 +1,5 @@
 $(document).on('decorate', function(e, updated) {
-    var seller_typeahead = $('.typeahead-user[name="announcement[buyer_attributes][name]"]');
+    var seller_typeahead = $('.typeahead-user[name="announcement[buyer_attributes][jid]"]');
     var seller_info_div = function(seller_input) {
         return seller_input.parent().parent().parent().next();
     };

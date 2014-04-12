@@ -17,7 +17,6 @@ class UsersController < ApplicationController
     @user = User.new(
       role: User::ROLE_CLIENT,
       jid: params[:user][:jid],
-      name: (params[:user][:name].present? && params[:user][:name]) || params[:user][:jid].to_s.split('@', 2)[0],
       phone: params[:user][:phone],
     )
 
@@ -34,7 +33,7 @@ class UsersController < ApplicationController
 
   def index
     respond_to do |format|
-      format.json { render json: @users.map(&:name) }
+      format.json { render json: @users.map(&:jid) }
       format.html
     end
   end

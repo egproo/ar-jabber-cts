@@ -19,8 +19,8 @@ class MoneyTransfersController < ApplicationController
       received_at: params[:money_transfer][:received_at],
     )
 
-    @money_transfer.sender = User.find_by_name(params[:money_transfer][:sender])
-    @money_transfer.receiver = User.find_by_name(params[:money_transfer][:receiver])
+    @money_transfer.sender = User.find_by_jid(params[:money_transfer][:sender])
+    @money_transfer.receiver = User.find_by_jid(params[:money_transfer][:receiver])
 
     params[:money_transfer][:payments_attributes].each_value do |payment_hash|
       next if payment_hash[:amount].blank?

@@ -17,7 +17,7 @@ class AnnouncementsController < ApplicationController
     )
 
     @announcement.seller = current_user
-    @announcement.buyer = User.find_by_name(attrs[:buyer_attributes][:name]) ||
+    @announcement.buyer = User.find_by_jid(attrs[:buyer_attributes][:jid]) ||
                  User.new(attrs[:buyer_attributes].merge(role: User::ROLE_CLIENT))
 
     payment_hash = attrs[:payment_attributes]

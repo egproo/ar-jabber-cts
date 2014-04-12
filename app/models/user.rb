@@ -1,12 +1,11 @@
 class User < ActiveRecord::Base
-  before_save :normalize_jid
+  before_validation :normalize_jid
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :rememberable, :trackable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :password, :password_confirmation, :remember_me
+  attr_accessible :jid, :password, :password_confirmation, :remember_me, :phone, :role, :locale
 
   audited
 
@@ -16,7 +15,6 @@ class User < ActiveRecord::Base
     # We work around this by reimplementing this method.
     {
       id: self.id,
-      name: self.name,
       role: self.role,
       phone: self.phone,
       jid: self.jid,
@@ -60,11 +58,8 @@ class User < ActiveRecord::Base
   has_many :sold_contracts, class_name: 'Contract', foreign_key: 'seller_id'
   has_one :salary_contract, class_name: 'Contract', foreign_key: 'seller_id', conditions: { type: 'Salary' }
 
-  attr_accessible :jid, :name, :password, :phone, :role, :locale
-
-  validates :jid, format: { with: /\A.+@.+\z/ }, presence: true
+  validates :jid, format: { with: /@/ }, presence: true, uniqueness: true
   validates :phone, format: { with: /\A\+?\d{8,15}\z/, if: 'phone.present?', message: "from 8 to 15" }
-  validates :name, presence: true, uniqueness: true
 
   def debt
     return 0 if role <= ROLE_CLIENT
@@ -78,11 +73,11 @@ class User < ActiveRecord::Base
   end
 
   def inspect
-    "#{name} [#{role_name}]#{" (JID/MAIL: #{jid})" if jid}#{" CELL #{phone}" if phone}"
+    "#{jid} [#{role_name}]#{" CELL #{phone}" if phone}"
   end
 
   def to_s
-    name
+    jid
   end
 
   def role_name
@@ -98,7 +93,7 @@ class User < ActiveRecord::Base
           seller_id: self
         }
       },
-      group: 'users.name')
+      group: 'users.jid')
   end
 
   def normalize_jid

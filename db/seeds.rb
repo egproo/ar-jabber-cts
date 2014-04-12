@@ -11,19 +11,16 @@ Audited::Adapters::ActiveRecord::Audit.delete_all
 
 User.delete_all
 u_sa = User.create!(
-  name: 'sa',
   role: User::ROLE_ADMIN,
   jid: 'sa@localhost',
   password: 'secret',
 )
 
 u_client1 = User.create!(
-  name: 'client1',
   role: User::ROLE_CLIENT,
   jid: 'client1@localhost',
 )
 u_client2 = User.create!(
-  name: 'client2',
   role: User::ROLE_CLIENT,
   jid: 'client2@localhost',
 )
