@@ -1,5 +1,5 @@
 class Room < Contract
-  before_save :normalize_name
+  before_validation :normalize_name
 
   validates :name,
     uniqueness: {
@@ -50,7 +50,8 @@ class Room < Contract
   end
 
   def normalize_name
-    name, host = self.name.split('@', 2)
+    name, host = self.name.try(:split, '@', 2)
+    return unless name && host
     self.name = "#{name.nodeprep}@#{host.nameprep}"
   end
 
