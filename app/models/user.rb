@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
   has_many :sold_contracts, class_name: 'Contract', foreign_key: 'seller_id'
   has_one :salary_contract, class_name: 'Contract', foreign_key: 'seller_id', conditions: { type: 'Salary' }
 
-  validates :jid, format: { with: /@/ }, presence: true, uniqueness: true
+  validates :jid, format: { with: /.@./ }, presence: true, uniqueness: true
   validates :phone, format: { with: /\A\+?\d{8,15}\z/, if: 'phone.present?', message: "from 8 to 15" }
 
   def debt
@@ -97,7 +97,8 @@ class User < ActiveRecord::Base
   end
 
   def normalize_jid
-    name, host = self.jid.split('@', 2)
+    name, host = self.jid.try(:split, '@', 2)
+    return unless name && host
     self.jid = "#{name.nodeprep}@#{host.nameprep}"
   end
 end
