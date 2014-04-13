@@ -4,7 +4,10 @@ class AnnouncementsController < ApplicationController
   def new
     @announcement.buyer = User.new
     @announcement.seller = current_user
-    @announcement.payments.build(money_transfer: MoneyTransfer.new(received_at: Time.now.to_date), amount: 5)
+    @announcement.payments.build(
+      money_transfer: MoneyTransfer.new(received_at: Time.now.to_date),
+      amount: Announcement::DEFAULT_COST,
+    )
   end
   
   def create
@@ -52,5 +55,8 @@ class AnnouncementsController < ApplicationController
 
   def index
     @announcements = @announcements.includes(:seller, :buyer)
+    if params[:untracked]
+      @announcements = @announcements.untracked(current_user)
+    end
   end
 end

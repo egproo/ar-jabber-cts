@@ -59,9 +59,8 @@ class EjabberdController < ApplicationController
           name: elements['subject'] || 'no subject',
         )
         a.seller = sender
-        a.buyer = sender
         a.active = false
-        if a.save
+        if a.autotrack && a.save
           render text: "queued (id #{a.id})"
         else
           render text: a.errors.full_messages.join($/), status: 400

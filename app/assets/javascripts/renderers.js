@@ -16,7 +16,12 @@ var renderers = {
     },
 
     announcementRooms: function(data, type, row) {
-        var text = data.join(', ');
+        var text;
+        if (data && data.length > 0) {
+            text = data.join(', ');
+        } else {
+            text = 'no rooms found';
+        }
         if (type === 'display') {
             return "<a href='/announcements/" + row.id + "'>" + text + "</a>";
         }
