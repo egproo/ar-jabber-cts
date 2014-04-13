@@ -4,7 +4,7 @@
 		<td>Role: <%= @user.role_name %></td>
 	</tr>
 	<tr>
-		<td>-</td>
+		<td>Phone: <%= @user.phone.present? ? @user.phone : 'N/A' %></td>
 		<td>Debt: $<%= @user.debt %></td>
 	</tr>
 	<tr>
@@ -33,7 +33,7 @@
 
 <p>Money Transfers:</p>
 <ul>
-  <% (@user.sent_transfers + @user.received_transfers).sort_by(&:received_at).reverse_each do |t| %>
+  <% (@user.sent_transfers + @user.received_transfers).sort_by(&:received_at).reverse[0..20].each do |t| %>
   	<li><%= link_to t, t %></li>
   <% end %>
 </ul>
