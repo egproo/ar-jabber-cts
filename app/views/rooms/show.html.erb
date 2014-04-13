@@ -36,6 +36,7 @@
 <% end %>
 
 <% if @room.active %>
+<div class="btn-toolbar">
 <%= link_to 'Receive money transfer for this contract', new_money_transfer_path(sender_id: @room.buyer, receiver_id: current_user, contract_id: @room.id), class: 'btn' %>
 <%= link_to 'Edit room', edit_room_path(@room),
 	rel: 'tooltip',
@@ -47,6 +48,7 @@
 	title: 'Destroy the room and mark this contract as disabled',
 	confirm: 'Are you sure you want to disable this contract?',
 	method: :delete %>
+</div>
 <% end %>
 
 <% if @room.payments.any? %>
