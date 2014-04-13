@@ -8,6 +8,10 @@
 		<td>Debt: $<%= @user.debt %></td>
 	</tr>
 	<tr>
+		<td>Created at: <%= @user.created_at %></td>
+		<td>Updated at: <%= @user.updated_at %></td>
+	</tr>
+	<tr>
 		<td>Contracts sold: <%= @user.sold_contracts.count %></td>
 		<td>Contracts bought: <%= @user.bought_contracts.count %></td>
 	</tr>
