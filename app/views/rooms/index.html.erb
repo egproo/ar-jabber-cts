@@ -6,7 +6,7 @@
 			subject = room.public_send subject_type
 			mapped[subject_type] = {
 				role: subject.role,
-				jid: subject.jid,
+				name: subject.to_s,
 				id: subject.id,
 			}
 		end
@@ -43,12 +43,12 @@
                 }, {
                     mData: 'buyer',
                     mRender: renderers.user,
-                    sWidth: "15%"
+                    sWidth: "20%"
                 }, {
 <% if current_user.role >= User::ROLE_SUPER_MANAGER %>
                     mData: 'seller',
                     mRender: renderers.user,
-                    sWidth: "15%"
+                    sWidth: "10%"
                 }, {
 <% end %>
                     mData: 'last_payment.effective_months',

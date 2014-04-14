@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
       id: self.id,
       role: self.role,
       phone: self.phone,
-      jid: self.jid,
+      name: self.to_s,
       created_at: self.created_at,
     }
   end
@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
   end
 
   def to_s
-    jid
+    jid.sub("@#{Ejabberd::DEFAULT_VHOST}", '')
   end
 
   def role_name

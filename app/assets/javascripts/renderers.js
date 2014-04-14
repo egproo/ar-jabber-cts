@@ -1,6 +1,6 @@
 var renderers = {
     user: function(data, type, row) {
-        var displayName = data.jid;
+        var displayName = data.name;
         if (type === 'display') {
             return "<a href='/users/" + data.id + "'>" + displayName + "</a>";
         } else {
@@ -104,11 +104,11 @@ var renderers = {
 
     owner: function(data, type, row) {
         if (type === 'display' && row.owner) {
-            return "<a href='/users/" + row.owner.id + "'>" + row.owner.jid + "</a>";
+            return "<a href='/users/" + row.owner.id + "'>" + row.owner.name + "</a>";
         } else if (!row.owner) {
             return '';
         }
-        return row.owner.jid;
+        return row.owner.name;
     },
 
     showDateTime: function(date) {
