@@ -3,7 +3,6 @@ class Announcement < Contract
 
   attr_accessible :adhoc_data
   validates :adhoc_data, presence: true
-  validate :correct_buyer
 
   scope :untracked, proc { |user|
     conditions = {
@@ -61,12 +60,5 @@ class Announcement < Contract
       name = room_names.join(', ') || "#{adhoc_data[/\A\S+/]}..."
     end
     "announcement: #{name}"
-  end
-
-  private
-  def correct_buyer
-    if room_names.any? && guess_buyers != [buyer]
-      errors.add(:adhoc_data, 'does not declare a unique room set corresponding to initiator')
-    end
   end
 end
