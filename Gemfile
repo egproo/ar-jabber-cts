@@ -11,7 +11,7 @@ group :assets do
 
   gem 'jquery-rails'
   gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-rails.git'
-  gem 'twitter-typeahead-rails', git: 'git://github.com/yourabi/twitter-typeahead-rails.git'
+  gem 'twitter-typeahead-rails', '0.9.3', git: 'git://github.com/yourabi/twitter-typeahead-rails.git', tag: 'v0.9.3'
 end
 
 gem 'twitter-bootstrap-rails', git: 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
