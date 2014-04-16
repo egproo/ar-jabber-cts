@@ -42,7 +42,9 @@ class MoneyTransfersController < ApplicationController
 
     authorize! :create, @money_transfer
 
-    if @money_transfer.save
+    # MT may appear readonly due to unresolved double-saving bug;
+    # in this case validation should also fail, but will set errors
+    if @money_transfer.valid? && @money_transfer.save
       redirect_to @money_transfer
     else
       logger.debug "Validation errors: #{@money_transfer.errors.inspect}"

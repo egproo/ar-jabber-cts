@@ -48,6 +48,8 @@ class Payment < ActiveRecord::Base
         last_payment.effective_to >= self.effective_from
       else
         last_payment != self
+      end.tap do |result|
+        logger.debug "Payment #{id}[#{self}] has a successor #{last_payment.id}[#{last_payment}]" if result
       end
     end
   end
