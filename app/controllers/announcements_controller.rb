@@ -54,7 +54,7 @@ class AnnouncementsController < ApplicationController
   end
 
   def index
-    @announcements = @announcements.includes(:seller, :buyer)
+    @announcements = @announcements.includes(:seller, :buyer, :payments)
     if params[:untracked]
       @announcements = @announcements.untracked(current_user)
     end
