@@ -4,6 +4,7 @@ class MoneyTransfersController < ApplicationController
   def new
     @money_transfer.received_at = Time.now.to_date
     # FIXME: security issue (minor: r/o access)
+    # TODO(artem): 2014-04-16: create a new instance if not found / unspecified
     @money_transfer.sender = User.find(params[:sender_id]) if params[:sender_id]
     @money_transfer.receiver = User.find(params[:receiver_id]) if params[:receiver_id]
 
@@ -19,8 +20,8 @@ class MoneyTransfersController < ApplicationController
       received_at: params[:money_transfer][:received_at],
     )
 
-    @money_transfer.sender = User.find_by_jid(params[:money_transfer][:sender])
-    @money_transfer.receiver = User.find_by_jid(params[:money_transfer][:receiver])
+    @money_transfer.sender = User.find_by_jid(params[:money_transfer][:sender_attributes][:jid])
+    @money_transfer.receiver = User.find_by_jid(params[:money_transfer][:receiver_attributes][:jid])
 
     params[:money_transfer][:payments_attributes].each_value do |payment_hash|
       next if payment_hash[:amount].blank?

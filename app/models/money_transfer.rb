@@ -8,7 +8,7 @@ class MoneyTransfer < ActiveRecord::Base
   has_many :payments, dependent: :destroy, inverse_of: :money_transfer
 
   attr_accessible :amount, :comment, :received_at, :sender, :receiver, :payments
-  accepts_nested_attributes_for :payments
+  accepts_nested_attributes_for :payments, :sender, :receiver
 
   validates :amount, presence: true, inclusion: { in: (0..5000), message: "from 0 to 5000" }
   validates :sender, presence: true

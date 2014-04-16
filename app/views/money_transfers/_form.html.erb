@@ -1,6 +1,10 @@
 <%= simple_form_for @money_transfer, html: { class: 'form-horizontal' } do |f| %>
-	<%= f.input :sender, readonly: !!@money_transfer.sender, input_html: { class: 'typeahead-user' } %>
-	<%= f.input :receiver, readonly: !!@money_transfer.receiver, input_html: { class: 'typeahead-user' } %>
+	<%= f.simple_fields_for :sender do |s| %>
+		<%= s.input :jid, label: 'Sender', readonly: !!s.object, input_html: { class: 'typeahead-user' } %>
+	<% end %>
+	<%= f.simple_fields_for :receiver do |r| %>
+		<%= r.input :jid, label: 'Receiver', readonly: !!r.object, input_html: { class: 'typeahead-user' } %>
+	<% end %>
 	<%= f.input :amount %>
 	<%= f.input :received_at, input_html: { class: 'date' }, as: :string %>
 	<%= f.input :comment, input_html: { rows: 4 } %>
