@@ -3,7 +3,7 @@
         payment: a.payments.first.present? ? link_to("$#{a.payments.first.amount}", money_transfer_path(a.payments.first.money_transfer_id)) : 'N/A',
         seller: a.seller,
         buyer: a.buyer,
-        room_names: a.room_names,
+        room_names: a.room_names.length > 0 ? link_to(a.room_names.join(', '), announcement_path(a.id)) : 'No rooms found',
         name: a.name,
         created_at: a.created_at
     }
@@ -30,7 +30,6 @@ end %>
                     sWidth: "20%"
                 }, {
                     mData: "room_names",
-                    mRender: renderers.announcementRooms,
                     sWidth: "55%"
                 }, {
                     mData: "payment",

@@ -11,21 +11,8 @@ var renderers = {
     date: function(data, type, row) {
         if (type === 'display') {
             return new Date(Date.parse(data)).toISOString().replace(/T.*/, '');
-        } 
+        }
         return data;
-    },
-
-    announcementRooms: function(data, type, row) {
-        var text;
-        if (data && data.length > 0) {
-            text = data.join(', ');
-        } else {
-            text = 'no rooms found';
-        }
-        if (type === 'display') {
-            return "<a href='/announcements/" + row.id + "'>" + text + "</a>";
-        }
-        return text;
     },
 
     roomClass: function(next_payment_at, active) {
