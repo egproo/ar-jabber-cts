@@ -1,9 +1,10 @@
 <% @announcements.map! do |a|
+    room_names = a.room_names
     {
         payment: a.payments.first.present? ? link_to("$#{a.payments.first.amount}", money_transfer_path(a.payments.first.money_transfer_id)) : 'N/A',
         seller: a.seller,
         buyer: a.buyer,
-        room_names: a.room_names,
+        room_names_link: link_to(room_names.any? ? room_names.join(', ') : 'No rooms found', a),
         name: a.name,
         created_at: a.created_at
     }
@@ -29,8 +30,7 @@ end %>
                     mRender: renderers.user,
                     sWidth: "20%"
                 }, {
-                    mData: "room_names",
-                    mRender: renderers.announcementRooms,
+                    mData: "room_names_link",
                     sWidth: "55%"
                 }, {
                     mData: "payment",
