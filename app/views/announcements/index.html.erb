@@ -1,6 +1,6 @@
 <% @announcements.map! do |a|
     {
-        payment: a.payments.first.present? ? link_to(a.payments.first.amount, money_transfer_path(a.payments.first.money_transfer_id)) : 'N/A',
+        payment: a.payments.first.present? ? link_to("$#{a.payments.first.amount}", money_transfer_path(a.payments.first.money_transfer_id)) : 'N/A',
         seller: a.seller,
         buyer: a.buyer,
         room_names: a.room_names,
