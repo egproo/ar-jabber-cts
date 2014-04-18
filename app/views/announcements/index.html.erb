@@ -1,7 +1,8 @@
 <% @announcements.map! do |a|
     room_names = a.room_names
     {
-        payment: a.payments.first.present? ? link_to("$#{a.payments.first.amount}", money_transfer_path(a.payments.first.money_transfer_id)) : 'N/A',
+        payment: (link_to("$#{a.payments.first.amount}", money_transfer_path(a.payments.first.money_transfer_id)) if a.payments.first.present?),
+        amount: a.payments.first.amount,
         seller: a.seller,
         buyer: a.buyer,
         room_names_link: link_to(room_names.any? ? room_names.join(', ') : 'No rooms found', a),
@@ -33,7 +34,15 @@ end %>
                     mData: "room_names_link",
                     sWidth: "55%"
                 }, {
-                    mData: "payment",
+                    mData: null,
+                    sType: "numeric",
+                    mRender: function(data, type, row) {
+                        if (row.amount || row.amount === 0) {
+                            return type == "display" ? row.payment : row.amount;
+                        } else {
+                            return type == "display" ? "N/A" : -1;
+                        }
+                    },
                     sWidth: "5%"
                 }, {
                     mData: "created_at",
