@@ -1,8 +1,8 @@
 <% @announcements.map! do |a|
     room_names = a.room_names
     {
-        payment: (link_to("$#{a.last_payment.amount}", money_transfer_path(a.last_payment.money_transfer_id)) if a.last_payment.present?),
-        amount: a.last_payment.amount,
+        payment: (link_to("$#{a.payments.first.amount}", money_transfer_path(a.payments.first.money_transfer_id)) if a.payments.first.present?),
+        amount: a.payments.first.amount,
         seller: a.seller,
         buyer: a.buyer,
         room_names_link: room_names.length > 0 ? link_to(room_names.join(', '), announcement_path(a)) : link_to('no rooms found', announcement_path(a)),
