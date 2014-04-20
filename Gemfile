@@ -16,6 +16,10 @@ end
 
 gem 'twitter-bootstrap-rails', git: 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0.0.beta'
+end
+
 group :production do
   gem 'unicorn'
   gem 'memcache-client'
