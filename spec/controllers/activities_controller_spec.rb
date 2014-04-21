@@ -2,12 +2,8 @@ require 'spec_helper'
 
 describe ActivitiesController do
   before(:each) do
-    @user = User.create!(
-      role: User::ROLE_ADMIN,
-      jid: 'sa@localhost',
-      password: 'secret',
-    )
-    sign_in @user
+    user = create(:user)
+    sign_in user
   end
 
   describe 'GET index' do

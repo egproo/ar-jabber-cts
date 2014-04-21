@@ -37,4 +37,7 @@ RSpec.configure do |config|
 
   # Include authenticate helpers
   config.include Devise::TestHelpers, type: :controller
+
+  # Include factorygirl
+  config.include FactoryGirl::Syntax::Methods
 end

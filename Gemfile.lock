@@ -75,6 +75,11 @@ GEM
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.0.2)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.1)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
     hike (1.2.3)
     i18n (0.6.9)
     idn-ruby (0.1.0)
@@ -187,6 +192,7 @@ DEPENDENCIES
   bert
   cancancan
   devise
+  factory_girl_rails (~> 4.0)
   idn-ruby
   jquery-datatables-rails!
   jquery-rails
