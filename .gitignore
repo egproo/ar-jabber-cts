@@ -19,6 +19,7 @@
 
 # vim swap files
 *.swp
+*.swo
 
 /.htpasswd
 /vendor/bundle
