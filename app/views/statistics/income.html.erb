@@ -11,8 +11,6 @@
       table2_data.push([Date.new(key[0], key[1]), amount_sum])
     end
    end
-
-   all_data = table2_data + table_data
 %>
 
 <%= javascript_include_tag "http://www.google.com/jsapi" %>
@@ -33,12 +31,19 @@
     var chart = new google.visualization.AnnotationChart(document.getElementById('orders_chart'));
     chart.draw(table);
 
+    // Make correct date offset
+    function correctOffset(date) {
+      // Get current time in milliseconds and add time offset
+      // in milliseconds (convert by multipying by 60000)
+      return new Date (date.getTime() + date.getTimezoneOffset() * 60000);
+    }
+
     var table2 = new google.visualization.DataTable();
     table2.addColumn('date', 'Date');
     table2.addColumn('number', 'Sum');
     table2.addRows([
       <% table2_data.map do |date, amount| %>
-        [new Date('<%= date %>'), <%= amount %>],
+        [correctOffset(new Date('<%= date %>')), <%= amount %>],
       <% end %>
     ]);
 
