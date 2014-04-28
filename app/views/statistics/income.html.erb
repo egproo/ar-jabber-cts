@@ -8,11 +8,9 @@
     if value.size > 1
       amount_sum = 0
       value.each { |v| amount_sum += v[1] }
-      table2_data.push([Date.new(key[0], key[1]), amount_sum])
+      table2_data.push([DateTime.new(key[0], key[1]), amount_sum])
     end
    end
-
-   all_data = table2_data + table_data
 %>
 
 <%= javascript_include_tag "http://www.google.com/jsapi" %>
@@ -36,11 +34,18 @@
     var table2 = new google.visualization.DataTable();
     table2.addColumn('date', 'Date');
     table2.addColumn('number', 'Sum');
-    table2.addRows([
-      <% table2_data.map do |date, amount| %>
-        [new Date('<%= date %>'), <%= amount %>],
-      <% end %>
-    ]);
+
+    // Create rows for the second table
+    var table2Rows = [];
+
+    // Make the date object with amount of seconds since 1970
+    var d;
+    <% table2_data.map do |date, amount| %>
+      d = new Date(0);
+      d.setUTCSeconds(<%= date.to_i %>);
+      table2Rows.push([d, <%= amount %>]);
+    <% end %>
+    table2.addRows(table2Rows);
 
     var formatter = new google.visualization.DateFormat({pattern: "yyyy/MMM"});
     formatter.format(table2, 0);
