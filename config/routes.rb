@@ -7,6 +7,8 @@ JabberCTS::Application.routes.draw do
   root :to => 'rooms#index'
   get "ejabberd/commit"
   get "ejabberd/sync", as: 'ejabberd_sync'
+  get "ejabberd/s2s"
+  post "ejabberd/s2s", as: 'ejabberd_s2s'
   get "statistics/income", as: 'statistics_income'
   get 'i18n/datatable'
   get 'activities/index', as: 'activities'

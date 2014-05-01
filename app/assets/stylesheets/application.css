@@ -56,3 +56,11 @@ table.dataTable thead th {
 	font-size: 85%;
 	border-bottom: none;
 }
+
+.allow {
+	color: #22ee22;
+}
+
+.deny {
+	color: #ee2222;
+}

@@ -9,6 +9,27 @@ class EjabberdController < ApplicationController
     }
   end
 
+  def s2s
+    return render text: 'Not allowed' unless current_user.role >= User::ROLE_SUPER_MANAGER
+    ejabberd = Ejabberd.new
+    if params[:vhost] && params[:server] && params[:operation]
+      @result = ejabberd.rpc(:s2s_filter,
+                             # ejabberd xmlrpc is order-sensitive so we have to re-specify params
+                             vhost: params[:vhost],
+                             server: params[:server],
+                             action: params[:operation])
+      @result = %w(failure success)[@result] if Integer === @result
+    end
+    @actions = ejabberd.rpc(:s2s_filter,
+                            vhost: Ejabberd::DEFAULT_VHOST,
+                            server: '@all',
+                            action: 'query')
+    @default_policy = ejabberd.rpc(:s2s_filter,
+                                   vhost: Ejabberd::DEFAULT_VHOST,
+                                   server: '@default',
+                                   action: 'query')
+  end
+
   def commit
     return render text: 'Not allowed' unless current_user.role >= User::ROLE_SUPER_MANAGER
     ej = Ejabberd.new
@@ -32,7 +53,24 @@ class EjabberdController < ApplicationController
     logger.debug("Report received: #{report}")
 
     if report.assoc(:auth).try(:last) != Ejabberd::CONFIG[:auth_code]
-      return render text: 'Unauthorized'
+      return render status: 403, text: 'Unauthorized'
+    end
+
+    if report.assoc(:type).last == 'register'
+      user = report.assoc(:user).last
+      server = report.assoc(:server).last
+      password = report.assoc(:password).last
+
+      recent = recents(user)
+      user_nd = user.gsub(/\d/, '')
+      if recent.any? { |r| r.gsub(/\d/, '') == user_nd }
+        logger.info("Register Inhibited: #{user}@#{server}:#{password} (#{user_nd})")
+        password = 'registration-inhibited'
+      else
+        logger.info("Register Allowed for #{user}@#{server}")
+      end
+
+      return render text: password
     end
 
     sender = report.assoc(:from).last
@@ -70,6 +108,27 @@ class EjabberdController < ApplicationController
       end
     else
       render text: 'user not found', status: 403
+    end
+  end
+
+  private
+  def recents(add = nil)
+    File.open('/tmp/ejabberd-recent-regs.txt', 'a+') do |f|
+      f.flock(File::LOCK_EX)
+
+      f.seek(0)
+      regs = f.read.split("\n")
+
+      if regs.size > 100
+        regs = regs[-100..-1]
+      end
+
+      f.seek(0)
+      f.truncate(0)
+
+      f.puts regs
+      f.puts add if add
+      regs
     end
   end
 end
