@@ -12,10 +12,10 @@ class EjabberdController < ApplicationController
   def s2s
     return render text: 'Not allowed' unless current_user.role >= User::ROLE_SUPER_MANAGER
     ejabberd = Ejabberd.new
-    if params[:vhost] && params[:server] && params[:operation]
+    if params[:server] && params[:operation]
       @result = ejabberd.rpc(:s2s_filter,
                              # ejabberd xmlrpc is order-sensitive so we have to re-specify params
-                             vhost: params[:vhost],
+                             vhost: Ejabberd::DEFAULT_VHOST,
                              server: params[:server],
                              action: params[:operation])
       @result = %w(failure success)[@result] if Integer === @result
@@ -28,6 +28,36 @@ class EjabberdController < ApplicationController
                                    vhost: Ejabberd::DEFAULT_VHOST,
                                    server: '@default',
                                    action: 'query')
+  end
+
+  def s2s_cleanup
+    return render text: 'Not allowed' unless current_user.role >= User::ROLE_SUPER_MANAGER
+    ejabberd = Ejabberd.new
+
+    actions = ejabberd.rpc(:s2s_filter,
+                           vhost: Ejabberd::DEFAULT_VHOST,
+                           server: '@all',
+                           action: 'query')
+
+    default_policy = ejabberd.rpc(:s2s_filter,
+                                  vhost: Ejabberd::DEFAULT_VHOST,
+                                  server: '@default',
+                                  action: 'query')
+
+    removals =
+    actions.count do |action|
+      if action['action'] == default_policy
+        logger.info("action for server #{action['server']} has the same policy as default #{default_policy}, removing")
+        ejabberd.rpc(:s2s_filter,
+                     vhost: Ejabberd::DEFAULT_VHOST,
+                     server: action['server'],
+                     action: 'delete')
+        true
+      end
+    end
+
+    flash[:notice] = "#{removals} entries were removed"
+    redirect_to ejabberd_s2s_path
   end
 
   def commit

@@ -1,9 +1,9 @@
 <% if @result %>
-	<p>Result of <%= params[:operation] %> of <%= params[:server].inspect %> at <%= params[:vhost].inspect %> is: <%= @result %>.</p>
+	<p>Result of <%= params[:operation] %> of <%= params[:server].inspect %> is: <%= @result %>.</p>
 <% end %>
 
 <%= form_tag(ejabberd_s2s_path) do %>
-	<p>VHost: <%= select_tag 'vhost', options_for_select(%w(syriatalk.biz), 'syriatalk.biz') %></p>
+	<p>VHost: <%= Ejabberd::DEFAULT_VHOST %></p>
 	<p>Server: <%= text_field_tag 'server', params[:server] %></p>
 
 	<p>
@@ -16,7 +16,7 @@
 
 <p>Current filter settings:<p>
 <p class='<%= @default_policy %>'>Default policy: <%= @default_policy %>.</p>
-<p><%= link_to 'Remove entries matching default policy', '/', class: 'btn', disabled: true %></p>
+<p><%= link_to 'Remove entries matching default policy', ejabberd_s2s_cleanup_path, class: 'btn' %></p>
 <ul>
 	<% @actions.each do |action| %>
 		<li class='<%= action['action'] %>'><%= action['server'] %>: <%= action['action'] %></li>
