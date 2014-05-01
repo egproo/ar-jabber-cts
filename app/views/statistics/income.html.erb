@@ -8,7 +8,9 @@
     if value.size > 1
       amount_sum = 0
       value.each { |v| amount_sum += v[1] }
-      table2_data.push([DateTime.new(key[0], key[1]), amount_sum])
+      # In order to keep correct month through all the time zones, set
+      # day to 15 (in DateTime.new)
+      table2_data.push([DateTime.new(key[0], key[1], 15), amount_sum])
     end
    end
 %>
