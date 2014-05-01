@@ -92,8 +92,7 @@ class MoneyTransfersController < ApplicationController
   end
 
   def index
-    # FIXME: security issue (full read: major)
-    @money_transfers = @money_transfers.includes(:sender, :receiver)
+    @money_transfers = @money_transfers.includes(:sender, :receiver).order('received_at DESC').limit(1000)
   end
 
   private
