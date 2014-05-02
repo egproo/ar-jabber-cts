@@ -1,4 +1,7 @@
 class Announcement < Contract
+
+  has_and_belongs_to_many :rooms
+
   DEFAULT_COST = 5
 
   attr_accessible :adhoc_data

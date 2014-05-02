@@ -1,4 +1,7 @@
 class Room < Contract
+
+  has_and_belongs_to_many :announcements
+
   before_validation :normalize_name
 
   validates :name,
