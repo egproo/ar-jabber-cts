@@ -110,6 +110,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
+    railroady (1.1.1)
     rails (3.2.17)
       actionmailer (= 3.2.17)
       actionpack (= 3.2.17)
@@ -198,6 +199,7 @@ DEPENDENCIES
   jquery-rails
   less-rails
   memcache-client
+  railroady
   rails (= 3.2.17)
   rspec-rails (~> 3.0.0.beta)
   sass-rails

@@ -27,3 +27,6 @@
 .ruby-version
 /config/application.yml
 /config/rpc.yml
+
+# Ignore railroady files
+*.svg
