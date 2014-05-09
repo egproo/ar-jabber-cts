@@ -1,5 +1,6 @@
-{<img src="https://travis-ci.org/dotdoom/jabber-cts.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/dotdoom/jabber-cts]
-
 == JabberCTS
+
+{<img src="https://travis-ci.org/dotdoom/jabber-cts.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/dotdoom/jabber-cts]
+{<img src="https://codeclimate.com/github/dotdoom/jabber-cts.png" />}[https://codeclimate.com/github/dotdoom/jabber-cts]
 
 Rails.
