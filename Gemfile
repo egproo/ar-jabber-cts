@@ -26,6 +26,8 @@ group :production do
   gem 'memcache-client'
 end
 
+gem 'codeclimate-test-reporter', group: :test, require: nil
+
 gem 'simple_form'
 gem 'audited-activerecord'
 gem 'idn-ruby'
