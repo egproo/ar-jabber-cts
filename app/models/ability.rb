@@ -3,6 +3,9 @@ class Ability
 
   def initialize(user)
     case user.role
+    when User::ROLE_CLIENT
+      can :show, User, id: user.id
+      can :read, Contract, buyer_id: user.id, active: true
     when User::ROLE_MANAGER
       can :manage, Contract, seller_id: user.id
       can :manage, MoneyTransfer, receiver_id: user.id
