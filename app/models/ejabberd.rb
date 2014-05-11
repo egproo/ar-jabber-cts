@@ -96,8 +96,7 @@ class Ejabberd
   def build_transactions
     (server_rooms = room_names).map do |room_name|
       real_room_name = room_name
-      node, host = room_name.split('@', 2)
-      room_name = "#{node.nodeprep}@#{host.nameprep}"
+      room_name = JID.new(room_name).to_s
 
       tracked_rooms = ::Room.preload(:last_payment).where(name: room_name).all
       if tracked_rooms.present?
