@@ -14,11 +14,7 @@ class MoneyTransfersController < ApplicationController
   end
 
   def create
-    @money_transfer = MoneyTransfer.new(
-      amount: params[:money_transfer][:amount],
-      comment: params[:money_transfer][:comment],
-      received_at: params[:money_transfer][:received_at],
-    )
+    @money_transfer = MoneyTransfer.new(params[:money_transfer].slice(:amount, :comment, :received_at))
 
     @money_transfer.sender = User.find_by_jid(params[:money_transfer][:sender_attributes][:jid])
     @money_transfer.receiver = User.find_by_jid(params[:money_transfer][:receiver_attributes][:jid])
@@ -65,11 +61,7 @@ class MoneyTransfersController < ApplicationController
   def update
     @money_transfer = MoneyTransfer.find(params[:id], include: { payments: :contract })
 
-    @money_transfer.assign_attributes(
-      amount: params[:money_transfer][:amount],
-      comment: params[:money_transfer][:comment],
-      received_at: params[:money_transfer][:received_at],
-    )
+    @money_transfer.assign_attributes(params[:money_transfer].slice(:amount, :comment, :received_at))
 
     @money_transfer.payments.each do |p|
       index, payment_hash = params[:money_transfer][:payments_attributes].find do |index, payment_hash|
