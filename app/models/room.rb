@@ -50,9 +50,7 @@ class Room < Contract
   end
 
   def normalize_name
-    name, host = self.name.try(:split, '@', 2)
-    return unless name && host
-    self.name = "#{name.nodeprep}@#{host.nameprep}"
+    self.name = JID.new(name).to_s if name
   end
 
   private

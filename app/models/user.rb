@@ -97,8 +97,6 @@ class User < ActiveRecord::Base
   end
 
   def normalize_jid
-    name, host = self.jid.try(:split, '@', 2)
-    return unless name && host
-    self.jid = "#{name.nodeprep}@#{host.nameprep}"
+    self.jid = JID.new(jid).to_s if jid
   end
 end
