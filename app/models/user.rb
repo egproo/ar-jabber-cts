@@ -63,12 +63,18 @@ class User < ActiveRecord::Base
 
   def debt
     return 0 if role <= ROLE_CLIENT
+    total_received - total_sent - total_salary
+  end
 
-    # Total received
-    MoneyTransfer.all(conditions: { receiver_id: self }).sum(&:amount) -
-    # Minus total sent
-    MoneyTransfer.all(conditions: { sender_id: self }).sum(&:amount) -
-    # Minus salary payoffs
+  def total_received
+    MoneyTransfer.all(conditions: { receiver_id: self }).sum(&:amount)
+  end
+
+  def total_sent
+    MoneyTransfer.all(conditions: { sender_id: self }).sum(&:amount)
+  end
+
+  def total_salary
     Payment.all(joins: :contract, conditions: { contracts: { type: 'Salary', seller_id: self } }).sum(&:amount)
   end
 
