@@ -2,7 +2,8 @@ class Announcement < Contract
 
   has_and_belongs_to_many :rooms
 
-  DEFAULT_COST = 5
+  DEFAULT_ANNOUNCEMENT_COST = 5
+  FIRST_ANNOUNCEMENT_COST = 0
 
   attr_accessible :adhoc_data
   validates :adhoc_data, presence: true
@@ -44,11 +45,11 @@ class Announcement < Contract
     self.buyer = buyers.first
 
     payments.build(
-      amount: DEFAULT_COST,
+      amount: DEFAULT_ANNOUNCEMENT_COST,
       effective_months: 1,
     ).tap do |p|
       p.build_money_transfer(
-        amount: DEFAULT_COST,
+        amount: DEFAULT_ANNOUNCEMENT_COST,
         received_at: Time.now.to_date,
         sender: buyer,
         receiver: seller,
@@ -63,5 +64,13 @@ class Announcement < Contract
       name = room_names.join(', ') || "#{adhoc_data[/\A\S+/]}..."
     end
     "announcement: #{name}"
+  end
+
+  def cost
+    if (rooms = Room.where(name: room_names)).size == 1 && rooms.first.active && rooms.first.announcements.empty?
+      return FIRST_ANNOUNCEMENT_COST
+    else
+      return DEFAULT_ANNOUNCEMENT_COST
+    end
   end
 end

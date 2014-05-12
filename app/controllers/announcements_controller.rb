@@ -6,10 +6,9 @@ class AnnouncementsController < ApplicationController
     @announcement.seller = current_user
     @announcement.payments.build(
       money_transfer: MoneyTransfer.new(received_at: Time.now.to_date),
-      amount: Announcement::DEFAULT_COST,
     )
   end
-  
+
   def create
     attrs = params[:announcement]
     @announcement = Announcement.new(
@@ -27,7 +26,7 @@ class AnnouncementsController < ApplicationController
     money_transfer = MoneyTransfer.new(
       sender: @announcement.buyer,
       receiver: @announcement.seller,
-      amount: payment_hash[:amount],
+      amount: @announcement.cost,
       received_at: payment_hash[:money_transfer_attributes][:received_at],
     )
     payment = money_transfer.payments.build(
@@ -42,7 +41,7 @@ class AnnouncementsController < ApplicationController
 
     if success = @announcement.save
       receivers = Ejabberd.new.announce(@announcement.name, @announcement.adhoc_data)
-      flash[:notice] = "The announcement has been sent to #{receivers} users."
+      flash[:notice] = "The announcement has been sent to #{receivers} users. Payment amount: $#{payment.amount}"
     else
       logger.error @announcement.errors.full_messages
     end
