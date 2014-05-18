@@ -23,10 +23,11 @@ class AnnouncementsController < ApplicationController
                  User.new(attrs[:buyer_attributes].merge(role: User::ROLE_CLIENT))
 
     payment_hash = attrs[:payment_attributes]
+
     money_transfer = MoneyTransfer.new(
       sender: @announcement.buyer,
       receiver: @announcement.seller,
-      amount: @announcement.cost,
+      amount: @announcement.room_and_cost,
       received_at: payment_hash[:money_transfer_attributes][:received_at],
     )
     payment = money_transfer.payments.build(
@@ -34,6 +35,11 @@ class AnnouncementsController < ApplicationController
       amount: money_transfer.amount,
       effective_months: 1,
     )
+
+    # Due to a bug https://github.com/rails/rails/issues/7809
+    # and monkey patch config/initializers/monkey_patches/autosave_association.rb
+    # we have to call .save here.
+    @announcement.save
 
     @announcement.payments << payment
 
