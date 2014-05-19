@@ -2,7 +2,6 @@ class Announcement < Contract
 
   has_and_belongs_to_many :rooms
 
-
   DEFAULT_ANNOUNCEMENT_COST = 5
   FIRST_ANNOUNCEMENT_COST = 0
 
@@ -18,17 +17,6 @@ class Announcement < Contract
     end
     includes(:payments).where(conditions)
   }
-
-  #before_create do
-    #if (rooms = Room.where(name: room_names)).size == 1 && rooms.first.active && rooms.first.announcements.empty?
-      #rooms.first << self
-      #return FIRST_ANNOUNCEMENT_COST
-      #puts "AHAHAHAHAHAHAHAHAHAHAH #{rooms.first.id}"
-    #else
-      #return DEFAULT_ANNOUNCEMENT_COST
-      #puts "121212121212AHAHAHAHAHAHAHAHAHAHAH"
-    #end
-  #end
 
   def room_names
     known_rooms = adhoc_data.scan(/\S+@#{Ejabberd::DEFAULT_ROOMS_VHOST}/)
