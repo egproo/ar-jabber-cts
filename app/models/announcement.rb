@@ -44,12 +44,14 @@ class Announcement < Contract
 
     self.buyer = buyers.first
 
+    amount = room_and_cost
+
     payments.build(
-      amount: DEFAULT_ANNOUNCEMENT_COST,
+      amount: amount,
       effective_months: 1,
     ).tap do |p|
       p.build_money_transfer(
-        amount: DEFAULT_ANNOUNCEMENT_COST,
+        amount: amount,
         received_at: Time.now.to_date,
         sender: buyer,
         receiver: seller,
