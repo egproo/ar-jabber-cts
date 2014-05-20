@@ -21,7 +21,6 @@
 				style: ('display: none' unless f.object.buyer_id_changed? || f.object.new_record?)
 			) do %>
 		<%= f.simple_fields_for :payment_attributes, f.object.payments.last do |p| %>
-			<%= p.input :amount, label: 'Payment amount', readonly: true %>
 			<%= p.simple_fields_for :money_transfer do |mt| %>
 				<%= mt.input :received_at, input_html: { class: 'date' }, as: :string, readonly: true %>
 			<% end %>
