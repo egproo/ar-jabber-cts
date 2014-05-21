@@ -60,4 +60,13 @@
 	</ul>
 <% end %>
 
+<% if @room.announcements.any? %>
+	<p>Announcements:</p>
+	<ul>
+<%   @room.announcements(include: :last_payment).each do |a| %>
+    <li>&nbsp;&nbsp;<%= link_to a, a %></li>
+<%   end %>
+	</ul>
+<% end %>
+
 <%= render partial: 'info' %>

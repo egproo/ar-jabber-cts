@@ -63,9 +63,13 @@ class Announcement < Contract
 
   def to_s
     if (name = self.name).blank?
-      name = room_names.join(', ') || "#{adhoc_data[/\A\S+/]}..."
+      #name = room_names.join(', ') || "#{adhoc_data[/\A\S+(\s+\S+){0,3}/]}..."
+      name = "#{adhoc_data[/\S+(\s+\S+){0,3}/]}..."
     end
-    "announcement: #{name}"
+    if true # association(:last_payment).loaded? # doesn't work yet
+      name << " (payment amount $#{last_payment.amount})"
+    end
+    name
   end
 
   def room_and_cost

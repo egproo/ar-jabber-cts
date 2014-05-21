@@ -18,7 +18,9 @@ class Payment < ActiveRecord::Base
   validate :validate_not_overlaps
 
   def to_s
-    "$#{amount} for #{contract} at #{money_transfer.received_at.to_date} " <<
+    contract_info = " for #{contract}" if association(:contract).loaded?
+    received_at_info = " at #{money_transfer.received_at.to_date}" if association(:money_transfer).loaded?
+    "$#{amount}#{contract_info} #{received_at_info} " <<
       "(effective #{effective_from.try(:to_date)} — #{effective_to.try(:to_date)})"
   end
 
