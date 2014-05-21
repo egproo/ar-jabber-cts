@@ -8,6 +8,8 @@ class Announcement < Contract
   attr_accessible :adhoc_data
   validates :adhoc_data, presence: true
 
+  validate :all_rooms_have_the_same_owner, on: :create
+
   scope :untracked, proc { |user|
     conditions = {
       payments: { contract_id: nil }
@@ -79,5 +81,11 @@ class Announcement < Contract
     else
       return DEFAULT_ANNOUNCEMENT_COST
     end
+  end
+
+  private
+
+  def all_rooms_have_the_same_owner
+    errors.add(:adhoc_data, "All rooms should have the same owner") unless guess_buyers.size == 1
   end
 end
