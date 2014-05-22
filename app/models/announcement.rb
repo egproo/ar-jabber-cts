@@ -21,12 +21,7 @@ class Announcement < Contract
   }
 
   def room_names
-    known_rooms = adhoc_data.scan(/\S+@#{Ejabberd::DEFAULT_ROOMS_VHOST}/)
-    if known_rooms.present?
-      known_rooms
-    else
-      adhoc_data.scan(/\S+@(?:chat|conference)\.\S+/)
-    end.uniq
+    Room.active.pluck(:name).select { |name| adhoc_data.include?(name) }
   end
 
   def guess_buyers
