@@ -63,5 +63,6 @@ class AnnouncementsController < ApplicationController
     if params[:untracked]
       @announcements = @announcements.untracked(current_user)
     end
+    @announcements = @announcements.order('created_at DESC').limit(1000)
   end
 end
