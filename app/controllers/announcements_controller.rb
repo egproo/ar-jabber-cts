@@ -24,17 +24,11 @@ class AnnouncementsController < ApplicationController
 
     payment_hash = attrs[:payment_attributes]
 
-    money_transfer = MoneyTransfer.new(
-      sender: @announcement.buyer,
-      receiver: @announcement.seller,
-      amount: @announcement.room_and_cost,
-      received_at: payment_hash[:money_transfer_attributes][:received_at],
-    )
-    payment = money_transfer.payments.build(
-      contract: @announcement,
-      amount: money_transfer.amount,
-      effective_months: 1,
-    )
+    money_transfer = MoneyTransfer.for_single_contract(@announcement,
+                                                       amount: @announcement.room_and_cost,
+                                                       received_at: payment_hash[:money_transfer_attributes][:received_at],
+                                                       effective_months: 1)
+    payment = money_transfer.payments.first
 
     # Due to a bug https://github.com/rails/rails/issues/7809
     # and monkey patch config/initializers/monkey_patches/autosave_association.rb

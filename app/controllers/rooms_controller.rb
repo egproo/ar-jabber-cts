@@ -141,17 +141,11 @@ class RoomsController < ApplicationController
     end
 
     payment_hash = attrs[:payment_attributes]
-    money_transfer = MoneyTransfer.new(
-      sender: room.buyer,
-      receiver: room.seller,
-      amount: payment_hash[:amount],
-      received_at: payment_hash[:money_transfer_attributes][:received_at],
-    )
-    payment = money_transfer.payments.build(
-      contract: room,
-      amount: money_transfer.amount,
-      effective_months: payment_hash[:effective_months]
-    )
+    money_transfer = MoneyTransfer.for_single_contract(room,
+                                                       amount: payment_hash[:amount],
+                                                       received_at: payment_hash[:money_transfer_attributes][:received_at],
+                                                       effective_months: payment_hash[:effective_months])
+    payment = money_transfer.payments.first
 
     room.payments << payment
 

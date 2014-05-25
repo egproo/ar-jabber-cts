@@ -58,4 +58,19 @@ class MoneyTransfer < ActiveRecord::Base
       end
     end
   end
+
+  def self.for_single_contract(contract, options = {})
+    self.new(
+      sender: contract.buyer,
+      receiver: contract.seller,
+      amount: options[:amount],
+      received_at: options[:received_at],
+    ).tap do |money_transfer|
+      money_transfer.payments.build(
+        contract: contract,
+        amount: money_transfer.amount,
+        effective_months: options[:effective_months],
+      )
+    end
+  end
 end
